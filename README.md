@@ -12,7 +12,7 @@
     <a href=".claude-plugin/marketplace.json"><img alt="Claude Code Plugin" src="https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg" /></a>
   </p>
 
-  <p>中文 | <a href="README.en.md">English README</a> | <a href="docs/en/INSTALL.md">English Docs</a></p>
+  <p>中文 | <a href="docs/zh/INSTALL.md">中文文档</a> | <a href="README.en.md">English README</a> | <a href="docs/en/INSTALL.md">English Docs</a></p>
 
 </div>
 
@@ -50,26 +50,6 @@
 
 安装到 wiki 目录后，普通问答默认基于这个 wiki：你可以直接提问，不需要每次写“基于 wiki 回答”。
 
-### 使用 Skills CLI
-
-在目标 wiki 项目目录运行：
-
-```bash
-npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
-```
-
-本地开发预览：
-
-```bash
-npx -y skills add . --list
-```
-
-安装当前本地版本：
-
-```bash
-npx -y skills add . --skill karmind-skill --agent '*' -y
-```
-
 ### Claude Code Plugin
 
 Claude Code 推荐使用 plugin marketplace 安装：
@@ -79,11 +59,12 @@ Claude Code 推荐使用 plugin marketplace 安装：
 /plugin install karmind-skill@karmind-skills
 ```
 
-本地开发安装：
+### Skills CLI
 
-```text
-/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
-/plugin install karmind-skill@karmind-local
+在目标 wiki 项目目录运行：
+
+```bash
+npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
 ### 内置安装脚本
@@ -98,6 +79,27 @@ python scripts/install.py --target project-agents --project .
 
 ```bash
 python scripts/install.py --list-targets
+```
+
+### 开发者本地安装
+
+本地 checkout 预览：
+
+```bash
+npx -y skills add . --list
+```
+
+安装当前本地版本：
+
+```bash
+npx -y skills add . --skill karmind-skill --agent '*' -y
+```
+
+Claude Code 本地插件安装：
+
+```text
+/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin install karmind-skill@karmind-local
 ```
 
 ## 快速开始

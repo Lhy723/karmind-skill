@@ -12,7 +12,7 @@
     <a href=".claude-plugin/marketplace.json"><img alt="Claude Code Plugin" src="https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg" /></a>
   </p>
 
-  <p><a href="README.md">中文 README</a> | English | <a href="docs/zh/INSTALL.md">中文文档</a></p>
+  <p><a href="README.md">中文 README</a> | <a href="docs/zh/INSTALL.md">中文文档</a> | English | <a href="docs/en/INSTALL.md">English Docs</a></p>
 
 </div>
 
@@ -50,26 +50,6 @@ Enable this skill only inside projects that actually contain an LLM Wiki. Global
 
 Once installed in a wiki directory, normal questions default to wiki-grounded answers. You can ask directly without saying "use the wiki" every time.
 
-### Skills CLI
-
-Run from the target wiki project:
-
-```bash
-npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
-```
-
-Preview a local checkout:
-
-```bash
-npx -y skills add . --list
-```
-
-Install the local checkout:
-
-```bash
-npx -y skills add . --skill karmind-skill --agent '*' -y
-```
-
 ### Claude Code Plugin
 
 Claude Code users should prefer plugin marketplace installation:
@@ -79,11 +59,12 @@ Claude Code users should prefer plugin marketplace installation:
 /plugin install karmind-skill@karmind-skills
 ```
 
-Local development install:
+### Skills CLI
 
-```text
-/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
-/plugin install karmind-skill@karmind-local
+Run from the target wiki project:
+
+```bash
+npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
 ### Bundled Installer
@@ -98,6 +79,27 @@ List all targets:
 
 ```bash
 python scripts/install.py --list-targets
+```
+
+### Local Development Install
+
+Preview a local checkout:
+
+```bash
+npx -y skills add . --list
+```
+
+Install the local checkout:
+
+```bash
+npx -y skills add . --skill karmind-skill --agent '*' -y
+```
+
+Claude Code local plugin install:
+
+```text
+/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin install karmind-skill@karmind-local
 ```
 
 ## Quick Start
