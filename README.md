@@ -1,13 +1,20 @@
-# karmind-skill
+<div align="center">
+  <img src="assets/banner.png" alt="karmind-skill banner" width="100%" />
 
-> A portable Agent Skill for maintaining a Karpathy-style LLM Wiki.
+  <h1>karmind-skill</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB.svg)](https://www.python.org/)
-[![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-111827.svg)](SKILL.md)
-[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg)](.claude-plugin/marketplace.json)
+  <p><strong>A portable Agent Skill for maintaining a Karpathy-style LLM Wiki.</strong></p>
 
-中文 | [English README](README.en.md) | [English Docs](docs/en/INSTALL.md)
+  <p>
+    <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>
+    <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-3776AB.svg" /></a>
+    <a href="SKILL.md"><img alt="Agent Skill" src="https://img.shields.io/badge/Agent%20Skill-SKILL.md-111827.svg" /></a>
+    <a href=".claude-plugin/marketplace.json"><img alt="Claude Code Plugin" src="https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg" /></a>
+  </p>
+
+  <p>中文 | <a href="README.en.md">English README</a> | <a href="docs/en/INSTALL.md">English Docs</a></p>
+
+</div>
 
 `karmind-skill` 是一个面向编程 agent 的可移植 Skill，用来维护长期演化的 LLM Wiki：把原始资料整理成有引用、有链接、有历史记录、可持续更新的 Markdown 知识库。
 
@@ -204,6 +211,7 @@ wiki/reports/batch/
 ├── references/                 # 按需读取的 skill 参考文档
 ├── scripts/                    # 初始化、缓存、批处理、体检、安装脚本
 ├── adapters/                   # 通用 agent 规则模板
+├── assets/                     # README banner 等静态资源
 ├── plugins/karmind-skill/      # Claude Code plugin 分发目录
 ├── docs/
 │   ├── en/
@@ -222,15 +230,10 @@ wiki/reports/batch/
 - 先用纯 Markdown、`rg` 和索引文件；规模真的变大后，再考虑向量数据库、MCP 搜索或其他工具。
 - 输出形态不局限于 prose，也可以是表格、时间线、图表、Marp slide markdown 或 Obsidian Canvas notes。
 
-## 验证
-
-```bash
-python -m py_compile scripts/*.py
-python -m unittest discover -s tests -v
-python scripts/smoke_test.py
-npx -y skills add . --list
-```
-
 ## 许可证
 
 MIT. See [LICENSE](LICENSE).
+
+## Star 历史
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Lhy723/karmind-skill&type=Date)](https://www.star-history.com/#Lhy723/karmind-skill&Date)

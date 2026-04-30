@@ -1,13 +1,20 @@
-# karmind-skill
+<div align="center">
+  <img src="assets/banner.png" alt="karmind-skill banner" width="100%" />
 
-> A portable Agent Skill for maintaining a Karpathy-style LLM Wiki.
+  <h1>karmind-skill</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB.svg)](https://www.python.org/)
-[![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-111827.svg)](SKILL.md)
-[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg)](.claude-plugin/marketplace.json)
+  <p><strong>A portable Agent Skill for maintaining a Karpathy-style LLM Wiki.</strong></p>
 
-[中文 README](README.md) | English | [中文文档](docs/zh/INSTALL.md)
+  <p>
+    <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>
+    <a href="https://www.python.org/"><img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-3776AB.svg" /></a>
+    <a href="SKILL.md"><img alt="Agent Skill" src="https://img.shields.io/badge/Agent%20Skill-SKILL.md-111827.svg" /></a>
+    <a href=".claude-plugin/marketplace.json"><img alt="Claude Code Plugin" src="https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg" /></a>
+  </p>
+
+  <p><a href="README.md">中文 README</a> | English | <a href="docs/zh/INSTALL.md">中文文档</a></p>
+
+</div>
 
 `karmind-skill` is a portable Agent Skill for coding agents. It maintains a long-lived LLM Wiki: a source-grounded, linked, logged, and continuously updated Markdown knowledge base.
 
@@ -204,6 +211,7 @@ Doctor repair policy:
 ├── references/                 # On-demand skill reference docs
 ├── scripts/                    # Init, cache, batch, doctor, and install scripts
 ├── adapters/                   # Generic agent rule templates
+├── assets/                     # Static assets such as the README banner
 ├── plugins/karmind-skill/      # Claude Code plugin distribution
 ├── docs/
 │   ├── en/
@@ -222,15 +230,10 @@ Doctor repair policy:
 - Start with Markdown, `rg`, and index files. Add vector databases, MCP search, or other tools only when scale demands them.
 - Answers do not have to be prose; they can become tables, timelines, diagrams, Marp slide markdown, or Obsidian Canvas notes.
 
-## Verification
-
-```bash
-python -m py_compile scripts/*.py
-python -m unittest discover -s tests -v
-python scripts/smoke_test.py
-npx -y skills add . --list
-```
-
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Lhy723/karmind-skill&type=Date)](https://www.star-history.com/#Lhy723/karmind-skill&Date)
