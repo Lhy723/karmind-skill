@@ -2,11 +2,73 @@
 
 Prefer enabling this skill only inside directories that actually contain an LLM Wiki. Global installation is not recommended by default because this skill scans documents, maintains `raw/`, and edits `wiki/`.
 
-Prefer the `skills` CLI from the target project directory:
+## Recommended: Claude Code Plugin
+
+Claude Code users should prefer plugin marketplace installation:
+
+```text
+/plugin marketplace add karmind-skills Lhy723/karmind-skill
+/plugin install karmind-skill@karmind-skills
+```
+
+See [CLAUDE_CODE.md](CLAUDE_CODE.md) for details.
+
+## Skills CLI
+
+If your agent supports the `skills` CLI, run this from the target wiki project:
 
 ```bash
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
+
+See [SKILLS_CLI.md](SKILLS_CLI.md) for details.
+
+## Project-Level Agent Install
+
+If you are not using plugin marketplace or the `skills` CLI, use the bundled helper to install into the current project's agent skill directory.
+
+Codex / generic agents:
+
+```bash
+python scripts/install.py --target project-agents --project .
+```
+
+Claude Code project skill:
+
+```bash
+python scripts/install.py --target project-claude --project .
+```
+
+OpenCode:
+
+```bash
+python scripts/install.py --target project-opencode --project .
+```
+
+Trae:
+
+```bash
+python scripts/install.py --target project-trae --project .
+```
+
+List available targets:
+
+```bash
+python scripts/install.py --list-targets
+```
+
+## Optional: User-Level Install
+
+Use user-level install only when you intentionally want the skill available everywhere:
+
+```bash
+python scripts/install.py --target codex-user
+python scripts/install.py --target claude-user
+python scripts/install.py --target opencode-user
+python scripts/install.py --target trae-user
+```
+
+## Local Development Install
 
 Preview a local checkout:
 
@@ -20,27 +82,11 @@ Install the local checkout into the current project:
 npx -y skills add . --skill karmind-skill --agent '*' -y
 ```
 
-See [SKILLS_CLI.md](SKILLS_CLI.md) for details.
+Claude Code local plugin install:
 
-You can also install with the bundled helper script. Project-level install is recommended:
-
-```bash
-python scripts/install.py --target project-agents --project .
-```
-
-Use user-level install only when you intentionally want the skill available everywhere:
-
-```bash
-python scripts/install.py --target codex-user
-python scripts/install.py --target claude-user
-python scripts/install.py --target opencode-user
-python scripts/install.py --target trae-user
-```
-
-List available targets:
-
-```bash
-python scripts/install.py --list-targets
+```text
+/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin install karmind-skill@karmind-local
 ```
 
 Use `--symlink` during development:

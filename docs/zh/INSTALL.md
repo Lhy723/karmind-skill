@@ -2,13 +2,75 @@
 
 推荐只在需要维护 LLM Wiki 的项目目录中启用这个 skill，不建议默认全局安装。它会扫描已有文档、维护 `raw/`、更新 `wiki/`，更适合作为某个 wiki 目录的专用能力。
 
-推荐优先使用 `skills` CLI，在当前项目目录安装：
+## 推荐：Claude Code Plugin
+
+Claude Code 用户推荐优先使用 plugin marketplace：
+
+```text
+/plugin marketplace add karmind-skills Lhy723/karmind-skill
+/plugin install karmind-skill@karmind-skills
+```
+
+更多说明见 [CLAUDE_CODE.md](CLAUDE_CODE.md)。
+
+## Skills CLI
+
+如果你的 agent 支持 `skills` CLI，在目标 wiki 项目目录运行：
 
 ```bash
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
-本地开发预览：
+更多说明见 [SKILLS_CLI.md](SKILLS_CLI.md)。
+
+## 项目级 Agent 安装
+
+如果不使用 plugin marketplace 或 `skills` CLI，可以用内置脚本安装到当前项目的 agent skill 目录。
+
+Codex / 通用 agent：
+
+```bash
+python scripts/install.py --target project-agents --project .
+```
+
+Claude Code 项目级 skill：
+
+```bash
+python scripts/install.py --target project-claude --project .
+```
+
+OpenCode：
+
+```bash
+python scripts/install.py --target project-opencode --project .
+```
+
+Trae：
+
+```bash
+python scripts/install.py --target project-trae --project .
+```
+
+查看所有支持的安装目标：
+
+```bash
+python scripts/install.py --list-targets
+```
+
+## 可选：用户级安装
+
+只有你明确希望所有项目都能调用这个 skill 时，再安装到用户级目录：
+
+```bash
+python scripts/install.py --target codex-user
+python scripts/install.py --target claude-user
+python scripts/install.py --target opencode-user
+python scripts/install.py --target trae-user
+```
+
+## 开发者本地安装
+
+本地 checkout 预览：
 
 ```bash
 npx -y skills add . --list
@@ -20,27 +82,11 @@ npx -y skills add . --list
 npx -y skills add . --skill karmind-skill --agent '*' -y
 ```
 
-更多说明见 [SKILLS_CLI.md](SKILLS_CLI.md)。
+Claude Code 本地插件安装：
 
-也可以使用仓库内置安装脚本，推荐项目级安装：
-
-```bash
-python scripts/install.py --target project-agents --project .
-```
-
-确实需要用户级安装时，再复制到不同 agent 的用户级 skill 目录：
-
-```bash
-python scripts/install.py --target codex-user
-python scripts/install.py --target claude-user
-python scripts/install.py --target opencode-user
-python scripts/install.py --target trae-user
-```
-
-查看所有支持的安装目标：
-
-```bash
-python scripts/install.py --list-targets
+```text
+/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin install karmind-skill@karmind-local
 ```
 
 开发本 skill 时可以使用软链接，避免每次修改后重复复制：
