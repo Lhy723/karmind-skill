@@ -98,7 +98,7 @@ npx -y skills add . --skill karmind-skill --agent '*' -y
 Claude Code local plugin install:
 
 ```text
-/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin marketplace add karmind-local /path/to/karmind-skill
 /plugin install karmind-skill@karmind-local
 ```
 

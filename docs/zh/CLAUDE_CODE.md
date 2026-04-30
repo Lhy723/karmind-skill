@@ -31,7 +31,7 @@ plugins/karmind-skill/skills/karmind-skill/SKILL.md
 本地开发安装：
 
 ```text
-/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin marketplace add karmind-local /path/to/karmind-skill
 /plugin install karmind-skill@karmind-local
 ```
 

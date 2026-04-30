@@ -31,7 +31,7 @@ With a full GitHub URL:
 Local development install:
 
 ```text
-/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin marketplace add karmind-local /path/to/karmind-skill
 /plugin install karmind-skill@karmind-local
 ```
 
