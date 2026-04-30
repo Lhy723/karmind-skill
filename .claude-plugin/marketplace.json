@@ -1,0 +1,14 @@
+{
+  "name": "karmind-skills",
+  "owner": {
+    "name": "Lhy723",
+    "email": "Lhy723@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "karmind-skill",
+      "source": "./plugins/karmind-skill",
+      "description": "Teach Claude Code to initialize and maintain a source-grounded LLM wiki."
+    }
+  ]
+}

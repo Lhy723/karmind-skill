@@ -1,0 +1,134 @@
+# Wiki Schema Reference
+
+Use this reference when creating or revising a wiki layout.
+
+## Recommended Structure
+
+```text
+wiki-root/
+├── AGENTS.md
+├── raw/
+│   └── assets/
+└── wiki/
+    ├── index.md
+    ├── log.md
+    ├── overview.md
+    ├── sources/
+    ├── entities/
+    ├── concepts/
+    ├── questions/
+    ├── synthesis/
+    ├── cache/
+    │   └── ingest-cache.json
+    └── reports/
+        ├── doctor-report.md
+        └── batch/
+```
+
+## Required Files
+
+`raw/`
+
+- Immutable source evidence. The agent reads from this layer and does not rewrite it without explicit approval.
+- `raw/assets/` stores local images and attachments, especially files downloaded from clipped web pages.
+- Raw sources can include markdown, PDFs, transcripts, images, CSVs, HTML clips, and other source material.
+
+`wiki/index.md`
+
+- Content-oriented catalog.
+- Group pages by type: overview, sources, entities, concepts, questions, synthesis.
+- Each entry should have a link and a one-line description.
+- Update after every ingest or major maintenance pass.
+
+`wiki/log.md`
+
+- Append-only chronological record.
+- Use parseable headings:
+  ```markdown
+  ## [YYYY-MM-DD] ingest | Source Title
+  ```
+- Include changed pages, source files, decisions, and open questions.
+
+`wiki/cache/ingest-cache.json`
+
+- Operational cache for raw source processing.
+- Tracks each raw file as `pending`, `processed`, `skipped`, or `failed`.
+- Includes hash, processor, source note, updated wiki pages, and timestamps.
+- Agents must update it whether processing is manual or automated.
+- Reset only when the user asks for forced re-extraction.
+
+`wiki/reports/`
+
+- Generated health checks, batch ingest reports, and other operational reports.
+- `wiki/reports/doctor-report.md` is the default wiki doctor output.
+- Batch processing reports should live under `wiki/reports/batch/`.
+
+`AGENTS.md`
+
+- Defines wiki conventions for all agents.
+- Should be short, local, and specific.
+- May point to this skill for detailed workflows.
+
+## Page Types
+
+Source note: `wiki/sources/<source-slug>.md`
+
+- Bibliographic/source metadata.
+- Concise summary.
+- Key claims.
+- Extracted entities and concepts.
+- Links to pages updated because of this source.
+- Open questions and caveats.
+
+Entity page: `wiki/entities/<entity-name>.md`
+
+- Who/what the entity is.
+- Known attributes.
+- Timeline or relationship notes when useful.
+- Sources and contradictions.
+
+Concept page: `wiki/concepts/<concept-name>.md`
+
+- Definition.
+- Competing interpretations.
+- Related concepts.
+- Evidence and examples.
+
+Question page: `wiki/questions/<question-slug>.md`
+
+- The question asked.
+- Current answer.
+- Evidence.
+- Remaining uncertainty.
+- Follow-up sources to seek.
+
+Synthesis page: `wiki/synthesis/<topic>.md`
+
+- Higher-level analysis across sources.
+- Comparisons, models, timelines, or takeaways.
+- Claims should link back to source notes or raw evidence.
+
+## Frontmatter
+
+Frontmatter is optional but recommended for larger wikis:
+
+```yaml
+---
+type: concept
+status: active
+created: YYYY-MM-DD
+last_updated: YYYY-MM-DD
+sources:
+  - wiki/sources/example.md
+tags:
+  - example
+---
+```
+
+Keep frontmatter stable and sparse. Do not let metadata become harder to maintain than the page itself.
+
+## Links
+
+- Use Obsidian wikilinks such as `[[Page Name]]` when the wiki is mainly browsed in Obsidian.
+- Use relative markdown links when GitHub rendering matters more.
+- Do not leave unexplained dangling links. If a page should exist but does not yet, add it to open questions or create a short stub.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Karmind Skill"
+  short_description: "Maintain a source-grounded LLM wiki"
+  brand_color: "#2563EB"
+  default_prompt: "Use $karmind-skill to create or maintain the LLM wiki in the current directory."
+
+policy:
+  allow_implicit_invocation: true

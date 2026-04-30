@@ -1,0 +1,8 @@
+{
+  "name": "karmind-skill",
+  "version": "0.1.0",
+  "description": "Claude Code plugin for maintaining a source-grounded LLM wiki with cached ingest workflows.",
+  "author": {
+    "name": "Lhy723"
+  }
+}

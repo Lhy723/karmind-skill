@@ -1,0 +1,140 @@
+# Operations Reference
+
+## Ingest Source
+
+Input can be a markdown clip, PDF-derived text, transcript, paper notes, CSV summary, image notes, or manually pasted source.
+
+Steps:
+
+1. Ensure the cache is current:
+   ```bash
+   python scripts/ingest_cache.py . ensure
+   ```
+2. List pending files and pick the next raw source:
+   ```bash
+   python scripts/ingest_cache.py . list --status pending
+   ```
+3. Skip files marked `processed` unless the user asks to force re-extract. For force re-extract, run:
+   ```bash
+   python scripts/ingest_cache.py . reset
+   ```
+4. Read the source and capture metadata: title, author, date, source path, retrieval date if web-derived.
+5. Inspect important local assets or images referenced by the source when they materially affect meaning.
+6. Extract durable items:
+   - claims
+   - definitions
+   - entities
+   - concepts
+   - relationships
+   - dates and timelines
+   - contradictions with existing wiki pages
+   - open questions
+7. Read `wiki/index.md` and relevant existing pages.
+8. Write or update the source note under `wiki/sources/`.
+9. Update entity, concept, question, and synthesis pages.
+10. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
+11. Update `wiki/index.md`.
+12. Append to `wiki/log.md`.
+13. Mark the file processed:
+   ```bash
+   python scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md --page wiki/concepts/example.md
+   ```
+14. Report changed pages and unresolved questions to the user.
+
+## Initialize Existing Notes
+
+When initializing a wiki in a directory that may already contain notes or documents:
+
+1. Scan first:
+   ```bash
+   python scripts/init_wiki.py . --scan-existing
+   ```
+2. Ask the user whether to move, copy, or ignore candidates.
+3. If approved, import into `raw/imported/`:
+   ```bash
+   python scripts/init_wiki.py . --import-existing move
+   ```
+   or:
+   ```bash
+   python scripts/init_wiki.py . --import-existing copy
+   ```
+4. Imported files are marked `pending` in `wiki/cache/ingest-cache.json`.
+5. Continue ingestion from the pending cache list.
+
+## Answer Query
+
+Normal user questions default to this workflow when the current directory is an LLM Wiki. The user does not need to explicitly say "use the wiki".
+
+Steps:
+
+1. Start from `wiki/index.md`.
+2. Search with `rg` if needed:
+   ```bash
+   rg -n "term|related phrase" wiki
+   ```
+3. Read relevant wiki pages and source notes.
+4. Inspect raw sources only when the wiki evidence is thin or exact citation is needed.
+5. Answer with citations to files used.
+6. Choose the right output form: prose, comparison table, timeline, diagram, chart, slide markdown, canvas note, or maintained wiki page.
+7. If the answer is reusable, create or update a page and log it.
+
+## Lint Wiki
+
+Steps:
+
+1. Run:
+   ```bash
+   python scripts/wiki_doctor.py .
+   ```
+2. Review `wiki/reports/doctor-report.md`, starting with broken links.
+3. Review orphan pages, missing index entries, stale pages, and untracked raw sources.
+4. Turn missing information into `wiki/questions/` pages or source-finding tasks when useful.
+5. Fix the smallest useful set of issues.
+6. Update `wiki/index.md` and append to `wiki/log.md`.
+
+## Fix Doctor Findings
+
+When the user asks to fix health-check issues, treat the doctor report as a maintenance queue, not as permission to rewrite the wiki.
+
+Steps:
+
+1. Read `wiki/reports/doctor-report.md`; if missing, run `python scripts/wiki_doctor.py .`.
+2. Triage findings:
+   - Low risk: obvious broken links, missing index entries, orphan pages that have a clear parent topic, missing question pages, missing source citations.
+   - Medium risk: duplicate pages, oversized pages, ambiguous page names, broad renames, or content that needs substantial synthesis.
+   - High risk: deletion, overwriting source notes, cache reset, batch re-ingest, schema changes, or moving large sets of files.
+3. Fix low-risk findings directly.
+4. For medium-risk findings, write a short plan and proceed only when the user approves the merge, split, or rename.
+5. For high-risk findings, ask before changing files.
+6. For broken links, prefer correcting the link target. If the target concept is real but missing, create a page or question page.
+7. For orphan pages, link them from `wiki/index.md` or the nearest relevant topic page. If the page is intentionally archival, mark that explicitly in the page or index.
+8. For raw files, follow `wiki/cache/ingest-cache.json`; process only pending entries unless the user requested force re-extract.
+9. When a manual fix processes a raw source, mark it with `scripts/ingest_cache.py` or update the cache equivalently.
+10. Do not invent evidence. Turn missing support into `wiki/questions/` entries or source-finding tasks.
+11. Preserve contradictions with source names, dates, and confidence language.
+12. Update `wiki/index.md` and append a dated maintenance entry to `wiki/log.md`.
+13. Rerun `python scripts/wiki_doctor.py .`.
+14. Report fixed items, remaining issues, and items waiting for user approval.
+
+## Contradiction Handling
+
+When a new source conflicts with existing wiki content:
+
+- Do not erase the older claim unless it is clearly obsolete and the schema permits replacement.
+- Add a `Contradictions` or `Evidence Notes` section.
+- Name the conflicting sources.
+- Include dates and confidence language.
+- Add an open question if resolution requires more evidence.
+
+## Batch Work
+
+Batch ingest is allowed only when the user asks or the source set is clearly low-risk.
+
+For large batches:
+
+- Ask whether to use an external-model API loop or manual agent processing.
+- Use `wiki/cache/ingest-cache.json` as the manifest.
+- Process only `pending` files.
+- Mark files as `processed`, `failed`, or `skipped`.
+- Write a report file with processed, skipped, failed, and needs-review items.
+- Keep logs parseable.

@@ -1,0 +1,236 @@
+# karmind-skill
+
+> A portable Agent Skill for maintaining a Karpathy-style LLM Wiki.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB.svg)](https://www.python.org/)
+[![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-111827.svg)](SKILL.md)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-Plugin-7C3AED.svg)](.claude-plugin/marketplace.json)
+
+[中文 README](README.md) | English | [中文文档](docs/zh/INSTALL.md)
+
+`karmind-skill` is a portable Agent Skill for coding agents. It maintains a long-lived LLM Wiki: a source-grounded, linked, logged, and continuously updated Markdown knowledge base.
+
+It follows Andrej Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) idea: instead of asking an LLM to rediscover scattered chunks from scratch every time, let an agent continuously compile sources into a structured wiki. Every new source, question, and contradiction should make the wiki more useful.
+
+## Why This Exists
+
+Typical RAG splits material into chunks and retrieves them at question time. An LLM Wiki is different: it separates raw evidence, maintained wiki pages, and local operating schema so an agent can maintain knowledge the way it maintains a codebase.
+
+| Layer | Path | Role |
+| --- | --- | --- |
+| Raw sources | `raw/` | Immutable evidence: papers, clipped web pages, interviews, images, CSVs, PDF-derived text |
+| Wiki | `wiki/` | Maintained knowledge: source notes, entity pages, concept pages, questions, synthesis |
+| Schema | `AGENTS.md` | Local operating manual for directories, citations, cache, logs, and maintenance rules |
+
+## Features
+
+| Feature | Description |
+| --- | --- |
+| Wiki initialization | Creates `raw/`, `wiki/`, `wiki/index.md`, `wiki/log.md`, `wiki/cache/`, and `wiki/reports/` |
+| Existing-note import | Scans existing documents and moves or copies them into `raw/imported/` after user approval |
+| Source ingest | Extracts claims, entities, concepts, timelines, contradictions, and open questions |
+| Cache-aware processing | Tracks `pending`, `processed`, `failed`, and `skipped` in `wiki/cache/ingest-cache.json` |
+| External model batch ingest | Uses any OpenAI-compatible model to draft source notes in batches |
+| Wiki doctor | Reports broken links, orphan pages, unprocessed sources, cache status, and maintenance actions |
+| Doctor finding repair | Fixes report findings only after explicit user request, with risk-based approval rules |
+| Obsidian-friendly | Supports wikilinks, assets, graph/backlinks, Dataview, Canvas, and Marp-style outputs |
+| Multi-agent support | Works with Codex, Claude Code, OpenCode, Trae, Skills CLI, and generic `AGENTS.md` workflows |
+
+## Installation Guidance
+
+Enable this skill only inside projects that actually contain an LLM Wiki. Global installation is not recommended by default because the skill scans documents and maintains `raw/` and `wiki/`, which can be noisy in ordinary code projects.
+
+Once installed in a wiki directory, normal questions default to wiki-grounded answers. You can ask directly without saying "use the wiki" every time.
+
+### Skills CLI
+
+Run from the target wiki project:
+
+```bash
+npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
+```
+
+Preview a local checkout:
+
+```bash
+npx -y skills add . --list
+```
+
+Install the local checkout:
+
+```bash
+npx -y skills add . --skill karmind-skill --agent '*' -y
+```
+
+### Claude Code Plugin
+
+Claude Code users should prefer plugin marketplace installation:
+
+```text
+/plugin marketplace add karmind-skills Lhy723/karmind-skill
+/plugin install karmind-skill@karmind-skills
+```
+
+Local development install:
+
+```text
+/plugin marketplace add karmind-local /Users/lhy/Project/Prompt/karMind-skill
+/plugin install karmind-skill@karmind-local
+```
+
+### Bundled Installer
+
+Project-level install. Point `--project` at the target wiki project; use `.` when you are already in that project:
+
+```bash
+python scripts/install.py --target project-agents --project .
+```
+
+List all targets:
+
+```bash
+python scripts/install.py --list-targets
+```
+
+## Quick Start
+
+Open your agent in the target directory and say:
+
+```text
+Use karmind-skill to initialize an LLM Wiki in the current directory. First scan for existing notes or documents, list candidates, ask whether to move, copy, or skip them, then create raw/, wiki/, index, log, cache, and reports after confirmation.
+```
+
+After adding sources, continue with:
+
+```text
+Use karmind-skill to ingest new sources. Find pending material from the default directories, create source notes, update related entity, concept, question, or synthesis pages, and maintain the default index, log, and cache.
+```
+
+If there are many raw files:
+
+```text
+Use karmind-skill to inspect pending material. Suggest a processing order first; if external-model batch processing is appropriate, run a dry run, explain which files, model, and reports will be used, then wait for my confirmation.
+```
+
+Manual fallback command:
+
+```bash
+python scripts/init_wiki.py . --scan-existing
+```
+
+## Recommended Wiki Layout
+
+```text
+my-llm-wiki/
+├── AGENTS.md
+├── raw/
+│   └── assets/
+└── wiki/
+    ├── index.md
+    ├── log.md
+    ├── overview.md
+    ├── sources/
+    ├── entities/
+    ├── concepts/
+    ├── questions/
+    ├── synthesis/
+    ├── cache/
+    │   └── ingest-cache.json
+    ├── reports/
+    │   ├── doctor-report.md
+    │   └── batch/
+    └── templates/
+```
+
+## Common Workflows
+
+Prefer natural-language prompts. The bundled scripts are deterministic tools for the agent or user to call when needed.
+
+| Workflow | Recommended prompt |
+| --- | --- |
+| Initialize wiki | `Use karmind-skill to initialize an LLM Wiki in the current directory. First scan for existing notes or documents, list candidates, and ask whether to move, copy, or skip them.` |
+| Ingest sources | `Use karmind-skill to ingest new sources.` |
+| Process pending sources | `Use karmind-skill to inspect pending material, suggest what to process next by importance, and wait for my confirmation.` |
+| Model batch ingest | `Use karmind-skill to configure external-model batch processing. Run a dry run first, tell me which files, model, and reports will be used, then wait for confirmation.` |
+| Force re-extract | `Use karmind-skill to force re-extraction. Explain which cache entries will be reset before doing it.` |
+| Default Q&A | `What evidence supports this claim?` |
+| Comparative analysis | `Compare A and B in a table.` |
+| Trace sources | `Which sources support this conclusion?` |
+| Archive an answer | `File the previous answer.` |
+| Wiki doctor | `Use karmind-skill to run a health check.` |
+| Fix doctor findings | `Use karmind-skill to fix issues from the latest health report. Do not delete pages; ask me before merging, splitting, or renaming pages.` |
+
+Wiki doctor reports are written to:
+
+```text
+wiki/reports/doctor-report.md
+```
+
+Model batch reports are written to:
+
+```text
+wiki/reports/batch/
+```
+
+Configure model API keys through environment variables or a local `.env.local`; do not write keys into the wiki. See [模型 API Key 配置](docs/zh/MODEL_KEYS.md) / [Model API Key Configuration](docs/en/MODEL_KEYS.md).
+
+Doctor repair policy:
+
+- Low-risk findings can be fixed directly: obvious broken links, missing index entries, orphan links, missing citations, and question-page stubs.
+- Medium-risk findings need a short plan first: duplicated pages, large-page splits, and page renames.
+- High-risk findings require confirmation: deleting pages, overwriting source notes, resetting cache, batch re-ingest, or schema changes.
+- After repairs, update `wiki/index.md`, append `wiki/log.md`, and rerun the doctor.
+
+## Agent Support
+
+| Agent / Tool | Recommended approach | Docs |
+| --- | --- | --- |
+| Skills CLI | `npx skills add` from the project directory | [中文](docs/zh/SKILLS_CLI.md) / [English](docs/en/SKILLS_CLI.md) |
+| Model API keys | Environment variables or local `.env.local` | [中文](docs/zh/MODEL_KEYS.md) / [English](docs/en/MODEL_KEYS.md) |
+| Codex | Project-level `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
+| Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
+| OpenCode | Project-level `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
+| Trae | Project-level `.trae/skills` or rules | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
+| Other agents | Project-level `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
+
+## Repository Layout
+
+```text
+.
+├── SKILL.md                    # Portable Agent Skill entrypoint
+├── .claude-plugin/             # Claude Code marketplace manifest
+├── agents/openai.yaml          # Optional Codex app metadata
+├── references/                 # On-demand skill reference docs
+├── scripts/                    # Init, cache, batch, doctor, and install scripts
+├── adapters/                   # Generic agent rule templates
+├── plugins/karmind-skill/      # Claude Code plugin distribution
+├── docs/
+│   ├── en/
+│   └── zh/
+├── examples/
+└── tests/
+```
+
+## Design Principles
+
+- Raw sources are immutable; wiki pages are maintained.
+- Important claims should trace back to source notes or raw sources.
+- `index.md` is for navigation, and `log.md` is for chronological history.
+- `ingest-cache.json` tracks processing state and skips already processed documents by default.
+- Contradictions and uncertainty are part of the knowledge base and should be explicit.
+- Start with Markdown, `rg`, and index files. Add vector databases, MCP search, or other tools only when scale demands them.
+- Answers do not have to be prose; they can become tables, timelines, diagrams, Marp slide markdown, or Obsidian Canvas notes.
+
+## Verification
+
+```bash
+python -m py_compile scripts/*.py
+python -m unittest discover -s tests -v
+python scripts/smoke_test.py
+npx -y skills add . --list
+```
+
+## License
+
+MIT. See [LICENSE](LICENSE).
