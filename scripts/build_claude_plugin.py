@@ -39,6 +39,7 @@ def copy_scripts() -> None:
         "ingest_cache.py",
         "init_wiki.py",
         "install.py",
+        "mirror_assets.py",
         "smoke_test.py",
         "wiki_doctor.py",
     ]:

@@ -166,6 +166,28 @@ If the user explicitly asks to force re-extract, reset the cache:
 python /tmp/karmind-skill/scripts/ingest_cache.py . reset
 ```
 
+## Image and Attachment Mirroring
+
+Before ingesting a raw article, copy local images/attachments referenced by the article into `wiki/assets/`, and download remote image URLs:
+
+macOS / Linux:
+
+```bash
+python /tmp/karmind-skill/scripts/mirror_assets.py . raw/example.md
+```
+
+Windows PowerShell:
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\mirror_assets.py" . raw/example.md
+```
+
+Mirror results are recorded in `wiki/cache/assets-cache.json`. To preview without copying or downloading:
+
+```bash
+python /tmp/karmind-skill/scripts/mirror_assets.py . raw/example.md --dry-run
+```
+
 For many documents, ask the user whether to configure an external-model API loop or let the current agent process pending files manually.
 
 Model batch helper:

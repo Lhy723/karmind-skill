@@ -38,6 +38,7 @@
 | 导入已有笔记 | 初始化时扫描已有文档，经用户确认后移动或复制到 `raw/imported/` |
 | 资料摄取 | 从 raw source 提取 claim、entity、concept、timeline、矛盾和开放问题 |
 | 缓存去重 | 用 `wiki/cache/ingest-cache.json` 记录 `pending`、`drafted`、`processed`、`failed`、`skipped` |
+| 附件镜像 | 把 raw 文章引用的本地图片/附件复制到 `wiki/assets/`，并下载在线图片 |
 | 外部模型批处理 | 可用任意 OpenAI-compatible 模型批量生成待复核 source note drafts |
 | Wiki 体检 | 输出断链、孤儿页、未摄取资料、缓存状态和维护建议到 `wiki/reports/` |
 | 体检修复 | 用户明确要求后，按风险分级修复报告问题；高风险操作先确认 |
@@ -173,6 +174,7 @@ my-llm-wiki/
     ├── index.md
     ├── log.md
     ├── overview.md
+    ├── assets/
     ├── sources/
     │   └── _drafts/
     ├── entities/
@@ -180,7 +182,8 @@ my-llm-wiki/
     ├── questions/
     ├── synthesis/
     ├── cache/
-    │   └── ingest-cache.json
+    │   ├── ingest-cache.json
+    │   └── assets-cache.json
     ├── reports/
     │   ├── doctor-report.md
     │   └── batch/
@@ -208,6 +211,8 @@ my-llm-wiki/
 当缓存中有多个 pending raw 文件时，`摄取新资料` 会先询问处理方式：外部模型批处理、当前 agent 手动循环处理、只处理下一篇，或暂缓。
 
 外部模型批处理默认只写入 `wiki/sources/_drafts/` 并把缓存标记为 `drafted`；复核后才提升到正式 `wiki/sources/` 并标记为 `processed`。
+
+如果 raw 文章引用图片或附件，agent 会先镜像到 `wiki/assets/`；在线图片会被下载为本地副本，source note 应引用这个本地副本。
 
 体检报告默认写入：
 

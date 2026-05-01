@@ -20,6 +20,8 @@ You are maintaining an LLM wiki: a persistent, source-grounded, interlinked set 
 - `wiki/index.md` is content-oriented navigation. Update it after every meaningful ingest or restructuring.
 - `wiki/log.md` is chronological and append-only. Add one dated entry for every ingest, query filed back into the wiki, lint pass, schema change, or major maintenance task.
 - `wiki/cache/ingest-cache.json` tracks raw files as pending, drafted, processed, skipped, or failed. Use it to avoid duplicate extraction.
+- `wiki/assets/` stores local wiki copies of images and attachments referenced by raw sources. Do not rely on remote image URLs as the only copy.
+- `wiki/cache/assets-cache.json` tracks mirrored local assets and downloaded remote assets.
 - The schema should evolve with the user. Keep conventions local, explicit, and useful for the domain.
 
 Read [references/llm-wiki-principles.md](references/llm-wiki-principles.md) when you need the philosophy and tradeoffs. Read [references/wiki-schema.md](references/wiki-schema.md) when creating or revising a wiki layout. Read [references/operations.md](references/operations.md) for detailed ingest, query, and lint workflows. Read [references/obsidian-and-tools.md](references/obsidian-and-tools.md) when the user wants Obsidian, local attachments, graph view, slides, charts, Dataview, or search tooling guidance. Read [references/batch-processing.md](references/batch-processing.md) when many raw files need external-model or cache-driven processing. Read [references/agent-adapters.md](references/agent-adapters.md) when installing or adapting this skill to a specific coding agent.
@@ -52,14 +54,15 @@ When the user asks to ingest a source:
 5. If there is exactly one pending raw file, process it directly.
 6. Skip cache entries marked `processed` unless the user asks to force re-extract; for force re-extract, reset or mark relevant cache entries pending.
 7. Extract claims, entities, concepts, dates, definitions, relationships, uncertainties, and source metadata.
-8. If the source references images or local assets, inspect the most relevant assets separately and cite them when they affect the summary.
-9. Create or update a reviewed source note under the default source-note folder.
+8. If the source references images or attachments, run or emulate `python scripts/mirror_assets.py . <raw-path>` before writing the source note. Copy local assets into `wiki/assets/` and download remote image URLs into `wiki/assets/`; preserve `raw/` unchanged.
+9. Inspect the most relevant mirrored assets separately and cite them when they affect the summary.
+10. Create or update a reviewed source note under the default source-note folder.
    Use the wiki's established language for section headings and prose. Do not mix English boilerplate headings such as `Summary` or `Evidence` into a Chinese wiki unless the local schema does that intentionally.
-10. Update relevant entity, concept, timeline, question, or synthesis pages using the default wiki folders. Prefer small, named pages over one giant summary.
-11. Discuss surprising takeaways, contradictions, or emphasis choices with the user when the source is important or ambiguous.
-12. Add cross-links with `[[Page Name]]` or relative markdown links, following the local schema.
-13. Mark contradictions, superseded claims, and confidence levels instead of smoothing them away.
-14. Update index, append to log, and mark the raw file `processed` in the ingest cache.
+11. Update relevant entity, concept, timeline, question, or synthesis pages using the default wiki folders. Prefer small, named pages over one giant summary.
+12. Discuss surprising takeaways, contradictions, or emphasis choices with the user when the source is important or ambiguous.
+13. Add cross-links with `[[Page Name]]` or relative markdown links, following the local schema.
+14. Mark contradictions, superseded claims, and confidence levels instead of smoothing them away.
+15. Update index, append to log, and mark the raw file `processed` in the ingest cache.
 
 External-model batch outputs are drafts, not final source notes. Keep them under `wiki/sources/_drafts/` and mark cache entries `drafted` until the current agent or user reviews them, promotes useful content into `wiki/sources/`, updates related wiki pages, and marks the raw file `processed`.
 
@@ -121,4 +124,5 @@ When the user explicitly asks to fix health-check findings:
 - Prefer incremental updates over rewrites. Keep history legible.
 - Ask before deleting pages, overwriting sources, batch-ingesting many files, or making schema changes with broad effects.
 - Ask before moving existing documents into `raw/`, configuring external model APIs, or resetting the ingest cache.
+- Downloading remote images referenced by raw sources is allowed during ingest, but do not download arbitrary non-asset web pages as attachments.
 - Keep generated pages useful to humans in Obsidian or any markdown editor.

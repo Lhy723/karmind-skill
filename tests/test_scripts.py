@@ -32,6 +32,7 @@ class ScriptTests(unittest.TestCase):
             self.assertTrue((wiki / "raw").is_dir())
             self.assertTrue((wiki / "wiki" / "index.md").exists())
             self.assertTrue((wiki / "wiki" / "log.md").exists())
+            self.assertTrue((wiki / "wiki" / "assets").is_dir())
             self.assertTrue((wiki / "wiki" / "cache" / "ingest-cache.json").exists())
             self.assertTrue((wiki / "wiki" / "reports").is_dir())
 
@@ -136,6 +137,42 @@ class ScriptTests(unittest.TestCase):
             result = self.run_cmd("scripts/model_batch_ingest.py", str(wiki), "--dry-run")
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn("raw/source.md", result.stdout)
+
+    def test_mirror_assets_copies_local_assets(self) -> None:
+        with TemporaryDirectory() as tmp:
+            wiki = Path(tmp) / "demo"
+            init = self.run_cmd("scripts/init_wiki.py", str(wiki))
+            self.assertEqual(init.returncode, 0, init.stderr)
+            image = wiki / "raw" / "image.png"
+            image.write_bytes(b"png bytes")
+            raw_file = wiki / "raw" / "source.md"
+            raw_file.write_text("# Source\n\n![Diagram](image.png)\n\n[Spec](spec.pdf)\n", encoding="utf-8")
+            attachment = wiki / "raw" / "spec.pdf"
+            attachment.write_bytes(b"pdf bytes")
+
+            result = self.run_cmd("scripts/mirror_assets.py", str(wiki), "raw/source.md")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            mirrored = list((wiki / "wiki" / "assets").rglob("*"))
+            self.assertTrue(any(path.name == "image.png" for path in mirrored))
+            self.assertTrue(any(path.name == "spec.pdf" for path in mirrored))
+
+            cache = json.loads((wiki / "wiki" / "cache" / "assets-cache.json").read_text(encoding="utf-8"))
+            assets = cache["raw_files"]["raw/source.md"]["assets"]
+            self.assertEqual(len(assets), 2)
+            self.assertEqual({asset["status"] for asset in assets}, {"copied"})
+
+    def test_mirror_assets_dry_run_finds_remote_images(self) -> None:
+        with TemporaryDirectory() as tmp:
+            wiki = Path(tmp) / "demo"
+            init = self.run_cmd("scripts/init_wiki.py", str(wiki))
+            self.assertEqual(init.returncode, 0, init.stderr)
+            raw_file = wiki / "raw" / "source.md"
+            raw_file.write_text("![Remote](https://example.com/image.png)\n", encoding="utf-8")
+
+            result = self.run_cmd("scripts/mirror_assets.py", str(wiki), "raw/source.md", "--dry-run")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("downloaded\traw/source.md\thttps://example.com/image.png", result.stdout)
+            self.assertFalse((wiki / "wiki" / "cache" / "assets-cache.json").exists())
 
     def test_model_batch_ingest_loads_local_env(self) -> None:
         module_path = ROOT / "scripts" / "model_batch_ingest.py"

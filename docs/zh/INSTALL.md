@@ -166,6 +166,28 @@ python /tmp/karmind-skill/scripts/ingest_cache.py . mark raw/example.md --proces
 python /tmp/karmind-skill/scripts/ingest_cache.py . reset
 ```
 
+## 图片和附件镜像
+
+摄取 raw 文章前，把文章引用的本地图片/附件复制到 `wiki/assets/`，并下载在线图片：
+
+macOS / Linux：
+
+```bash
+python /tmp/karmind-skill/scripts/mirror_assets.py . raw/example.md
+```
+
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\mirror_assets.py" . raw/example.md
+```
+
+镜像结果记录在 `wiki/cache/assets-cache.json`。如果只想预览，不复制也不下载：
+
+```bash
+python /tmp/karmind-skill/scripts/mirror_assets.py . raw/example.md --dry-run
+```
+
 如果文档很多，agent 应询问用户选择：配置外部模型 API 循环整理，还是由当前 agent 按 pending 缓存逐个手动整理。
 
 模型批处理辅助脚本：

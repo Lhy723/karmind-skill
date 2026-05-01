@@ -13,6 +13,7 @@ wiki-root/
     ├── index.md
     ├── log.md
     ├── overview.md
+    ├── assets/
     ├── sources/
     │   └── _drafts/
     ├── entities/
@@ -20,7 +21,8 @@ wiki-root/
     ├── questions/
     ├── synthesis/
     ├── cache/
-    │   └── ingest-cache.json
+    │   ├── ingest-cache.json
+    │   └── assets-cache.json
     └── reports/
         ├── doctor-report.md
         └── batch/
@@ -57,6 +59,18 @@ wiki-root/
 - Includes hash, processor, source note, updated wiki pages, and timestamps.
 - Agents must update it whether processing is manual or automated.
 - Reset only when the user asks for forced re-extraction.
+
+`wiki/assets/`
+
+- Local wiki copies of images and attachments referenced by raw sources.
+- Local assets are copied here; remote image URLs are downloaded here during ingest.
+- Source notes and topic pages should link to `wiki/assets/` copies for durable browsing.
+- Keep `raw/` unchanged; mirrored assets are working copies for the wiki layer.
+
+`wiki/cache/assets-cache.json`
+
+- Operational cache for asset mirroring.
+- Tracks each raw file's referenced images/attachments, copy/download status, wiki asset path, hash, and errors.
 
 `wiki/reports/`
 

@@ -23,8 +23,13 @@ Steps:
    python scripts/ingest_cache.py . reset
    ```
 7. Read the source and capture metadata: title, author, date, source path, retrieval date if web-derived.
-8. Inspect important local assets or images referenced by the source when they materially affect meaning.
-9. Extract durable items:
+8. Mirror images and attachments referenced by the source:
+   ```bash
+   python scripts/mirror_assets.py . raw/example.md
+   ```
+   This copies local assets and downloads remote image URLs into `wiki/assets/` while preserving `raw/`.
+9. Inspect important mirrored assets when they materially affect meaning.
+10. Extract durable items:
    - claims
    - definitions
    - entities
@@ -33,18 +38,19 @@ Steps:
    - dates and timelines
    - contradictions with existing wiki pages
    - open questions
-10. Read `wiki/index.md` and relevant existing pages.
-11. Write or update the reviewed source note under `wiki/sources/`.
+11. Read `wiki/index.md` and relevant existing pages.
+12. Write or update the reviewed source note under `wiki/sources/`.
     Match the wiki language for headings and prose. Avoid English boilerplate headings in a Chinese wiki unless the local template uses them.
-12. Update entity, concept, question, and synthesis pages.
-13. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
-14. Update `wiki/index.md`.
-15. Append to `wiki/log.md`.
-16. Mark the file processed:
+    Link important images or attachments to their `wiki/assets/` copies, not only to remote URLs.
+13. Update entity, concept, question, and synthesis pages.
+14. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
+15. Update `wiki/index.md`.
+16. Append to `wiki/log.md`.
+17. Mark the file processed:
    ```bash
    python scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md --page wiki/concepts/example.md
    ```
-17. Report changed pages, unresolved questions, and remaining pending count to the user.
+18. Report changed pages, mirrored assets, unresolved questions, and remaining pending count to the user.
 
 ## Initialize Existing Notes
 

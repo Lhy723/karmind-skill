@@ -38,6 +38,7 @@ Typical RAG splits material into chunks and retrieves them at question time. An 
 | Existing-note import | Scans existing documents and moves or copies them into `raw/imported/` after user approval |
 | Source ingest | Extracts claims, entities, concepts, timelines, contradictions, and open questions |
 | Cache-aware processing | Tracks `pending`, `drafted`, `processed`, `failed`, and `skipped` in `wiki/cache/ingest-cache.json` |
+| Asset mirroring | Copies local raw images/attachments into `wiki/assets/` and downloads remote images |
 | External model batch ingest | Uses any OpenAI-compatible model to draft reviewable source notes in batches |
 | Wiki doctor | Reports broken links, orphan pages, unprocessed sources, cache status, and maintenance actions |
 | Doctor finding repair | Fixes report findings only after explicit user request, with risk-based approval rules |
@@ -173,6 +174,7 @@ my-llm-wiki/
     ├── index.md
     ├── log.md
     ├── overview.md
+    ├── assets/
     ├── sources/
     │   └── _drafts/
     ├── entities/
@@ -180,7 +182,8 @@ my-llm-wiki/
     ├── questions/
     ├── synthesis/
     ├── cache/
-    │   └── ingest-cache.json
+    │   ├── ingest-cache.json
+    │   └── assets-cache.json
     ├── reports/
     │   ├── doctor-report.md
     │   └── batch/
@@ -208,6 +211,8 @@ Prefer natural-language prompts. The bundled scripts are deterministic tools for
 When multiple pending raw files exist, `ingest new sources` asks for the processing mode first: external-model batch processing, manual agent loop, next file only, or defer.
 
 External-model batch processing writes to `wiki/sources/_drafts/` by default and marks cache entries `drafted`; reviewed notes are promoted to `wiki/sources/` and then marked `processed`.
+
+If a raw article references images or attachments, the agent mirrors them into `wiki/assets/`; remote image URLs are downloaded as local copies, and source notes should cite the local copies.
 
 Wiki doctor reports are written to:
 

@@ -242,8 +242,10 @@ def build_agents_md(project_name: str, language: str) -> str:
 - `wiki/index.md` 是内容索引，摄取资料或大幅修改页面后必须更新。
 - `wiki/log.md` 是追加式时间日志。使用类似 `## [YYYY-MM-DD] ingest | 标题` 的可解析标题。
 - `wiki/cache/ingest-cache.json` 记录 raw 文件的 `pending`、`drafted`、`processed`、`skipped`、`failed` 状态。除非用户要求强制重新提取，否则跳过已处理文件。
+- `wiki/cache/assets-cache.json` 记录 raw 文章中的本地附件副本和在线图片下载结果。
 - 外部模型输出是草稿，放在 `wiki/sources/_drafts/`，复核前保持 `drafted`。
 - `raw/assets/` 保存资料引用的图片和附件。
+- `wiki/assets/` 保存从 raw 文章镜像出来、供 wiki 页面引用的图片和附件。
 - 长期结论必须引用 source note 或 raw source 路径。
 - 保留矛盾、不确定性和开放问题。
 - 优先渐进式修改，避免大范围重写。
@@ -262,6 +264,7 @@ def build_agents_md(project_name: str, language: str) -> str:
 - 第一次摄取前，先检查已有笔记/文档是否应移动或复制到 `raw/imported/`。
 - 除非用户要求批量摄取或批准外部模型批处理，否则一次处理一个 source。
 - 外部模型批处理结果只是待复核草稿；检查原文并更新相关页面后，才提升到正式 `wiki/sources/`。
+- 摄取 raw 文章前，先镜像重要图片和附件到 `wiki/assets/`；在线图片应下载为本地副本。
 - 手动或自动处理后都要更新 ingest cache。
 - 可复用回答归档到 `wiki/questions/` 或 `wiki/synthesis/`；必要时使用表格、时间线、图表或 slide markdown。
 - 生成的报告写入 `wiki/reports/`。
@@ -283,8 +286,10 @@ This repository is an LLM wiki named `{project_name}`.
 - `wiki/index.md` is the content catalog and must be updated after ingest or major page changes.
 - `wiki/log.md` is append-only chronological history. Add parseable headings like `## [YYYY-MM-DD] ingest | Title`.
 - `wiki/cache/ingest-cache.json` records raw files that are pending, drafted, processed, skipped, or failed. Skip processed files unless the user asks to force re-extract.
+- `wiki/cache/assets-cache.json` records local attachment copies and downloaded remote images referenced by raw articles.
 - External-model outputs are drafts under `wiki/sources/_drafts/` and should stay `drafted` until reviewed.
 - `raw/assets/` stores images and attachments referenced by sources.
+- `wiki/assets/` stores mirrored images and attachments for wiki page references.
 - Durable claims should cite a source note or raw source path.
 - Preserve contradictions, uncertainty, and open questions.
 - Prefer incremental edits over broad rewrites.
@@ -303,6 +308,7 @@ This repository is an LLM wiki named `{project_name}`.
 - Before first ingest, check whether existing notes/documents should be moved or copied into `raw/imported/`.
 - Ingest one source at a time unless the user asks for batch ingest or approves an external-model batch processor.
 - Treat external-model batch output as draft review material; promote it into reviewed `wiki/sources/` only after checking the raw source and updating related wiki pages.
+- Before ingesting a raw article, mirror important images and attachments into `wiki/assets/`; remote images should be downloaded as local copies.
 - Update the ingest cache after manual or automated processing.
 - File reusable answers into `wiki/questions/` or `wiki/synthesis/`; use tables, timelines, diagrams, or slide markdown when that better answers the question.
 - Write generated reports under `wiki/reports/`.
@@ -486,6 +492,7 @@ def init_wiki(root: Path, force: bool, language: str = "auto") -> list[Path]:
         root / "raw",
         root / "raw" / "assets",
         root / "wiki",
+        root / "wiki" / "assets",
         root / "wiki" / "sources",
         root / "wiki" / "sources" / "_drafts",
         root / "wiki" / "entities",
