@@ -134,6 +134,8 @@ Claude Code 本地插件安装：
 使用 karmind-skill 在当前目录初始化一个 LLM Wiki。先扫描已有笔记或文档，列出候选项，询问我是移动、复制还是跳过；确认后再创建 raw/、wiki/、index、log、cache 和 reports。
 ```
 
+初始化时 agent 会按当前对话语言生成模板；中文对话默认生成中文标题，如 `摘要`、`证据`、`待解决问题`。
+
 放入资料后继续说：
 
 ```text
@@ -151,13 +153,13 @@ Claude Code 本地插件安装：
 macOS / Linux：
 
 ```bash
-python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing --language zh
 ```
 
 Windows PowerShell：
 
 ```powershell
-python "$env:TEMP\karmind-skill\scripts\init_wiki.py" . --scan-existing
+python "$env:TEMP\karmind-skill\scripts\init_wiki.py" . --scan-existing --language zh
 ```
 
 ## 推荐目录结构

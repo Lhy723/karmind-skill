@@ -134,6 +134,8 @@ Open your agent in the target directory and say:
 Use karmind-skill to initialize an LLM Wiki in the current directory. First scan for existing notes or documents, list candidates, ask whether to move, copy, or skip them, then create raw/, wiki/, index, log, cache, and reports after confirmation.
 ```
 
+During initialization, the agent should generate templates in the current conversation language. A Chinese conversation should create headings such as `摘要`, `证据`, and `待解决问题`.
+
 After adding sources, continue with:
 
 ```text
@@ -151,13 +153,13 @@ Manual fallback command:
 macOS / Linux:
 
 ```bash
-python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing --language en
 ```
 
 Windows PowerShell:
 
 ```powershell
-python "$env:TEMP\karmind-skill\scripts\init_wiki.py" . --scan-existing
+python "$env:TEMP\karmind-skill\scripts\init_wiki.py" . --scan-existing --language en
 ```
 
 ## Recommended Wiki Layout

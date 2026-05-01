@@ -27,15 +27,15 @@ Then run from the wiki project directory:
 macOS / Linux:
 
 ```bash
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run --language en
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10 --language en
 ```
 
 Windows PowerShell:
 
 ```powershell
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run --language en
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10 --language en
 ```
 
 This assumes you cloned this repository to `/tmp/karmind-skill` or `$env:TEMP\karmind-skill` on Windows. If you use another location, replace the path accordingly.

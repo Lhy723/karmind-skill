@@ -35,6 +35,17 @@ class ScriptTests(unittest.TestCase):
             self.assertTrue((wiki / "wiki" / "cache" / "ingest-cache.json").exists())
             self.assertTrue((wiki / "wiki" / "reports").is_dir())
 
+    def test_init_wiki_can_create_chinese_templates(self) -> None:
+        with TemporaryDirectory() as tmp:
+            wiki = Path(tmp) / "demo"
+            result = self.run_cmd("scripts/init_wiki.py", str(wiki), "--language", "zh")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            template = (wiki / "wiki" / "templates" / "source-note.md").read_text(encoding="utf-8")
+            agents = (wiki / "AGENTS.md").read_text(encoding="utf-8")
+            self.assertIn("## 摘要", template)
+            self.assertIn("## 证据", template)
+            self.assertIn("默认问答模式", agents)
+
     def test_skill_frontmatter_is_cli_friendly(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         header = skill.split("---", 2)[1]
@@ -188,6 +199,41 @@ class ScriptTests(unittest.TestCase):
                 entry = cache["raw_files"]["raw/source.md"]
                 self.assertEqual(entry["status"], "drafted")
                 self.assertTrue(entry["source_note"].startswith("wiki/sources/_drafts/"))
+        finally:
+            module.chat_completion = original_chat_completion
+
+    def test_model_batch_ingest_can_use_chinese_prompt(self) -> None:
+        module_path = ROOT / "scripts" / "model_batch_ingest.py"
+        spec = importlib.util.spec_from_file_location("model_batch_ingest_language_test", module_path)
+        self.assertIsNotNone(spec)
+        module = importlib.util.module_from_spec(spec)
+        assert spec.loader is not None
+        sys.path.insert(0, str(ROOT / "scripts"))
+        spec.loader.exec_module(module)
+
+        captured: dict[str, str] = {}
+
+        def fake_chat_completion(_base_url: str, _api_key: str, _model: str, prompt: str, _temperature: float, language: str) -> str:
+            captured["prompt"] = prompt
+            captured["language"] = language
+            return "# 资料标题\n\n## 摘要\n\n测试草稿。"
+
+        original_chat_completion = module.chat_completion
+        module.chat_completion = fake_chat_completion
+        try:
+            with TemporaryDirectory() as tmp:
+                wiki = Path(tmp) / "demo"
+                init = self.run_cmd("scripts/init_wiki.py", str(wiki), "--language", "zh")
+                self.assertEqual(init.returncode, 0, init.stderr)
+                raw_file = wiki / "raw" / "source.md"
+                raw_file.write_text("# Source\n", encoding="utf-8")
+
+                result = module.main([str(wiki), "--model", "test-model", "--api-key", "test-key", "--limit", "1"])
+                self.assertEqual(result, 0)
+                self.assertEqual(captured["language"], "zh")
+                self.assertIn("## 摘要", captured["prompt"])
+                draft = next((wiki / "wiki" / "sources" / "_drafts").glob("*.md"))
+                self.assertIn("机器生成草稿", draft.read_text(encoding="utf-8"))
         finally:
             module.chat_completion = original_chat_completion
 

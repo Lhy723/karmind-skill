@@ -72,6 +72,8 @@ wiki-root/
 
 ## Page Types
 
+Use the wiki's established language for page headings and prose. A Chinese wiki should use headings such as `摘要`, `证据`, `链接`, and `待解决问题` instead of English boilerplate headings unless the local schema intentionally says otherwise.
+
 Source note: `wiki/sources/<source-slug>.md`
 
 - Bibliographic/source metadata.

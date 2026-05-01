@@ -35,6 +35,7 @@ Steps:
    - open questions
 10. Read `wiki/index.md` and relevant existing pages.
 11. Write or update the reviewed source note under `wiki/sources/`.
+    Match the wiki language for headings and prose. Avoid English boilerplate headings in a Chinese wiki unless the local template uses them.
 12. Update entity, concept, question, and synthesis pages.
 13. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
 14. Update `wiki/index.md`.
@@ -51,8 +52,9 @@ When initializing a wiki in a directory that may already contain notes or docume
 
 1. Scan first:
    ```bash
-   python scripts/init_wiki.py . --scan-existing
+   python scripts/init_wiki.py . --scan-existing --language zh
    ```
+   Use the language currently used with the user, such as `zh` or `en`. If unsure, use `auto`.
 2. Ask the user whether to move, copy, or ignore candidates.
 3. If approved, import into `raw/imported/`:
    ```bash

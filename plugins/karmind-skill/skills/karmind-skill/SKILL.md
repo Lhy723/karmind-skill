@@ -29,8 +29,9 @@ Read [references/llm-wiki-principles.md](references/llm-wiki-principles.md) when
 1. Locate the wiki root. Look for `raw/`, `wiki/`, `wiki/index.md`, `wiki/log.md`, or an `AGENTS.md` that describes an LLM wiki.
 2. If no wiki exists, propose or run:
    ```bash
-   python scripts/init_wiki.py . --scan-existing
+   python scripts/init_wiki.py . --scan-existing --language zh
    ```
+   Use the language currently used with the user: `--language zh` for Chinese, `--language en` for English, or `--language auto` if unsure.
 3. If existing notes/documents are found outside `raw/` and `wiki/`, ask the user whether to move them into `raw/imported/`, copy them, or leave them in place. Do not move project code or user files silently.
 4. If there are many raw files, ask whether to configure an external-model batch extractor or process manually with the current agent. Use the ingest cache either way.
 5. Read the local schema before changing wiki files.
@@ -53,6 +54,7 @@ When the user asks to ingest a source:
 7. Extract claims, entities, concepts, dates, definitions, relationships, uncertainties, and source metadata.
 8. If the source references images or local assets, inspect the most relevant assets separately and cite them when they affect the summary.
 9. Create or update a reviewed source note under the default source-note folder.
+   Use the wiki's established language for section headings and prose. Do not mix English boilerplate headings such as `Summary` or `Evidence` into a Chinese wiki unless the local schema does that intentionally.
 10. Update relevant entity, concept, timeline, question, or synthesis pages using the default wiki folders. Prefer small, named pages over one giant summary.
 11. Discuss surprising takeaways, contradictions, or emphasis choices with the user when the source is important or ambiguous.
 12. Add cross-links with `[[Page Name]]` or relative markdown links, following the local schema.

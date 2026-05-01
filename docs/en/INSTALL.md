@@ -126,8 +126,10 @@ On Windows PowerShell, use `"$env:TEMP\karmind-skill\scripts\..."`.
 When a target directory already contains notes or documents, scan first:
 
 ```bash
-python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing --language en
 ```
+
+For a Chinese wiki, use `--language zh`; `auto` lets the script infer from existing files.
 
 After review, import candidates into `raw/imported/`:
 
@@ -173,7 +175,7 @@ macOS / Linux:
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10 --language en
 ```
 
 Windows PowerShell:
@@ -181,7 +183,7 @@ Windows PowerShell:
 ```powershell
 $env:LLM_API_KEY = "..."
 $env:LLM_MODEL = "model-name"
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10 --language en
 ```
 
 Preview pending files without calling the API:
@@ -189,13 +191,13 @@ Preview pending files without calling the API:
 macOS / Linux:
 
 ```bash
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run --language en
 ```
 
 Windows PowerShell:
 
 ```powershell
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run --language en
 ```
 
 See [MODEL_KEYS.md](MODEL_KEYS.md) for API key configuration. Prefer environment variables or a local `.env.local`; do not write keys into the wiki.

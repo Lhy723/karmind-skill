@@ -86,16 +86,18 @@ Bundled helper:
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
-python scripts/model_batch_ingest.py . --limit 10
+python scripts/model_batch_ingest.py . --limit 10 --language auto
 ```
 
 Dry run:
 
 ```bash
-python scripts/model_batch_ingest.py . --dry-run
+python scripts/model_batch_ingest.py . --dry-run --language auto
 ```
 
 The helper expects an OpenAI-compatible `/chat/completions` API. By default it writes draft source notes under `wiki/sources/_drafts/`, writes a batch report, and marks successful files as `drafted`.
+
+Use `--language zh` or `--language en` to force draft headings and prose. `auto` reads the wiki scaffold and templates.
 
 To bypass review and publish directly into `wiki/sources/`, pass `--publish-final-source-notes`. Use this only for low-risk sources or after the user explicitly accepts lower-quality batch output.
 

@@ -27,15 +27,15 @@ $env:LLM_API_KEY = "sk-..."
 macOS / Linux：
 
 ```bash
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run --language zh
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10 --language zh
 ```
 
 Windows PowerShell：
 
 ```powershell
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run --language zh
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10 --language zh
 ```
 
 这里假设你已经把本仓库 clone 到 `/tmp/karmind-skill` 或 Windows 的 `$env:TEMP\karmind-skill`。如果使用其他位置，请替换成对应路径。

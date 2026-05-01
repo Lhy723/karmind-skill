@@ -126,8 +126,10 @@ Windows PowerShell 用户请使用 `"$env:TEMP\karmind-skill\scripts\..."`。
 如果目标目录里已经有笔记或文档，先扫描，不要直接移动：
 
 ```bash
-python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing --language zh
 ```
+
+如果不是中文 wiki，把 `zh` 换成 `en`，或使用 `auto` 让脚本按已有资料自动判断。
 
 用户确认后，把候选文件导入到 `raw/imported/`：
 
@@ -173,7 +175,7 @@ macOS / Linux：
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10 --language zh
 ```
 
 Windows PowerShell：
@@ -181,7 +183,7 @@ Windows PowerShell：
 ```powershell
 $env:LLM_API_KEY = "..."
 $env:LLM_MODEL = "model-name"
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10 --language zh
 ```
 
 不调用 API，只预览待处理文件：
@@ -189,13 +191,13 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
 macOS / Linux：
 
 ```bash
-python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run --language zh
 ```
 
 Windows PowerShell：
 
 ```powershell
-python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run --language zh
 ```
 
 API key 配置见 [MODEL_KEYS.md](MODEL_KEYS.md)。推荐使用环境变量或本地 `.env.local`，不要写进 wiki。

@@ -32,6 +32,16 @@ TEXT_EXTENSIONS = {
     ".yaml",
     ".yml",
 }
+LANGUAGE_ALIASES = {
+    "cn": "zh",
+    "zh-cn": "zh",
+    "zh_hans": "zh",
+    "zh-hans": "zh",
+    "chinese": "zh",
+    "中文": "zh",
+    "en-us": "en",
+    "english": "en",
+}
 
 
 def load_env_file(path: Path) -> None:
@@ -63,6 +73,30 @@ def slugify(value: str) -> str:
     return value or "source"
 
 
+def normalize_language(value: str | None) -> str:
+    if not value:
+        return "auto"
+    normalized = value.strip().lower().replace("_", "-")
+    return LANGUAGE_ALIASES.get(normalized, normalized)
+
+
+def has_cjk(text: str) -> bool:
+    return re.search(r"[\u4e00-\u9fff]", text) is not None
+
+
+def detect_language(root: Path, requested: str) -> str:
+    requested = normalize_language(requested)
+    if requested in {"en", "zh"}:
+        return requested
+    env_language = normalize_language(os.environ.get("KARMIND_LANGUAGE"))
+    if env_language in {"en", "zh"}:
+        return env_language
+    for path in [root / "AGENTS.md", root / "wiki" / "index.md", root / "wiki" / "templates" / "source-note.md"]:
+        if path.exists() and has_cjk(path.read_text(encoding="utf-8", errors="ignore")[:4000]):
+            return "zh"
+    return "en"
+
+
 def read_text_source(path: Path, max_chars: int) -> str:
     text = path.read_text(encoding="utf-8", errors="replace")
     if len(text) > max_chars:
@@ -70,7 +104,7 @@ def read_text_source(path: Path, max_chars: int) -> str:
     return text
 
 
-def chat_completion(base_url: str, api_key: str, model: str, prompt: str, temperature: float) -> str:
+def chat_completion(base_url: str, api_key: str, model: str, prompt: str, temperature: float, language: str) -> str:
     url = base_url.rstrip("/") + "/chat/completions"
     payload = {
         "model": model,
@@ -78,7 +112,11 @@ def chat_completion(base_url: str, api_key: str, model: str, prompt: str, temper
         "messages": [
             {
                 "role": "system",
-                "content": "You extract source notes for a markdown LLM wiki. Be concise, source-grounded, and preserve uncertainty.",
+                "content": (
+                    "You extract source notes for a markdown LLM wiki. "
+                    f"Write headings and prose in {'Simplified Chinese' if language == 'zh' else 'English'}. "
+                    "Be concise, source-grounded, and preserve uncertainty."
+                ),
             },
             {"role": "user", "content": prompt},
         ],
@@ -101,7 +139,46 @@ def chat_completion(base_url: str, api_key: str, model: str, prompt: str, temper
     return data["choices"][0]["message"]["content"]
 
 
-def build_prompt(raw_path: str, source_text: str) -> str:
+def build_prompt(raw_path: str, source_text: str, language: str) -> str:
+    if language == "zh":
+        return f"""请为这个 LLM Wiki raw source 创建一份 source note 草稿。
+
+Raw path: {raw_path}
+
+请返回 Markdown，并使用这些中文章节：
+
+# 资料标题
+
+## 元数据
+
+- raw_path:
+- inferred_title:
+- date_or_time_period:
+- author_or_origin:
+- confidence:
+
+## 摘要
+
+## 关键论点
+
+## 实体
+
+## 概念
+
+## 日期与时间线
+
+## 矛盾或注意事项
+
+## 建议的 Wiki 页面
+
+## 待解决问题
+
+Source text:
+
+```text
+{source_text}
+```
+"""
     return f"""Create a source note for this LLM wiki raw source.
 
 Raw path: {raw_path}
@@ -142,7 +219,12 @@ Source text:
 """
 
 
-def wrap_draft_note(note: str, raw_path: str, model: str) -> str:
+def wrap_draft_note(note: str, raw_path: str, model: str, language: str) -> str:
+    notice = (
+        "> 机器生成草稿。人工或主 agent 应复核原文，将有价值的内容提升到 `wiki/sources/`，然后把 raw 文件标记为 `processed`。"
+        if language == "zh"
+        else "> Machine-generated draft. A human or primary agent should review, promote useful claims into `wiki/sources/`, and then mark the raw file `processed`."
+    )
     return f"""---
 type: source-draft
 status: needs-review
@@ -151,7 +233,7 @@ processor: {json.dumps(f"model-draft:{model}", ensure_ascii=False)}
 created: {date.today().isoformat()}
 ---
 
-> Machine-generated draft. A human or primary agent should review, promote useful claims into `wiki/sources/`, and then mark the raw file `processed`.
+{notice}
 
 {note.rstrip()}
 """
@@ -176,6 +258,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--max-chars", type=int, default=40000, help="Maximum characters sent per source.")
     parser.add_argument("--temperature", type=float, default=0.1)
     parser.add_argument("--dry-run", action="store_true", help="List files that would be processed without calling the API.")
+    parser.add_argument("--language", default="auto", choices=["auto", "en", "zh"], help="Draft language. Default auto-detects from the wiki scaffold.")
     parser.add_argument(
         "--publish-final-source-notes",
         action="store_true",
@@ -192,6 +275,7 @@ def main(argv: list[str]) -> int:
     args.model = args.model or os.environ.get("LLM_MODEL") or os.environ.get("OPENAI_MODEL")
     args.base_url = args.base_url or os.environ.get("LLM_BASE_URL") or os.environ.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
     args.api_key = args.api_key or os.environ.get("LLM_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    args.language = detect_language(root, args.language)
     cache = ingest_cache.ensure(root)
     pending = [
         (path, entry)
@@ -233,8 +317,9 @@ def main(argv: list[str]) -> int:
                 args.base_url,
                 args.api_key,
                 args.model,
-                build_prompt(raw_path, source_text),
+                build_prompt(raw_path, source_text, args.language),
                 args.temperature,
+                args.language,
             )
             digest = hashlib.sha256(raw_path.encode("utf-8")).hexdigest()[:8]
             source_dir = root / "wiki" / "sources"
@@ -246,7 +331,7 @@ def main(argv: list[str]) -> int:
                 report_action = "processed"
             else:
                 source_note = source_dir / "_drafts" / f"{slugify(absolute_raw.stem)}-{digest}.md"
-                note_text = wrap_draft_note(note, raw_path, args.model)
+                note_text = wrap_draft_note(note, raw_path, args.model, args.language)
                 status = "drafted"
                 processor = f"model-draft:{args.model}"
                 report_action = "drafted"
