@@ -48,7 +48,13 @@ Typical RAG splits material into chunks and retrieves them at question time. An 
 
 Enable this skill only inside projects that actually contain an LLM Wiki. Global installation is not recommended by default because the skill scans documents and maintains `raw/` and `wiki/`, which can be noisy in ordinary code projects.
 
+> [!WARNING]
+> If this directory is migrated from an existing Obsidian vault or another note library, make a full backup first, or test in a copied directory. Initialization scans existing documents and may move or copy approved candidates into `raw/imported/`.
+
 Once installed in a wiki directory, normal questions default to wiki-grounded answers. You can ask directly without saying "use the wiki" every time.
+
+> [!TIP]
+> Pair this with the [Obsidian Web Clipper](https://obsidian.md/clipper) browser extension to save web pages, papers, and highlights as local Markdown before compiling them with `karmind-skill`. For graph styling, see the [recommended Obsidian color groups](docs/en/OBSIDIAN_GRAPH.md).
 
 ### Claude Code Plugin
 

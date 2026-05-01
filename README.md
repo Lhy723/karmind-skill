@@ -48,7 +48,13 @@
 
 推荐只在需要维护 LLM Wiki 的项目目录中启用这个 skill，不建议默认全局安装。它会扫描文档、维护 `raw/` 和 `wiki/`，放在普通代码项目的全局上下文里容易误触发。
 
+> [!WARNING]
+> 如果这是从已有 Obsidian vault 或其他笔记库迁移过来的目录，请先做好完整备份，或在副本目录中试装。初始化会扫描已有文档，并可能在你确认后把候选资料移动或复制到 `raw/imported/`。
+
 安装到 wiki 目录后，普通问答默认基于这个 wiki：你可以直接提问，不需要每次写“基于 wiki 回答”。
+
+> [!TIP]
+> 推荐搭配 [Obsidian Web Clipper](https://obsidian.md/clipper) 浏览器插件，把网页、论文和高亮保存为本地 Markdown，再交给 `karmind-skill` 编译。Obsidian 关系图谱颜色组可参考 [推荐配置](docs/zh/OBSIDIAN_GRAPH.md)。
 
 ### Claude Code Plugin
 
