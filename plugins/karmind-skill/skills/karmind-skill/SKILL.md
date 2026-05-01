@@ -34,6 +34,7 @@ Read [references/llm-wiki-principles.md](references/llm-wiki-principles.md) when
    python scripts/init_wiki.py . --scan-existing --language zh
    ```
    Use the language currently used with the user: `--language zh` for Chinese, `--language en` for English, or `--language auto` if unsure.
+   For other user languages, do not invent a permanent language pack. Instead, create a temporary localized copy of `scripts/init_wiki.py`, rewrite only the human-readable scaffold text in `build_agents_md`, `build_index`, `build_log`, `build_overview`, and `build_template_page`, then run that temporary script. Keep paths, Python identifiers, command examples, JSON keys, frontmatter keys, frontmatter `type/status` values, cache statuses, and report filenames in English.
 3. If existing notes/documents are found outside `raw/` and `wiki/`, ask the user whether to move them into `raw/imported/`, copy them, or leave them in place. Do not move project code or user files silently.
 4. If there are many raw files, ask whether to configure an external-model batch extractor or process manually with the current agent. Use the ingest cache either way.
 5. Read the local schema before changing wiki files.

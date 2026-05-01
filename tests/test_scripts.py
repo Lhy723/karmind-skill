@@ -55,6 +55,13 @@ class ScriptTests(unittest.TestCase):
             self.assertNotEqual(question, synthesis)
             self.assertIn("默认问答模式", agents)
 
+    def test_init_wiki_accepts_custom_language_code(self) -> None:
+        with TemporaryDirectory() as tmp:
+            wiki = Path(tmp) / "demo"
+            result = self.run_cmd("scripts/init_wiki.py", str(wiki), "--language", "ja")
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue((wiki / "wiki" / "templates" / "source-note.md").exists())
+
     def test_skill_frontmatter_is_cli_friendly(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         header = skill.split("---", 2)[1]
@@ -281,6 +288,19 @@ class ScriptTests(unittest.TestCase):
                 self.assertIn("机器生成草稿", draft.read_text(encoding="utf-8"))
         finally:
             module.chat_completion = original_chat_completion
+
+    def test_model_batch_ingest_accepts_custom_language_code(self) -> None:
+        module_path = ROOT / "scripts" / "model_batch_ingest.py"
+        spec = importlib.util.spec_from_file_location("model_batch_ingest_custom_language_test", module_path)
+        self.assertIsNotNone(spec)
+        module = importlib.util.module_from_spec(spec)
+        assert spec.loader is not None
+        sys.path.insert(0, str(ROOT / "scripts"))
+        spec.loader.exec_module(module)
+
+        prompt = module.build_prompt("raw/source.md", "# Source\n", "ja")
+        self.assertIn("language identified by `ja`", prompt)
+        self.assertEqual(module.detect_language(Path("/tmp"), "ja"), "ja")
 
     def test_install_script_is_not_distributed(self) -> None:
         self.assertFalse((ROOT / "scripts" / "install.py").exists())

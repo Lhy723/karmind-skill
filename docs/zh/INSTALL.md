@@ -107,7 +107,7 @@ Windows PowerShell 用户请使用 `"$env:TEMP\karmind-skill\scripts\..."`。
 python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing --language zh
 ```
 
-如果不是中文 wiki，把 `zh` 换成 `en`，或使用 `auto` 让脚本按已有资料自动判断。
+如果不是中文 wiki，把 `zh` 换成 `en`，或使用 `auto` 让脚本按已有资料自动判断。对于其他语言，不建议在仓库里维护语言包；让 agent 先复制一份临时 `init_wiki.py`，只本地化人类可读模板文字，再执行这份临时脚本。
 
 用户确认后，把候选文件导入到 `raw/imported/`：
 
@@ -201,6 +201,8 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run --lan
 ```
 
 API key 配置见 [MODEL_KEYS.md](MODEL_KEYS.md)。推荐使用环境变量或本地 `.env.local`，不要写进 wiki。
+
+模型批处理可以把 `--language` 换成其他语言代码；脚本会要求外部模型按该语言生成标题和正文，同时保持机器字段为英文。
 
 默认情况下，模型批处理只生成待复核草稿到 `wiki/sources/_drafts/`，并把缓存标记为 `drafted`。当前 agent 复核原文和草稿、整理正式 source note、更新相关页面后，才应标记为 `processed`。只有明确接受低质量批量输出时，才使用 `--publish-final-source-notes` 直接写入 `wiki/sources/`。
 

@@ -61,6 +61,7 @@ When initializing a wiki in a directory that may already contain notes or docume
    python scripts/init_wiki.py . --scan-existing --language zh
    ```
    Use the language currently used with the user, such as `zh` or `en`. If unsure, use `auto`.
+   For any other user language, make a temporary localized copy of `scripts/init_wiki.py` before scanning. Translate only human-readable scaffold prose and template headings in the `build_*` functions, then execute the temporary copy with the desired language code. Do not translate paths, Python identifiers, command examples, JSON keys, frontmatter keys, frontmatter `type/status` values, cache statuses, or report filenames.
 2. Ask the user whether to move, copy, or ignore candidates.
 3. If approved, import into `raw/imported/`:
    ```bash

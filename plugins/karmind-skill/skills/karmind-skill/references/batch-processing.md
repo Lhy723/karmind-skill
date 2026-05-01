@@ -97,7 +97,7 @@ python scripts/model_batch_ingest.py . --dry-run --language auto
 
 The helper expects an OpenAI-compatible `/chat/completions` API. By default it writes draft source notes under `wiki/sources/_drafts/`, writes a batch report, and marks successful files as `drafted`.
 
-Use `--language zh` or `--language en` to force draft headings and prose. `auto` reads the wiki scaffold and templates.
+Use `--language zh`, `--language en`, or another language code to force draft headings and prose. `auto` reads the wiki scaffold and templates. Because this helper calls an LLM, non-zh/en languages are requested from the model instead of maintained as static language packs.
 
 To bypass review and publish directly into `wiki/sources/`, pass `--publish-final-source-notes`. Use this only for low-risk sources or after the user explicitly accepts lower-quality batch output.
 

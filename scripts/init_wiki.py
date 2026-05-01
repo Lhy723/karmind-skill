@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Initialize a local LLM wiki scaffold."""
+"""Initialize a local LLM wiki scaffold.
+
+For languages beyond the built-in zh/en fallback, agents should create a
+temporary localized copy of this script, translate only human-readable
+scaffold text in the build_* functions, then run that copy. Keep paths,
+frontmatter keys and values, cache schema, status values, and Python
+identifiers in English for stable tooling.
+"""
 
 from __future__ import annotations
 
@@ -77,11 +84,11 @@ def has_cjk(text: str) -> bool:
 
 def detect_language(root: Path, requested: str) -> str:
     requested = normalize_language(requested)
-    if requested in {"en", "zh"}:
+    if requested != "auto":
         return requested
 
     env_language = normalize_language(os.environ.get("KARMIND_LANGUAGE"))
-    if env_language in {"en", "zh"}:
+    if env_language != "auto":
         return env_language
 
     for path in find_existing_documents(root)[:20]:
@@ -667,7 +674,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--scan-existing", action="store_true", help="List existing notes/documents that could be imported into raw/.")
     parser.add_argument("--import-existing", choices=["move", "copy"], help="Move or copy existing notes/documents into raw/imported/.")
     parser.add_argument("--reset-cache", action="store_true", help="Reset wiki/cache/ingest-cache.json.")
-    parser.add_argument("--language", default="auto", choices=["auto", "en", "zh"], help="Template language. Agents should pass the current user conversation language.")
+    parser.add_argument(
+        "--language",
+        default="auto",
+        help=(
+            "Scaffold language code. Built-in output is zh/en; for other languages, "
+            "agents should run a temporary localized copy of this script."
+        ),
+    )
     return parser.parse_args(argv)
 
 

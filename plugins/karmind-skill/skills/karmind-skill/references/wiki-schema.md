@@ -86,7 +86,7 @@ wiki-root/
 
 ## Page Types
 
-Use the wiki's established language for page headings and prose. A Chinese wiki should use headings such as `摘要`, `证据`, `链接`, and `待解决问题` instead of English boilerplate headings unless the local schema intentionally says otherwise.
+Use the wiki's established language for page headings and prose. Machine-facing fields stay stable in English, while human-facing headings should match the user/wiki language. For languages beyond the built-in zh/en fallback, the initializing agent should localize a temporary copy of the scaffold script instead of adding a permanent language pack.
 
 Source note: `wiki/sources/<source-slug>.md`
 

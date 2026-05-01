@@ -86,10 +86,10 @@ def has_cjk(text: str) -> bool:
 
 def detect_language(root: Path, requested: str) -> str:
     requested = normalize_language(requested)
-    if requested in {"en", "zh"}:
+    if requested != "auto":
         return requested
     env_language = normalize_language(os.environ.get("KARMIND_LANGUAGE"))
-    if env_language in {"en", "zh"}:
+    if env_language != "auto":
         return env_language
     for path in [root / "AGENTS.md", root / "wiki" / "index.md", root / "wiki" / "templates" / "source-note.md"]:
         if path.exists() and has_cjk(path.read_text(encoding="utf-8", errors="ignore")[:4000]):
@@ -106,6 +106,13 @@ def read_text_source(path: Path, max_chars: int) -> str:
 
 def chat_completion(base_url: str, api_key: str, model: str, prompt: str, temperature: float, language: str) -> str:
     url = base_url.rstrip("/") + "/chat/completions"
+    output_language = (
+        "Simplified Chinese"
+        if language == "zh"
+        else "English"
+        if language == "en"
+        else f"the wiki language identified by language code `{language}`"
+    )
     payload = {
         "model": model,
         "temperature": temperature,
@@ -114,7 +121,8 @@ def chat_completion(base_url: str, api_key: str, model: str, prompt: str, temper
                 "role": "system",
                 "content": (
                     "You extract source notes for a markdown LLM wiki. "
-                    f"Write headings and prose in {'Simplified Chinese' if language == 'zh' else 'English'}. "
+                    f"Write human-facing headings and prose in {output_language}. "
+                    "Keep machine-facing metadata keys, raw paths, and wiki paths in English. "
                     "Be concise, source-grounded, and preserve uncertainty."
                 ),
             },
@@ -179,11 +187,22 @@ Source text:
 {source_text}
 ```
 """
+    language_instruction = (
+        "Use English headings and prose."
+        if language == "en"
+        else (
+            "Translate the human-facing section headings and prose into the wiki "
+            f"language identified by `{language}`. Keep metadata keys such as raw_path, "
+            "inferred_title, date_or_time_period, author_or_origin, and confidence in English."
+        )
+    )
     return f"""Create a source note for this LLM wiki raw source.
 
 Raw path: {raw_path}
 
-Return markdown with these sections:
+{language_instruction}
+
+Return markdown with this semantic structure:
 
 # Source Title
 
@@ -258,7 +277,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--max-chars", type=int, default=40000, help="Maximum characters sent per source.")
     parser.add_argument("--temperature", type=float, default=0.1)
     parser.add_argument("--dry-run", action="store_true", help="List files that would be processed without calling the API.")
-    parser.add_argument("--language", default="auto", choices=["auto", "en", "zh"], help="Draft language. Default auto-detects from the wiki scaffold.")
+    parser.add_argument("--language", default="auto", help="Draft language code. Default auto-detects from the wiki scaffold.")
     parser.add_argument(
         "--publish-final-source-notes",
         action="store_true",

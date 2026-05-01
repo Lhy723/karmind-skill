@@ -107,7 +107,7 @@ When a target directory already contains notes or documents, scan first:
 python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing --language en
 ```
 
-For a Chinese wiki, use `--language zh`; `auto` lets the script infer from existing files.
+For a Chinese wiki, use `--language zh`; `auto` lets the script infer from existing files. For other languages, avoid permanent language packs: ask the agent to copy a temporary `init_wiki.py`, localize only human-readable template text, and run that temporary script.
 
 After review, import candidates into `raw/imported/`:
 
@@ -201,6 +201,8 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run --lan
 ```
 
 See [MODEL_KEYS.md](MODEL_KEYS.md) for API key configuration. Prefer environment variables or a local `.env.local`; do not write keys into the wiki.
+
+For model batch processing, `--language` may be any language code; the helper asks the external model to write human-facing headings and prose in that language while keeping machine fields in English.
 
 By default, model batch processing writes review drafts to `wiki/sources/_drafts/` and marks cache entries `drafted`. The current agent should review the raw source and draft, create the final source note, update related pages, and then mark the file `processed`. Use `--publish-final-source-notes` only when the user explicitly accepts lower-quality direct batch output.
 

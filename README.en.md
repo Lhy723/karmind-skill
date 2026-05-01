@@ -120,7 +120,7 @@ Open your agent in the target directory and say:
 Use karmind-skill to initialize an LLM Wiki in the current directory.
 ```
 
-During initialization, the agent should generate templates in the current conversation language. A Chinese conversation should create headings such as `摘要`, `证据`, and `待解决问题`.
+During initialization, the agent should generate templates in the current conversation language. Chinese and English can use the bundled script directly; for other languages, the agent should temporarily localize the initialization script by rewriting only human-readable headings and prose, then run that temporary copy.
 
 After adding sources, continue with:
 
