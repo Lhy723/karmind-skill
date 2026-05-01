@@ -40,6 +40,14 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
 
 This assumes you cloned this repository to `/tmp/karmind-skill` or `$env:TEMP\karmind-skill` on Windows. If you use another location, replace the path accordingly.
 
+Default output is review drafts:
+
+```text
+wiki/sources/_drafts/
+```
+
+The cache status becomes `drafted`, not `processed`. Promote reviewed notes into `wiki/sources/` afterward.
+
 ## Local `.env.local`
 
 If you do not want to export variables every time, create `.env.local` in the wiki project root:

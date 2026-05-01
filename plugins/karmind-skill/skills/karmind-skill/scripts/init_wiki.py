@@ -193,7 +193,8 @@ This repository is an LLM wiki named `{project_name}`.
 - `wiki/` contains agent-maintained markdown pages.
 - `wiki/index.md` is the content catalog and must be updated after ingest or major page changes.
 - `wiki/log.md` is append-only chronological history. Add parseable headings like `## [YYYY-MM-DD] ingest | Title`.
-- `wiki/cache/ingest-cache.json` records raw files that are pending or processed. Skip processed files unless the user asks to force re-extract.
+- `wiki/cache/ingest-cache.json` records raw files that are pending, drafted, processed, skipped, or failed. Skip processed files unless the user asks to force re-extract.
+- External-model outputs are drafts under `wiki/sources/_drafts/` and should stay `drafted` until reviewed.
 - `raw/assets/` stores images and attachments referenced by sources.
 - Durable claims should cite a source note or raw source path.
 - Preserve contradictions, uncertainty, and open questions.
@@ -212,6 +213,7 @@ This repository is an LLM wiki named `{project_name}`.
 
 - Before first ingest, check whether existing notes/documents should be moved or copied into `raw/imported/`.
 - Ingest one source at a time unless the user asks for batch ingest or approves an external-model batch processor.
+- Treat external-model batch output as draft review material; promote it into reviewed `wiki/sources/` only after checking the raw source and updating related wiki pages.
 - Update the ingest cache after manual or automated processing.
 - File reusable answers into `wiki/questions/` or `wiki/synthesis/`; use tables, timelines, diagrams, or slide markdown when that better answers the question.
 - Write generated reports under `wiki/reports/`.
@@ -318,6 +320,7 @@ def init_wiki(root: Path, force: bool) -> list[Path]:
         root / "raw" / "assets",
         root / "wiki",
         root / "wiki" / "sources",
+        root / "wiki" / "sources" / "_drafts",
         root / "wiki" / "entities",
         root / "wiki" / "concepts",
         root / "wiki" / "questions",

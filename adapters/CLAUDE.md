@@ -6,7 +6,8 @@ When the task involves an LLM wiki, follow `karmind-skill`.
 - `wiki/` contains agent-maintained markdown pages.
 - `wiki/index.md` is the content catalog.
 - `wiki/log.md` is append-only chronological history.
-- `wiki/cache/ingest-cache.json` tracks raw files that are pending, processed, skipped, or failed.
+- `wiki/cache/ingest-cache.json` tracks raw files that are pending, drafted, processed, skipped, or failed.
+- External-model outputs are drafts under `wiki/sources/_drafts/` and should stay `drafted` until reviewed.
 - Keep claims source-grounded and link related pages.
 - Record contradictions and uncertainty instead of hiding them.
 - Ask before moving existing documents into `raw/imported/`, configuring model APIs, or resetting the ingest cache.

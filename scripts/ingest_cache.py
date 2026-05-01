@@ -106,6 +106,8 @@ def mark(root: Path, raw_path: str, status: str, processor: str | None, source_n
     entry["status"] = status
     if status == "processed":
         entry["processed_at"] = date.today().isoformat()
+    if status == "drafted":
+        entry["drafted_at"] = date.today().isoformat()
     if processor:
         entry["processor"] = processor
     if source_note:
@@ -131,11 +133,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     subparsers.add_parser("ensure", help="Add missing raw files to the cache as pending.")
 
     list_parser = subparsers.add_parser("list", help="List cached raw files.")
-    list_parser.add_argument("--status", choices=["pending", "processed", "failed", "skipped"], help="Filter by status.")
+    list_parser.add_argument("--status", choices=["pending", "drafted", "processed", "failed", "skipped"], help="Filter by status.")
 
     mark_parser = subparsers.add_parser("mark", help="Mark a raw file status.")
     mark_parser.add_argument("raw_path", help="Raw path, relative to wiki root or absolute.")
-    mark_parser.add_argument("--status", default="processed", choices=["pending", "processed", "failed", "skipped"])
+    mark_parser.add_argument("--status", default="processed", choices=["pending", "drafted", "processed", "failed", "skipped"])
     mark_parser.add_argument("--processor", help="Processor label, for example manual-agent or model-batch:gpt-4o-mini.")
     mark_parser.add_argument("--source-note", help="Source note path created for this raw file.")
     mark_parser.add_argument("--page", action="append", default=[], help="Wiki page updated. Repeat for multiple pages.")

@@ -19,7 +19,7 @@ You are maintaining an LLM wiki: a persistent, source-grounded, interlinked set 
 - The schema is the operating manual for the wiki. Prefer `AGENTS.md`; also support `CLAUDE.md`, `.trae/rules/project_rules.md`, or equivalent agent rule files when needed.
 - `wiki/index.md` is content-oriented navigation. Update it after every meaningful ingest or restructuring.
 - `wiki/log.md` is chronological and append-only. Add one dated entry for every ingest, query filed back into the wiki, lint pass, schema change, or major maintenance task.
-- `wiki/cache/ingest-cache.json` tracks raw files as pending, processed, skipped, or failed. Use it to avoid duplicate extraction.
+- `wiki/cache/ingest-cache.json` tracks raw files as pending, drafted, processed, skipped, or failed. Use it to avoid duplicate extraction.
 - The schema should evolve with the user. Keep conventions local, explicit, and useful for the domain.
 
 Read [references/llm-wiki-principles.md](references/llm-wiki-principles.md) when you need the philosophy and tradeoffs. Read [references/wiki-schema.md](references/wiki-schema.md) when creating or revising a wiki layout. Read [references/operations.md](references/operations.md) for detailed ingest, query, and lint workflows. Read [references/obsidian-and-tools.md](references/obsidian-and-tools.md) when the user wants Obsidian, local attachments, graph view, slides, charts, Dataview, or search tooling guidance. Read [references/batch-processing.md](references/batch-processing.md) when many raw files need external-model or cache-driven processing. Read [references/agent-adapters.md](references/agent-adapters.md) when installing or adapting this skill to a specific coding agent.
@@ -43,7 +43,7 @@ When the user asks to ingest a source:
 1. Treat the current wiki root as the default root. Do not ask the user for paths unless no wiki root or no candidate source can be found.
 2. Run or emulate `python scripts/ingest_cache.py . ensure`, then list pending raw files before reading source content.
 3. If the user did not name a source and there are multiple pending raw files, pause before extraction and ask the user to choose:
-   - configure an external-model batch loop,
+   - configure an external-model batch loop that writes review drafts under `wiki/sources/_drafts/`,
    - let the current agent manually process pending files in cache order,
    - process only the next pending file,
    - or defer.
@@ -52,12 +52,14 @@ When the user asks to ingest a source:
 6. Skip cache entries marked `processed` unless the user asks to force re-extract; for force re-extract, reset or mark relevant cache entries pending.
 7. Extract claims, entities, concepts, dates, definitions, relationships, uncertainties, and source metadata.
 8. If the source references images or local assets, inspect the most relevant assets separately and cite them when they affect the summary.
-9. Create or update a source note under the default source-note folder.
+9. Create or update a reviewed source note under the default source-note folder.
 10. Update relevant entity, concept, timeline, question, or synthesis pages using the default wiki folders. Prefer small, named pages over one giant summary.
 11. Discuss surprising takeaways, contradictions, or emphasis choices with the user when the source is important or ambiguous.
 12. Add cross-links with `[[Page Name]]` or relative markdown links, following the local schema.
 13. Mark contradictions, superseded claims, and confidence levels instead of smoothing them away.
 14. Update index, append to log, and mark the raw file `processed` in the ingest cache.
+
+External-model batch outputs are drafts, not final source notes. Keep them under `wiki/sources/_drafts/` and mark cache entries `drafted` until the current agent or user reviews them, promotes useful content into `wiki/sources/`, updates related wiki pages, and marks the raw file `processed`.
 
 ## Query Workflow
 

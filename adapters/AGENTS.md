@@ -8,7 +8,7 @@ Use `karmind-skill` when maintaining this wiki.
 - Maintain generated knowledge in `wiki/`.
 - Read `wiki/index.md` before editing topic pages.
 - Append to `wiki/log.md` after ingest, query filing, lint, or schema maintenance.
-- Maintain `wiki/cache/ingest-cache.json`; skip processed raw files unless the user asks to force re-extract.
+- Maintain `wiki/cache/ingest-cache.json`; skip processed raw files unless the user asks to force re-extract. External-model outputs are drafts under `wiki/sources/_drafts/` and should stay `drafted` until reviewed.
 - Cite source notes or raw files for durable claims.
 - Preserve contradictions, uncertainties, and open questions.
 - Do not delete or overwrite sources without explicit user approval.

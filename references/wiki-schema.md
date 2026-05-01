@@ -14,6 +14,7 @@ wiki-root/
     ├── log.md
     ├── overview.md
     ├── sources/
+    │   └── _drafts/
     ├── entities/
     ├── concepts/
     ├── questions/
@@ -52,7 +53,7 @@ wiki-root/
 `wiki/cache/ingest-cache.json`
 
 - Operational cache for raw source processing.
-- Tracks each raw file as `pending`, `processed`, `skipped`, or `failed`.
+- Tracks each raw file as `pending`, `drafted`, `processed`, `skipped`, or `failed`.
 - Includes hash, processor, source note, updated wiki pages, and timestamps.
 - Agents must update it whether processing is manual or automated.
 - Reset only when the user asks for forced re-extraction.
@@ -79,6 +80,13 @@ Source note: `wiki/sources/<source-slug>.md`
 - Extracted entities and concepts.
 - Links to pages updated because of this source.
 - Open questions and caveats.
+
+Source draft: `wiki/sources/_drafts/<source-slug>.md`
+
+- Machine-generated or otherwise unreviewed extraction output.
+- Must be visibly marked as draft or `needs-review`.
+- Does not count as a reviewed source note.
+- After review, promote useful content into `wiki/sources/`, update related pages, and mark the raw file `processed`.
 
 Entity page: `wiki/entities/<entity-name>.md`
 

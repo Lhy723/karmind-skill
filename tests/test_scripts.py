@@ -156,6 +156,41 @@ class ScriptTests(unittest.TestCase):
                 else:
                     os.environ[key] = value
 
+    def test_model_batch_ingest_writes_drafts_by_default(self) -> None:
+        module_path = ROOT / "scripts" / "model_batch_ingest.py"
+        spec = importlib.util.spec_from_file_location("model_batch_ingest_draft_test", module_path)
+        self.assertIsNotNone(spec)
+        module = importlib.util.module_from_spec(spec)
+        assert spec.loader is not None
+        sys.path.insert(0, str(ROOT / "scripts"))
+        spec.loader.exec_module(module)
+
+        def fake_chat_completion(*_args: object, **_kwargs: object) -> str:
+            return "# Draft Source\n\n## Summary\n\nDrafted by test."
+
+        original_chat_completion = module.chat_completion
+        module.chat_completion = fake_chat_completion
+        try:
+            with TemporaryDirectory() as tmp:
+                wiki = Path(tmp) / "demo"
+                init = self.run_cmd("scripts/init_wiki.py", str(wiki))
+                self.assertEqual(init.returncode, 0, init.stderr)
+                raw_file = wiki / "raw" / "source.md"
+                raw_file.write_text("# Source\n", encoding="utf-8")
+
+                result = module.main([str(wiki), "--model", "test-model", "--api-key", "test-key", "--limit", "1"])
+                self.assertEqual(result, 0)
+                drafts = list((wiki / "wiki" / "sources" / "_drafts").glob("*.md"))
+                self.assertEqual(len(drafts), 1)
+                self.assertIn("Machine-generated draft", drafts[0].read_text(encoding="utf-8"))
+
+                cache = json.loads((wiki / "wiki" / "cache" / "ingest-cache.json").read_text(encoding="utf-8"))
+                entry = cache["raw_files"]["raw/source.md"]
+                self.assertEqual(entry["status"], "drafted")
+                self.assertTrue(entry["source_note"].startswith("wiki/sources/_drafts/"))
+        finally:
+            module.chat_completion = original_chat_completion
+
     def test_install_lists_targets(self) -> None:
         result = self.run_cmd("scripts/install.py", "--list-targets")
         self.assertEqual(result.returncode, 0, result.stderr)

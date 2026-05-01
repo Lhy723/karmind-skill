@@ -7,7 +7,7 @@ Use the `karmind-skill` workflow for LLM wiki tasks. This project rule is the tr
 - Maintain generated pages in `wiki/`.
 - Update `wiki/index.md` after ingest and major page changes.
 - Append to `wiki/log.md` after ingest, query filing, lint, or schema changes.
-- Maintain `wiki/cache/ingest-cache.json` and skip processed raw files unless forced re-extraction is requested.
+- Maintain `wiki/cache/ingest-cache.json` and skip processed raw files unless forced re-extraction is requested. External-model outputs are drafts under `wiki/sources/_drafts/` and should stay `drafted` until reviewed.
 - Cite source notes or raw files for durable claims.
 - Keep contradictions, caveats, and open questions visible.
 - Before initializing a wiki, scan existing notes/documents and ask before moving or copying them into `raw/imported/`.

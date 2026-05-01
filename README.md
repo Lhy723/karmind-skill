@@ -37,8 +37,8 @@
 | 初始化 wiki | 创建 `raw/`、`wiki/`、`wiki/index.md`、`wiki/log.md`、`wiki/cache/`、`wiki/reports/` |
 | 导入已有笔记 | 初始化时扫描已有文档，经用户确认后移动或复制到 `raw/imported/` |
 | 资料摄取 | 从 raw source 提取 claim、entity、concept、timeline、矛盾和开放问题 |
-| 缓存去重 | 用 `wiki/cache/ingest-cache.json` 记录 `pending`、`processed`、`failed`、`skipped` |
-| 外部模型批处理 | 可用任意 OpenAI-compatible 模型批量生成 source notes |
+| 缓存去重 | 用 `wiki/cache/ingest-cache.json` 记录 `pending`、`drafted`、`processed`、`failed`、`skipped` |
+| 外部模型批处理 | 可用任意 OpenAI-compatible 模型批量生成待复核 source note drafts |
 | Wiki 体检 | 输出断链、孤儿页、未摄取资料、缓存状态和维护建议到 `wiki/reports/` |
 | 体检修复 | 用户明确要求后，按风险分级修复报告问题；高风险操作先确认 |
 | Obsidian 友好 | 支持 wikilinks、assets、graph/backlinks、Dataview、Canvas、Marp 风格输出 |
@@ -172,6 +172,7 @@ my-llm-wiki/
     ├── log.md
     ├── overview.md
     ├── sources/
+    │   └── _drafts/
     ├── entities/
     ├── concepts/
     ├── questions/
@@ -203,6 +204,8 @@ my-llm-wiki/
 | 修复体检问题 | `使用 karmind-skill 修复最新体检报告中的问题。不要删除页面；需要合并、拆分或重命名时先问我。` |
 
 当缓存中有多个 pending raw 文件时，`摄取新资料` 会先询问处理方式：外部模型批处理、当前 agent 手动循环处理、只处理下一篇，或暂缓。
+
+外部模型批处理默认只写入 `wiki/sources/_drafts/` 并把缓存标记为 `drafted`；复核后才提升到正式 `wiki/sources/` 并标记为 `processed`。
 
 体检报告默认写入：
 
@@ -261,7 +264,7 @@ wiki/reports/batch/
 - 原始资料不可变，wiki 页面可维护。
 - 每个重要结论都应该能追溯到 source note 或 raw source。
 - `index.md` 负责内容导航，`log.md` 负责时间线记录。
-- `ingest-cache.json` 负责整理状态，默认跳过已处理文档。
+- `ingest-cache.json` 负责整理状态。外部模型输出先进入 `drafted`，复核后才进入 `processed`。
 - 矛盾和不确定性是知识库的一部分，应该明确记录。
 - 先用纯 Markdown、`rg` 和索引文件；规模真的变大后，再考虑向量数据库、MCP 搜索或其他工具。
 - 输出形态不局限于 prose，也可以是表格、时间线、图表、Marp slide markdown 或 Obsidian Canvas notes。

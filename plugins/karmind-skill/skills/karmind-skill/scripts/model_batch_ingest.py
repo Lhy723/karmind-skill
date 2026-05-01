@@ -142,6 +142,21 @@ Source text:
 """
 
 
+def wrap_draft_note(note: str, raw_path: str, model: str) -> str:
+    return f"""---
+type: source-draft
+status: needs-review
+raw_path: {json.dumps(raw_path, ensure_ascii=False)}
+processor: {json.dumps(f"model-draft:{model}", ensure_ascii=False)}
+created: {date.today().isoformat()}
+---
+
+> Machine-generated draft. A human or primary agent should review, promote useful claims into `wiki/sources/`, and then mark the raw file `processed`.
+
+{note.rstrip()}
+"""
+
+
 def append_report(root: Path, lines: list[str]) -> Path:
     report_dir = root / "wiki" / "reports" / "batch"
     report_dir.mkdir(parents=True, exist_ok=True)
@@ -161,6 +176,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--max-chars", type=int, default=40000, help="Maximum characters sent per source.")
     parser.add_argument("--temperature", type=float, default=0.1)
     parser.add_argument("--dry-run", action="store_true", help="List files that would be processed without calling the API.")
+    parser.add_argument(
+        "--publish-final-source-notes",
+        action="store_true",
+        help="Write directly to wiki/sources/ and mark raw files processed. Default writes review drafts to wiki/sources/_drafts/.",
+    )
     return parser.parse_args(argv)
 
 
@@ -196,7 +216,7 @@ def main(argv: list[str]) -> int:
         return 2
 
     report_lines: list[str] = []
-    processed = 0
+    succeeded = 0
     failed = 0
 
     for raw_path, _entry in pending:
@@ -217,20 +237,33 @@ def main(argv: list[str]) -> int:
                 args.temperature,
             )
             digest = hashlib.sha256(raw_path.encode("utf-8")).hexdigest()[:8]
-            source_note = root / "wiki" / "sources" / f"{slugify(absolute_raw.stem)}-{digest}.md"
+            source_dir = root / "wiki" / "sources"
+            if args.publish_final_source_notes:
+                source_note = source_dir / f"{slugify(absolute_raw.stem)}-{digest}.md"
+                note_text = note.rstrip() + "\n"
+                status = "processed"
+                processor = f"model-batch:{args.model}"
+                report_action = "processed"
+            else:
+                source_note = source_dir / "_drafts" / f"{slugify(absolute_raw.stem)}-{digest}.md"
+                note_text = wrap_draft_note(note, raw_path, args.model)
+                status = "drafted"
+                processor = f"model-draft:{args.model}"
+                report_action = "drafted"
             source_note.parent.mkdir(parents=True, exist_ok=True)
-            source_note.write_text(note.rstrip() + "\n", encoding="utf-8")
+            source_note.write_text(note_text, encoding="utf-8")
             rel_source_note = source_note.relative_to(root).as_posix()
-            ingest_cache.mark(root, raw_path, "processed", f"model-batch:{args.model}", rel_source_note, [rel_source_note])
-            report_lines.append(f"- processed `{raw_path}` -> `{rel_source_note}`")
-            processed += 1
+            ingest_cache.mark(root, raw_path, status, processor, rel_source_note, [rel_source_note])
+            report_lines.append(f"- {report_action} `{raw_path}` -> `{rel_source_note}`")
+            succeeded += 1
         except Exception as exc:
             ingest_cache.mark(root, raw_path, "failed", f"model-batch:{args.model}", None, [])
             report_lines.append(f"- failed `{raw_path}`: {exc}")
             failed += 1
 
     report_path = append_report(root, report_lines)
-    print(f"processed={processed} failed={failed} report={report_path}")
+    success_label = "processed" if args.publish_final_source_notes else "drafted"
+    print(f"{success_label}={succeeded} failed={failed} report={report_path}")
     return 0 if failed == 0 else 1
 
 

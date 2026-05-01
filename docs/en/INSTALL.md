@@ -200,6 +200,8 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
 
 See [MODEL_KEYS.md](MODEL_KEYS.md) for API key configuration. Prefer environment variables or a local `.env.local`; do not write keys into the wiki.
 
+By default, model batch processing writes review drafts to `wiki/sources/_drafts/` and marks cache entries `drafted`. The current agent should review the raw source and draft, create the final source note, update related pages, and then mark the file `processed`. Use `--publish-final-source-notes` only when the user explicitly accepts lower-quality direct batch output.
+
 ## Agent-Specific Guides
 
 - [Skills CLI](SKILLS_CLI.md)

@@ -40,6 +40,14 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
 
 这里假设你已经把本仓库 clone 到 `/tmp/karmind-skill` 或 Windows 的 `$env:TEMP\karmind-skill`。如果使用其他位置，请替换成对应路径。
 
+默认输出是待复核草稿：
+
+```text
+wiki/sources/_drafts/
+```
+
+缓存状态会变为 `drafted`，不是 `processed`。复核后再提升到正式 `wiki/sources/`。
+
 ## 本地 `.env.local`
 
 如果你不想每次都 `export`，可以在 wiki 项目根目录创建 `.env.local`：

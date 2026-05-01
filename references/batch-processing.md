@@ -6,7 +6,7 @@ Use this when a wiki has multiple raw files, many raw files, or the user asks to
 
 Before extracting multiple pending files, ask the user to choose:
 
-- External-model batch loop: best for many documents where a configured API model can extract source notes and structured facts.
+- External-model batch loop: best for many documents where a configured API model can draft source notes and structured facts for later review.
 - Manual agent processing: best for small collections, sensitive documents, or when the current agent should reason carefully.
 - Defer: leave files in `pending` state for later.
 
@@ -25,6 +25,7 @@ wiki/cache/ingest-cache.json
 Statuses:
 
 - `pending`: raw file exists but has not been organized into the wiki.
+- `drafted`: an external model created a review draft, usually under `wiki/sources/_drafts/`, but the draft has not been promoted into reviewed wiki knowledge.
 - `processed`: source note and relevant wiki pages were updated.
 - `failed`: processing was attempted but needs retry or human review.
 - `skipped`: user or schema decided not to ingest this file.
@@ -45,14 +46,13 @@ python scripts/ingest_cache.py . mark raw/example.md \
   --page wiki/concepts/example.md
 ```
 
-After external-model batch processing:
+After external-model batch processing, keep the raw file in `drafted` state unless the user explicitly requested final publication:
 
 ```bash
 python scripts/ingest_cache.py . mark raw/example.md \
-  --processor model-batch:model-name \
-  --source-note wiki/sources/example.md \
-  --page wiki/entities/example.md \
-  --page wiki/synthesis/topic.md
+  --status drafted \
+  --processor model-draft:model-name \
+  --source-note wiki/sources/_drafts/example.md
 ```
 
 Force re-extract:
@@ -71,8 +71,8 @@ A model batch extraction loop should:
 2. Convert binary documents to text first when needed.
 3. Send one source at a time to the model.
 4. Ask for structured extraction: summary, claims, entities, concepts, dates, contradictions, open questions, suggested wiki pages.
-5. Write source notes and draft updates to wiki pages.
-6. Mark each file processed only after successful file writes.
+5. Write draft source notes to `wiki/sources/_drafts/`, not directly to reviewed `wiki/sources/`.
+6. Mark each successful file `drafted`.
 7. Record failures as `failed` with a short note in the report.
 
 Store batch outputs in a reviewable file such as:
@@ -95,7 +95,19 @@ Dry run:
 python scripts/model_batch_ingest.py . --dry-run
 ```
 
-The helper expects an OpenAI-compatible `/chat/completions` API. It drafts source notes for text-like raw files, writes a batch report, and marks successful files as `processed`.
+The helper expects an OpenAI-compatible `/chat/completions` API. By default it writes draft source notes under `wiki/sources/_drafts/`, writes a batch report, and marks successful files as `drafted`.
+
+To bypass review and publish directly into `wiki/sources/`, pass `--publish-final-source-notes`. Use this only for low-risk sources or after the user explicitly accepts lower-quality batch output.
+
+## Promoting Drafts
+
+When reviewing a `drafted` raw file:
+
+1. Read the raw source, the model draft, and relevant existing wiki pages.
+2. Create or update a reviewed source note under `wiki/sources/`.
+3. Promote only source-grounded, useful claims; discard weak or generic draft text.
+4. Update related entity, concept, question, synthesis, index, and log pages.
+5. Mark the raw file `processed` with the reviewed source note path.
 
 ## Manual Agent Guidance
 

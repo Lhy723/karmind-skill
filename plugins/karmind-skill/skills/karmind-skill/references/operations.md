@@ -15,6 +15,7 @@ Steps:
    python scripts/ingest_cache.py . list --status pending
    ```
 3. If the user did not name a source and there are multiple pending files, ask the user to choose an external-model batch loop, manual agent processing through the cache, processing only the next file, or deferring.
+   - External-model batch output should be treated as `drafted` review material, not final wiki knowledge.
 4. If the user chooses manual agent processing, continue through pending entries until the cache is exhausted, the user stops, or the context budget requires a checkpoint. Do not stop after one file without reporting what remains.
 5. If there is exactly one pending file, process it directly.
 6. Skip files marked `processed` unless the user asks to force re-extract. For force re-extract, run:
@@ -33,7 +34,7 @@ Steps:
    - contradictions with existing wiki pages
    - open questions
 10. Read `wiki/index.md` and relevant existing pages.
-11. Write or update the source note under `wiki/sources/`.
+11. Write or update the reviewed source note under `wiki/sources/`.
 12. Update entity, concept, question, and synthesis pages.
 13. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
 14. Update `wiki/index.md`.
@@ -137,9 +138,11 @@ For large batches:
 
 - Ask whether to use an external-model API loop or manual agent processing.
 - Use `wiki/cache/ingest-cache.json` as the manifest.
-- Process only `pending` files.
-- Mark files as `processed`, `failed`, or `skipped`.
-- Write a report file with processed, skipped, failed, and needs-review items.
+- Process only `pending` files, or review `drafted` files when the task is to promote model drafts.
+- Mark files as `drafted`, `processed`, `failed`, or `skipped`.
+- Write a report file with drafted, processed, skipped, failed, and needs-review items.
 - Keep logs parseable.
 
 For an unqualified request like "ingest new sources", multiple pending files count as batch work. Ask for the processing mode before extracting the first file.
+
+For external-model batch mode, write drafts to `wiki/sources/_drafts/` and keep cache entries `drafted` until reviewed. Do not mix unreviewed model drafts with reviewed source notes.

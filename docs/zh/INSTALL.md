@@ -200,6 +200,8 @@ python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
 
 API key 配置见 [MODEL_KEYS.md](MODEL_KEYS.md)。推荐使用环境变量或本地 `.env.local`，不要写进 wiki。
 
+默认情况下，模型批处理只生成待复核草稿到 `wiki/sources/_drafts/`，并把缓存标记为 `drafted`。当前 agent 复核原文和草稿、整理正式 source note、更新相关页面后，才应标记为 `processed`。只有明确接受低质量批量输出时，才使用 `--publish-final-source-notes` 直接写入 `wiki/sources/`。
+
 ## Agent 专用指南
 
 - [Skills CLI](SKILLS_CLI.md)
