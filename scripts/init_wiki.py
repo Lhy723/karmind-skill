@@ -441,8 +441,7 @@ No focus has been set yet.
 
 def build_template_page(page_type: str, language: str) -> str:
     today = date.today().isoformat()
-    if language == "zh":
-        return f"""---
+    frontmatter = f"""---
 type: {page_type}
 status: draft
 created: {today}
@@ -450,36 +449,168 @@ last_updated: {today}
 sources: []
 tags: []
 ---
-
-# 标题
+"""
+    if language == "zh":
+        templates = {
+            "source": """# 资料标题
 
 ## 摘要
 
-## 证据
+## 基本信息
 
-## 链接
+- 原始文件：
+- 作者/来源：
+- 日期：
+
+## 核心主张
+
+## 证据摘录
+
+## 提取的实体
+
+## 提取的概念
+
+## 更新的页面
 
 ## 待解决问题
-"""
-    return f"""---
-type: {page_type}
-status: draft
-created: {today}
-last_updated: {today}
-sources: []
-tags: []
----
+""",
+            "entity": """# 实体名称
 
-# Title
+## 简介
+
+## 关键属性
+
+## 时间线
+
+## 关系
+
+## 相关资料
+
+## 矛盾与不确定性
+""",
+            "concept": """# 概念名称
+
+## 定义
+
+## 为什么重要
+
+## 证据与例子
+
+## 相关概念
+
+## 边界与易混点
+
+## 待解决问题
+""",
+            "question": """# 问题
+
+## 当前回答
+
+## 支持证据
+
+## 反例或矛盾
+
+## 仍不确定的部分
+
+## 下一步要找的资料
+""",
+            "synthesis": """# 综合主题
+
+## 核心结论
+
+## 资料地图
+
+## 对比与模式
+
+## 可复用模型
+
+## 需要回查的主张
+
+## 后续方向
+""",
+        }
+    else:
+        templates = {
+            "source": """# Source Title
 
 ## Summary
 
-## Evidence
+## Bibliographic Details
 
-## Links
+- Raw file:
+- Author/source:
+- Date:
+
+## Key Claims
+
+## Evidence Excerpts
+
+## Extracted Entities
+
+## Extracted Concepts
+
+## Pages Updated
 
 ## Open Questions
-"""
+""",
+            "entity": """# Entity Name
+
+## Overview
+
+## Key Attributes
+
+## Timeline
+
+## Relationships
+
+## Related Sources
+
+## Contradictions and Uncertainty
+""",
+            "concept": """# Concept Name
+
+## Definition
+
+## Why It Matters
+
+## Evidence and Examples
+
+## Related Concepts
+
+## Boundaries and Confusions
+
+## Open Questions
+""",
+            "question": """# Question
+
+## Current Answer
+
+## Supporting Evidence
+
+## Counterevidence or Contradictions
+
+## Remaining Uncertainty
+
+## Sources to Seek Next
+""",
+            "synthesis": """# Synthesis Topic
+
+## Main Takeaways
+
+## Source Map
+
+## Comparisons and Patterns
+
+## Reusable Model
+
+## Claims to Recheck
+
+## Next Directions
+""",
+        }
+
+    body = templates.get(page_type, templates["source"])
+    return f"{frontmatter}\n{body}"
 
 
 def init_wiki(root: Path, force: bool, language: str = "auto") -> list[Path]:

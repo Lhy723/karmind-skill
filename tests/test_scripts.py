@@ -42,9 +42,17 @@ class ScriptTests(unittest.TestCase):
             result = self.run_cmd("scripts/init_wiki.py", str(wiki), "--language", "zh")
             self.assertEqual(result.returncode, 0, result.stderr)
             template = (wiki / "wiki" / "templates" / "source-note.md").read_text(encoding="utf-8")
+            concept = (wiki / "wiki" / "templates" / "concept.md").read_text(encoding="utf-8")
+            question = (wiki / "wiki" / "templates" / "question.md").read_text(encoding="utf-8")
+            synthesis = (wiki / "wiki" / "templates" / "synthesis.md").read_text(encoding="utf-8")
             agents = (wiki / "AGENTS.md").read_text(encoding="utf-8")
             self.assertIn("## 摘要", template)
-            self.assertIn("## 证据", template)
+            self.assertIn("## 证据摘录", template)
+            self.assertIn("## 定义", concept)
+            self.assertIn("## 当前回答", question)
+            self.assertIn("## 核心结论", synthesis)
+            self.assertNotEqual(template, concept)
+            self.assertNotEqual(question, synthesis)
             self.assertIn("默认问答模式", agents)
 
     def test_skill_frontmatter_is_cli_friendly(self) -> None:
