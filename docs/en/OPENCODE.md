@@ -6,8 +6,16 @@ Prefer project-level installation inside the LLM Wiki directory.
 
 ## Recommended: Project Install
 
+If you use the install script, fetch this repository first:
+
 ```bash
-python scripts/install.py --target project-opencode --project .
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+Then run this from the target LLM Wiki project directory:
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
 ## Optional: User Install
@@ -15,7 +23,7 @@ python scripts/install.py --target project-opencode --project .
 Use this only when you intentionally want the skill available in every OpenCode project.
 
 ```bash
-python scripts/install.py --target opencode-user
+python /tmp/karmind-skill/scripts/install.py --target opencode-user
 ```
 
 Equivalent manual install:

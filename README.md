@@ -69,16 +69,22 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 ### 内置安装脚本
 
-项目级安装。请把 `--project` 指向目标 wiki 项目目录；如果你就在目标目录中运行脚本，可以使用 `.`：
+内置脚本来自本仓库。先获取仓库：
 
 ```bash
-python scripts/install.py --target project-agents --project .
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+然后在目标 wiki 项目目录中运行：
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```
 
 查看全部目标：
 
 ```bash
-python scripts/install.py --list-targets
+python /tmp/karmind-skill/scripts/install.py --list-targets
 ```
 
 ### 开发者本地安装
@@ -125,7 +131,7 @@ Claude Code 本地插件安装：
 手动兜底命令：
 
 ```bash
-python scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
 ```
 
 ## 推荐目录结构
@@ -200,7 +206,7 @@ wiki/reports/batch/
 | Codex | 项目级 `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
 | OpenCode | 项目级 `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
-| Trae | 项目级 `.trae/skills` 或 rules | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
+| Trae | 项目级 `.trae/rules/project_rules.md`，可选 `.trae/skills` | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
 | 其他 agent | 项目级 `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
 
 ## 本仓库结构

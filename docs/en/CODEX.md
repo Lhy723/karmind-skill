@@ -6,8 +6,16 @@ Prefer project-level installation so this skill is enabled only in the LLM Wiki 
 
 ## Recommended: Project Install
 
+If you use the install script, fetch this repository first:
+
 ```bash
-python scripts/install.py --target project-agents --project .
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+Then run this from the target LLM Wiki project directory:
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```
 
 Equivalent manual install:
@@ -22,7 +30,7 @@ cp -R /path/to/karmind-skill .agents/skills/karmind-skill
 Use this only when you intentionally want the skill available in every project.
 
 ```bash
-python scripts/install.py --target codex-user
+python /tmp/karmind-skill/scripts/install.py --target codex-user
 ```
 
 Equivalent manual install:

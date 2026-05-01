@@ -27,34 +27,38 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 如果不使用 plugin marketplace 或 `skills` CLI，可以用内置脚本安装到当前项目的 agent skill 目录。
 
+内置脚本来自本仓库。先获取仓库：
+
+```bash
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+然后在目标 LLM Wiki 项目目录中运行下面的命令。
+
 Codex / 通用 agent：
 
 ```bash
-python scripts/install.py --target project-agents --project .
+python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```
 
 Claude Code 项目级 skill：
 
 ```bash
-python scripts/install.py --target project-claude --project .
+python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
 ```
 
 OpenCode：
 
 ```bash
-python scripts/install.py --target project-opencode --project .
+python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
-Trae：
-
-```bash
-python scripts/install.py --target project-trae --project .
-```
+Trae 推荐使用项目规则文件，不建议先从 `.trae/skills` 开始。见 [TRAE.md](TRAE.md)。
 
 查看所有支持的安装目标：
 
 ```bash
-python scripts/install.py --list-targets
+python /tmp/karmind-skill/scripts/install.py --list-targets
 ```
 
 ## 可选：用户级安装
@@ -62,10 +66,10 @@ python scripts/install.py --list-targets
 只有你明确希望所有项目都能调用这个 skill 时，再安装到用户级目录：
 
 ```bash
-python scripts/install.py --target codex-user
-python scripts/install.py --target claude-user
-python scripts/install.py --target opencode-user
-python scripts/install.py --target trae-user
+python /tmp/karmind-skill/scripts/install.py --target codex-user
+python /tmp/karmind-skill/scripts/install.py --target claude-user
+python /tmp/karmind-skill/scripts/install.py --target opencode-user
+python /tmp/karmind-skill/scripts/install.py --target trae-user
 ```
 
 ## 开发者本地安装
@@ -95,24 +99,26 @@ Claude Code 本地插件安装：
 python scripts/install.py --target project-agents --project . --symlink --force
 ```
 
+下面的辅助脚本同样来自本仓库。如果你的当前项目里没有 `scripts/` 目录，请使用 `/tmp/karmind-skill/scripts/...` 形式调用。
+
 ## 初始化已有笔记
 
 如果目标目录里已经有笔记或文档，先扫描，不要直接移动：
 
 ```bash
-python scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
 ```
 
 用户确认后，把候选文件导入到 `raw/imported/`：
 
 ```bash
-python scripts/init_wiki.py . --import-existing move
+python /tmp/karmind-skill/scripts/init_wiki.py . --import-existing move
 ```
 
 如果需要保留原文件，用复制：
 
 ```bash
-python scripts/init_wiki.py . --import-existing copy
+python /tmp/karmind-skill/scripts/init_wiki.py . --import-existing copy
 ```
 
 导入后的文件会在 `wiki/cache/ingest-cache.json` 中标记为 `pending`。
@@ -122,20 +128,20 @@ python scripts/init_wiki.py . --import-existing copy
 保持缓存与 `raw/` 同步：
 
 ```bash
-python scripts/ingest_cache.py . ensure
-python scripts/ingest_cache.py . list --status pending
+python /tmp/karmind-skill/scripts/ingest_cache.py . ensure
+python /tmp/karmind-skill/scripts/ingest_cache.py . list --status pending
 ```
 
 手动整理某个 raw 文件后，标记为已处理：
 
 ```bash
-python scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md
+python /tmp/karmind-skill/scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md
 ```
 
 只有在用户明确要求强制重新提取时，才重置缓存：
 
 ```bash
-python scripts/ingest_cache.py . reset
+python /tmp/karmind-skill/scripts/ingest_cache.py . reset
 ```
 
 如果文档很多，agent 应询问用户选择：配置外部模型 API 循环整理，还是由当前 agent 按 pending 缓存逐个手动整理。
@@ -145,13 +151,13 @@ python scripts/ingest_cache.py . reset
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
-python scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
 ```
 
 不调用 API，只预览待处理文件：
 
 ```bash
-python scripts/model_batch_ingest.py . --dry-run
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
 ```
 
 API key 配置见 [MODEL_KEYS.md](MODEL_KEYS.md)。推荐使用环境变量或本地 `.env.local`，不要写进 wiki。
@@ -183,7 +189,7 @@ What skills are available?
 也可以运行本地冒烟测试：
 
 ```bash
-python scripts/smoke_test.py
+python /tmp/karmind-skill/scripts/smoke_test.py
 ```
 
 Wiki 体检报告默认集中写入：

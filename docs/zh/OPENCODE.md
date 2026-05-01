@@ -6,8 +6,16 @@ OpenCode 支持原生 `.opencode/skills`，也支持全局 `~/.config/opencode/s
 
 ## 推荐：项目级安装
 
+如果使用安装脚本，先获取本仓库：
+
 ```bash
-python scripts/install.py --target project-opencode --project .
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+然后在目标 LLM Wiki 项目目录中运行：
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
 ## 可选：用户级安装
@@ -15,7 +23,7 @@ python scripts/install.py --target project-opencode --project .
 只有你明确希望所有 OpenCode 项目都能调用这个 skill 时，再使用：
 
 ```bash
-python scripts/install.py --target opencode-user
+python /tmp/karmind-skill/scripts/install.py --target opencode-user
 ```
 
 等价的手动安装方式：

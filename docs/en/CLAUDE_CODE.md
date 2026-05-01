@@ -39,9 +39,11 @@ If the repository moves, replace the path with the new repository root.
 
 ### Sync the Plugin Distribution
 
-`plugins/karmind-skill/` is a self-contained plugin directory built from root `SKILL.md`, `references/`, `scripts/`, and `adapters/`. After changing those source files, run:
+`plugins/karmind-skill/` is a self-contained plugin directory built from root `SKILL.md`, `references/`, `scripts/`, and `adapters/`. This command is for developers who have cloned this repository:
 
 ```bash
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+cd /tmp/karmind-skill
 python scripts/build_claude_plugin.py
 ```
 
@@ -51,8 +53,11 @@ Claude Code can also load skills from `~/.claude/skills/<skill-name>/SKILL.md` a
 
 ### User Install
 
+If you use the install script, fetch this repository first:
+
 ```bash
-python scripts/install.py --target claude-user
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+python /tmp/karmind-skill/scripts/install.py --target claude-user
 ```
 
 Equivalent manual install:
@@ -65,7 +70,7 @@ cp -R /path/to/karmind-skill ~/.claude/skills/karmind-skill
 ### Project Install
 
 ```bash
-python scripts/install.py --target project-claude --project .
+python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
 ```
 
 ## Usage

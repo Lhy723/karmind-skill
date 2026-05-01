@@ -69,16 +69,22 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 ### Bundled Installer
 
-Project-level install. Point `--project` at the target wiki project; use `.` when you are already in that project:
+The bundled helper comes from this repository. Fetch it first:
 
 ```bash
-python scripts/install.py --target project-agents --project .
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+Then run this from the target wiki project:
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```
 
 List all targets:
 
 ```bash
-python scripts/install.py --list-targets
+python /tmp/karmind-skill/scripts/install.py --list-targets
 ```
 
 ### Local Development Install
@@ -125,7 +131,7 @@ Use karmind-skill to inspect pending material. Suggest a processing order first;
 Manual fallback command:
 
 ```bash
-python scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
 ```
 
 ## Recommended Wiki Layout
@@ -200,7 +206,7 @@ Doctor repair policy:
 | Codex | Project-level `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
 | OpenCode | Project-level `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
-| Trae | Project-level `.trae/skills` or rules | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
+| Trae | Project-level `.trae/rules/project_rules.md`, optional `.trae/skills` | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
 | Other agents | Project-level `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
 
 ## Repository Layout

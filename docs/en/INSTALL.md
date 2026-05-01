@@ -27,34 +27,38 @@ See [SKILLS_CLI.md](SKILLS_CLI.md) for details.
 
 If you are not using plugin marketplace or the `skills` CLI, use the bundled helper to install into the current project's agent skill directory.
 
+The bundled helper comes from this repository. Fetch it first:
+
+```bash
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+Then run the following commands from the target LLM Wiki project directory.
+
 Codex / generic agents:
 
 ```bash
-python scripts/install.py --target project-agents --project .
+python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```
 
 Claude Code project skill:
 
 ```bash
-python scripts/install.py --target project-claude --project .
+python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
 ```
 
 OpenCode:
 
 ```bash
-python scripts/install.py --target project-opencode --project .
+python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
-Trae:
-
-```bash
-python scripts/install.py --target project-trae --project .
-```
+For Trae, use a project rule file first instead of starting with `.trae/skills`. See [TRAE.md](TRAE.md).
 
 List available targets:
 
 ```bash
-python scripts/install.py --list-targets
+python /tmp/karmind-skill/scripts/install.py --list-targets
 ```
 
 ## Optional: User-Level Install
@@ -62,10 +66,10 @@ python scripts/install.py --list-targets
 Use user-level install only when you intentionally want the skill available everywhere:
 
 ```bash
-python scripts/install.py --target codex-user
-python scripts/install.py --target claude-user
-python scripts/install.py --target opencode-user
-python scripts/install.py --target trae-user
+python /tmp/karmind-skill/scripts/install.py --target codex-user
+python /tmp/karmind-skill/scripts/install.py --target claude-user
+python /tmp/karmind-skill/scripts/install.py --target opencode-user
+python /tmp/karmind-skill/scripts/install.py --target trae-user
 ```
 
 ## Local Development Install
@@ -95,24 +99,26 @@ Use `--symlink` during development:
 python scripts/install.py --target project-agents --project . --symlink --force
 ```
 
+The helper scripts below also come from this repository. If the current project does not contain a `scripts/` directory, call them as `/tmp/karmind-skill/scripts/...`.
+
 ## Initialize Existing Notes
 
 When a target directory already contains notes or documents, scan first:
 
 ```bash
-python scripts/init_wiki.py . --scan-existing
+python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
 ```
 
 After review, import candidates into `raw/imported/`:
 
 ```bash
-python scripts/init_wiki.py . --import-existing move
+python /tmp/karmind-skill/scripts/init_wiki.py . --import-existing move
 ```
 
 Use `copy` instead of `move` if the original files should remain in place:
 
 ```bash
-python scripts/init_wiki.py . --import-existing copy
+python /tmp/karmind-skill/scripts/init_wiki.py . --import-existing copy
 ```
 
 Imported files are marked `pending` in `wiki/cache/ingest-cache.json`.
@@ -122,20 +128,20 @@ Imported files are marked `pending` in `wiki/cache/ingest-cache.json`.
 Keep the cache current:
 
 ```bash
-python scripts/ingest_cache.py . ensure
-python scripts/ingest_cache.py . list --status pending
+python /tmp/karmind-skill/scripts/ingest_cache.py . ensure
+python /tmp/karmind-skill/scripts/ingest_cache.py . list --status pending
 ```
 
 After manual processing:
 
 ```bash
-python scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md
+python /tmp/karmind-skill/scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md
 ```
 
 If the user explicitly asks to force re-extract, reset the cache:
 
 ```bash
-python scripts/ingest_cache.py . reset
+python /tmp/karmind-skill/scripts/ingest_cache.py . reset
 ```
 
 For many documents, ask the user whether to configure an external-model API loop or let the current agent process pending files manually.
@@ -145,13 +151,13 @@ Model batch helper:
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
-python scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
 ```
 
 Preview pending files without calling the API:
 
 ```bash
-python scripts/model_batch_ingest.py . --dry-run
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
 ```
 
 See [MODEL_KEYS.md](MODEL_KEYS.md) for API key configuration. Prefer environment variables or a local `.env.local`; do not write keys into the wiki.
@@ -183,7 +189,7 @@ Use karmind-skill to initialize an LLM Wiki in the current directory.
 You can also run:
 
 ```bash
-python scripts/smoke_test.py
+python /tmp/karmind-skill/scripts/smoke_test.py
 ```
 
 Wiki doctor reports are written by default to:

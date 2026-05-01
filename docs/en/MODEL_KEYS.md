@@ -15,9 +15,11 @@ export LLM_API_KEY="sk-..."
 Then run from the wiki project directory:
 
 ```bash
-python scripts/model_batch_ingest.py . --dry-run
-python scripts/model_batch_ingest.py . --limit 10
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
+python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
 ```
+
+This assumes you cloned this repository to `/tmp/karmind-skill`. If you use another location, replace the path accordingly.
 
 ## Local `.env.local`
 
