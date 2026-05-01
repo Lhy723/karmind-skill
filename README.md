@@ -242,6 +242,7 @@ wiki/reports/batch/
 | --- | --- | --- |
 | Skills CLI | 项目目录中 `npx skills add` | [中文](docs/zh/SKILLS_CLI.md) / [English](docs/en/SKILLS_CLI.md) |
 | 模型 API Key | 环境变量或本地 `.env.local` | [中文](docs/zh/MODEL_KEYS.md) / [English](docs/en/MODEL_KEYS.md) |
+| Obsidian 关系图谱 | 目录职责颜色组 | [中文](docs/zh/OBSIDIAN_GRAPH.md) / [English](docs/en/OBSIDIAN_GRAPH.md) |
 | Codex | 项目级 `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
 | OpenCode | 项目级 `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |

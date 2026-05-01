@@ -7,8 +7,29 @@ Use this when the user wants the wiki to work well in Obsidian or another markdo
 - Keep pages human-readable markdown.
 - Prefer stable page titles and explicit links so graph view, backlinks, and search remain useful.
 - Keep original or imported assets under `raw/` when they arrive with the source. During ingest, mirror referenced assets into `wiki/assets/` and link important assets from source notes or topic pages.
+- Use graph color groups based on wiki directories: sources, drafts, concepts, entities, questions, synthesis, assets, raw evidence, reports/cache.
 - Use frontmatter sparingly so Dataview or property filters can help without becoming a maintenance burden.
 - The agent may suggest Obsidian Web Clipper for web pages, but raw source files should still be preserved.
+
+Recommended graph group docs:
+
+- Chinese: `docs/zh/OBSIDIAN_GRAPH.md`
+- English: `docs/en/OBSIDIAN_GRAPH.md`
+
+Core graph color groups:
+
+| Name | Query | Color |
+| --- | --- | --- |
+| Source Drafts | `path:wiki/sources/_drafts` | `#A855F7` |
+| Reviewed Sources | `path:wiki/sources -path:wiki/sources/_drafts` | `#2563EB` |
+| Concepts | `path:wiki/concepts` | `#16A34A` |
+| Entities | `path:wiki/entities` | `#0891B2` |
+| Questions | `path:wiki/questions` | `#E11D48` |
+| Synthesis | `path:wiki/synthesis` | `#D97706` |
+| Core Navigation | `path:wiki/index.md OR path:wiki/overview.md OR path:wiki/log.md` | `#6366F1` |
+| Assets | `path:wiki/assets OR path:raw/assets` | `#0D9488` |
+| Raw Evidence | `path:raw -path:raw/assets` | `#71717A` |
+| Reports and Cache | `path:wiki/reports OR path:wiki/cache` | `#64748B` |
 
 ## Attachments and Images
 

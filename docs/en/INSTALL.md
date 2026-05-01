@@ -230,6 +230,7 @@ By default, model batch processing writes review drafts to `wiki/sources/_drafts
 
 - [Skills CLI](SKILLS_CLI.md)
 - [Model API Keys](MODEL_KEYS.md)
+- [Obsidian Graph](OBSIDIAN_GRAPH.md)
 - [Codex](CODEX.md)
 - [Claude Code](CLAUDE_CODE.md)
 - [OpenCode](OPENCODE.md)
