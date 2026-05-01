@@ -6,38 +6,80 @@ Prefer project-level installation so this skill is enabled only in the LLM Wiki 
 
 ## Recommended: Project Install
 
-If you use the install script, fetch this repository first:
+If you use the install script, fetch this repository first.
+
+macOS / Linux:
 
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
-Then run this from the target LLM Wiki project directory:
+Windows PowerShell:
+
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+```
+
+Then run this from the target LLM Wiki project directory.
+
+macOS / Linux:
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```
 
-Equivalent manual install:
+Windows PowerShell:
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-agents --project .
+```
+
+Equivalent manual install.
+
+macOS / Linux:
 
 ```bash
 mkdir -p .agents/skills
 cp -R /path/to/karmind-skill .agents/skills/karmind-skill
 ```
 
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force ".agents\skills"
+Copy-Item -Recurse -Force "C:\path\to\karmind-skill" ".agents\skills\karmind-skill"
+```
+
 ## Optional: User Install
 
 Use this only when you intentionally want the skill available in every project.
+
+macOS / Linux:
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target codex-user
 ```
 
-Equivalent manual install:
+Windows PowerShell:
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\install.py" --target codex-user
+```
+
+Equivalent manual install.
+
+macOS / Linux:
 
 ```bash
 mkdir -p ~/.agents/skills
 cp -R /path/to/karmind-skill ~/.agents/skills/karmind-skill
+```
+
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.agents\skills"
+Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.agents\skills\karmind-skill"
 ```
 
 Restart Codex if the skill does not appear.

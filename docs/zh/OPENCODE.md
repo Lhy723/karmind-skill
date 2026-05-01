@@ -6,31 +6,64 @@ OpenCode 支持原生 `.opencode/skills`，也支持全局 `~/.config/opencode/s
 
 ## 推荐：项目级安装
 
-如果使用安装脚本，先获取本仓库：
+如果使用安装脚本，先获取本仓库。
+
+macOS / Linux：
 
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
-然后在目标 LLM Wiki 项目目录中运行：
+Windows PowerShell：
+
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+```
+
+然后在目标 LLM Wiki 项目目录中运行。
+
+macOS / Linux：
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
+```
+
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-opencode --project .
 ```
 
 ## 可选：用户级安装
 
 只有你明确希望所有 OpenCode 项目都能调用这个 skill 时，再使用：
 
+macOS / Linux：
+
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target opencode-user
 ```
 
-等价的手动安装方式：
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\install.py" --target opencode-user
+```
+
+等价的手动安装方式。
+
+macOS / Linux：
 
 ```bash
 mkdir -p ~/.config/opencode/skills
 cp -R /path/to/karmind-skill ~/.config/opencode/skills/karmind-skill
+```
+
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.config\opencode\skills"
+Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.config\opencode\skills\karmind-skill"
 ```
 
 ## 权限配置

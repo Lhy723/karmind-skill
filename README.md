@@ -71,14 +71,30 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 内置脚本来自本仓库。先获取仓库：
 
+macOS / Linux：
+
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
+Windows PowerShell：
+
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+```
+
 然后在目标 wiki 项目目录中运行：
+
+macOS / Linux：
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
+```
+
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-agents --project .
 ```
 
 查看全部目标：
@@ -86,6 +102,8 @@ python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
 ```bash
 python /tmp/karmind-skill/scripts/install.py --list-targets
 ```
+
+Windows PowerShell 中把脚本路径替换为 `"$env:TEMP\karmind-skill\scripts\install.py"`。
 
 ### 开发者本地安装
 
@@ -130,8 +148,16 @@ Claude Code 本地插件安装：
 
 手动兜底命令：
 
+macOS / Linux：
+
 ```bash
 python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
+```
+
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\init_wiki.py" . --scan-existing
 ```
 
 ## 推荐目录结构

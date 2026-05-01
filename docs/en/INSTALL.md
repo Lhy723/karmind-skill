@@ -29,11 +29,25 @@ If you are not using plugin marketplace or the `skills` CLI, use the bundled hel
 
 The bundled helper comes from this repository. Fetch it first:
 
+macOS / Linux:
+
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
+Windows PowerShell:
+
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+```
+
 Then run the following commands from the target LLM Wiki project directory.
+
+On Windows PowerShell, replace `/tmp/karmind-skill/scripts/install.py` in the commands below with:
+
+```text
+"$env:TEMP\karmind-skill\scripts\install.py"
+```
 
 Codex / generic agents:
 
@@ -105,6 +119,8 @@ python scripts/install.py --target project-agents --project . --symlink --force
 
 The helper scripts below also come from this repository. If the current project does not contain a `scripts/` directory, call them as `/tmp/karmind-skill/scripts/...`.
 
+On Windows PowerShell, use `"$env:TEMP\karmind-skill\scripts\..."`.
+
 ## Initialize Existing Notes
 
 When a target directory already contains notes or documents, scan first:
@@ -152,16 +168,34 @@ For many documents, ask the user whether to configure an external-model API loop
 
 Model batch helper:
 
+macOS / Linux:
+
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
 python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
 ```
 
+Windows PowerShell:
+
+```powershell
+$env:LLM_API_KEY = "..."
+$env:LLM_MODEL = "model-name"
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+```
+
 Preview pending files without calling the API:
+
+macOS / Linux:
 
 ```bash
 python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
+```
+
+Windows PowerShell:
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
 ```
 
 See [MODEL_KEYS.md](MODEL_KEYS.md) for API key configuration. Prefer environment variables or a local `.env.local`; do not write keys into the wiki.

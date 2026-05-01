@@ -6,20 +6,39 @@
 
 优先使用环境变量，不要把真实 API key 写入 wiki 页面、source note、log 或报告。
 
+macOS / Linux：
+
 ```bash
 export LLM_BASE_URL="https://api.openai.com/v1"
 export LLM_MODEL="model-name"
 export LLM_API_KEY="sk-..."
 ```
 
+Windows PowerShell：
+
+```powershell
+$env:LLM_BASE_URL = "https://api.openai.com/v1"
+$env:LLM_MODEL = "model-name"
+$env:LLM_API_KEY = "sk-..."
+```
+
 然后在 wiki 项目目录运行：
+
+macOS / Linux：
 
 ```bash
 python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
 python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
 ```
 
-这里假设你已经把本仓库 clone 到 `/tmp/karmind-skill`。如果使用其他位置，请替换成对应路径。
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+```
+
+这里假设你已经把本仓库 clone 到 `/tmp/karmind-skill` 或 Windows 的 `$env:TEMP\karmind-skill`。如果使用其他位置，请替换成对应路径。
 
 ## 本地 `.env.local`
 

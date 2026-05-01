@@ -71,14 +71,30 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 The bundled helper comes from this repository. Fetch it first:
 
+macOS / Linux:
+
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
+Windows PowerShell:
+
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+```
+
 Then run this from the target wiki project:
+
+macOS / Linux:
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
+```
+
+Windows PowerShell:
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-agents --project .
 ```
 
 List all targets:
@@ -86,6 +102,8 @@ List all targets:
 ```bash
 python /tmp/karmind-skill/scripts/install.py --list-targets
 ```
+
+In Windows PowerShell, replace the script path with `"$env:TEMP\karmind-skill\scripts\install.py"`.
 
 ### Local Development Install
 
@@ -130,8 +148,16 @@ Use karmind-skill to inspect pending material. Suggest a processing order first;
 
 Manual fallback command:
 
+macOS / Linux:
+
 ```bash
 python /tmp/karmind-skill/scripts/init_wiki.py . --scan-existing
+```
+
+Windows PowerShell:
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\init_wiki.py" . --scan-existing
 ```
 
 ## Recommended Wiki Layout

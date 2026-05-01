@@ -58,11 +58,11 @@ git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
 Windows PowerShell:
 
 ```powershell
-New-Item -ItemType Directory -Force .trae/rules, .trae/skills
+New-Item -ItemType Directory -Force ".trae\rules", ".trae\skills"
 Invoke-WebRequest `
   -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
-  -OutFile ".trae/rules/project_rules.md"
-git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
+  -OutFile ".trae\rules\project_rules.md"
+git clone https://github.com/Lhy723/karmind-skill.git ".trae\skills\karmind-skill"
 ```
 
 ## Minimal Project Rules Only
@@ -80,10 +80,10 @@ curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/tra
 Windows PowerShell:
 
 ```powershell
-New-Item -ItemType Directory -Force .trae/rules
+New-Item -ItemType Directory -Force ".trae\rules"
 Invoke-WebRequest `
   -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
-  -OutFile ".trae/rules/project_rules.md"
+  -OutFile ".trae\rules\project_rules.md"
 ```
 
 This works, but it relies on the shorter project rule instructions. The combined install is preferred because Trae can read the full `SKILL.md` when needed.
@@ -128,5 +128,5 @@ Windows PowerShell:
 ```powershell
 Invoke-WebRequest `
   -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
-  -OutFile ".trae/rules/project_rules.md"
+  -OutFile ".trae\rules\project_rules.md"
 ```

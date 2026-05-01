@@ -29,11 +29,25 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 内置脚本来自本仓库。先获取仓库：
 
+macOS / Linux：
+
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
+Windows PowerShell：
+
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+```
+
 然后在目标 LLM Wiki 项目目录中运行下面的命令。
+
+Windows PowerShell 用户把下面命令里的 `/tmp/karmind-skill/scripts/install.py` 替换为：
+
+```text
+"$env:TEMP\karmind-skill\scripts\install.py"
+```
 
 Codex / 通用 agent：
 
@@ -105,6 +119,8 @@ python scripts/install.py --target project-agents --project . --symlink --force
 
 下面的辅助脚本同样来自本仓库。如果你的当前项目里没有 `scripts/` 目录，请使用 `/tmp/karmind-skill/scripts/...` 形式调用。
 
+Windows PowerShell 用户请使用 `"$env:TEMP\karmind-skill\scripts\..."`。
+
 ## 初始化已有笔记
 
 如果目标目录里已经有笔记或文档，先扫描，不要直接移动：
@@ -152,16 +168,34 @@ python /tmp/karmind-skill/scripts/ingest_cache.py . reset
 
 模型批处理辅助脚本：
 
+macOS / Linux：
+
 ```bash
 export LLM_API_KEY="..."
 export LLM_MODEL="model-name"
 python /tmp/karmind-skill/scripts/model_batch_ingest.py . --limit 10
 ```
 
+Windows PowerShell：
+
+```powershell
+$env:LLM_API_KEY = "..."
+$env:LLM_MODEL = "model-name"
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --limit 10
+```
+
 不调用 API，只预览待处理文件：
+
+macOS / Linux：
 
 ```bash
 python /tmp/karmind-skill/scripts/model_batch_ingest.py . --dry-run
+```
+
+Windows PowerShell：
+
+```powershell
+python "$env:TEMP\karmind-skill\scripts\model_batch_ingest.py" . --dry-run
 ```
 
 API key 配置见 [MODEL_KEYS.md](MODEL_KEYS.md)。推荐使用环境变量或本地 `.env.local`，不要写进 wiki。
