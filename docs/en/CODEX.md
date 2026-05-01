@@ -4,9 +4,27 @@ Codex reads Agent Skills from `.agents/skills` in a repository and from `~/.agen
 
 Prefer lightweight project-level installation inside the LLM Wiki directory. Do not install globally by default, and do not copy the full repository into the wiki project.
 
+## Minimal Install
+
+Run this from the target wiki project:
+
+macOS / Linux:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | bash
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex
+```
+
+Choose `Codex / generic agents` when prompted. Non-interactive runs default to `.agents/skills/karmind-skill`.
+
 ## Recommended: Manual Project Install
 
-This checks out only the files needed at runtime:
+This checks out only the lightweight skill files:
 
 - `SKILL.md`
 - `references/`

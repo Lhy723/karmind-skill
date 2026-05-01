@@ -8,6 +8,22 @@
 
 这样 Trae 不需要全局启用这个能力，也不会影响普通代码项目。
 
+## 极简安装
+
+在目标 wiki 项目目录运行：
+
+macOS / Linux：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | KARMIND_AGENT=trae bash
+```
+
+Windows PowerShell：
+
+```powershell
+$env:KARMIND_AGENT = "trae"; irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex; Remove-Item Env:KARMIND_AGENT
+```
+
 ## 推荐：项目级手动组合安装
 
 macOS / Linux：

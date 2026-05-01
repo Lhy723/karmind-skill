@@ -8,6 +8,22 @@ Use the combined “project rules + lightweight skill” setup inside the wiki p
 
 This keeps the behavior scoped to the current project and avoids affecting ordinary code projects.
 
+## Minimal Install
+
+Run this from the target wiki project:
+
+macOS / Linux:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | KARMIND_AGENT=trae bash
+```
+
+Windows PowerShell:
+
+```powershell
+$env:KARMIND_AGENT = "trae"; irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex; Remove-Item Env:KARMIND_AGENT
+```
+
 ## Recommended: Manual Project Combined Install
 
 macOS / Linux:

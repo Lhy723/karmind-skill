@@ -23,9 +23,45 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 更多说明见 [SKILLS_CLI.md](SKILLS_CLI.md)。
 
+## 极简安装命令
+
+不使用 plugin marketplace 或 `skills` CLI 时，可以在目标 wiki 项目目录运行一行安装命令。安装器会询问目标 agent，并且只复制轻量 skill 文件。
+
+macOS / Linux：
+
+```bash
+cd your-project
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | bash
+```
+
+Windows PowerShell：
+
+```powershell
+cd your-project
+irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex
+```
+
+如果你想跳过询问，可以指定 agent：
+
+macOS / Linux：
+
+```bash
+cd your-project
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | KARMIND_AGENT=trae bash
+```
+
+Windows PowerShell：
+
+```powershell
+cd your-project
+$env:KARMIND_AGENT = "trae"; irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex; Remove-Item Env:KARMIND_AGENT
+```
+
+可选值：`codex`、`opencode`、`trae`、`claude`、`all`。
+
 ## 手动安装
 
-如果不使用 plugin marketplace 或 `skills` CLI，按各 agent 的专用文档手动安装到项目目录。推荐只放运行时需要的轻量文件：`SKILL.md`、`references/`、`scripts/`；Codex 额外放 `agents/`，Trae 额外放项目规则。
+如果不使用 plugin marketplace 或 `skills` CLI，按各 agent 的专用文档手动安装到项目目录。推荐只放轻量 skill 文件：`SKILL.md`、`references/`、`scripts/`；Codex 额外放 `agents/`，Trae 额外放项目规则。
 
 手动安装可以使用文档中的 sparse checkout 命令，也可以从本地 checkout 复制同样的轻量文件到目标目录；不要复制 README、docs、tests、插件分发目录等仓库维护文件。
 

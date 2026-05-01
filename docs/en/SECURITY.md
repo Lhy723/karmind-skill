@@ -6,6 +6,7 @@ Review before enabling any third-party skill:
 
 - `SKILL.md`
 - scripts under `scripts/`
+- quick install scripts `scripts/install.sh` and `scripts/install.ps1`
 - lightweight skill files in the agent install directory
 - agent-specific rule files
 

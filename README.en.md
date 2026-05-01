@@ -68,6 +68,24 @@ Run from the target wiki project:
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
+### Minimal Install Command
+
+When you are not using the plugin or Skills CLI, run a one-line installer from the target wiki project. It asks for the target agent and copies only the lightweight skill files.
+
+macOS / Linux:
+
+```bash
+cd your-project
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | bash
+```
+
+Windows PowerShell:
+
+```powershell
+cd your-project
+irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex
+```
+
 ### Manual Install
 
 If you do not use the Claude Code plugin or the `skills` CLI, manually place the lightweight skill files in the target agent directory. Use sparse checkout or copy from a local checkout. Do not copy the whole repository. Install `SKILL.md`, `references/`, and `scripts/`; Codex also gets `agents/`, and Trae also gets `.trae/rules/project_rules.md`.
@@ -91,7 +109,7 @@ npx -y skills add . --skill karmind-skill --agent '*' -y
 Claude Code local plugin install:
 
 ```text
-/plugin marketplace add karmind-local /path/to/karmind-skill
+/plugin marketplace add karmind-local <local-repo-path>
 /plugin install karmind-skill@karmind-local
 ```
 
@@ -225,7 +243,7 @@ Doctor repair policy:
 ├── .claude-plugin/             # Claude Code marketplace manifest
 ├── agents/openai.yaml          # Optional Codex app metadata
 ├── references/                 # On-demand skill reference docs
-├── scripts/                    # Init, cache, batch, doctor, and asset mirroring scripts
+├── scripts/                    # Quick install, init, cache, batch, doctor, and asset mirroring scripts
 ├── adapters/                   # Generic agent rule templates
 ├── assets/                     # Static assets such as the README banner
 ├── plugins/karmind-skill/      # Claude Code plugin distribution

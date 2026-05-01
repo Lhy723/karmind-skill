@@ -23,6 +23,42 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 See [SKILLS_CLI.md](SKILLS_CLI.md) for details.
 
+## Minimal Install Command
+
+When you are not using plugin marketplace or the `skills` CLI, run a one-line installer from the target wiki project. It asks for the target agent and copies only the lightweight skill files.
+
+macOS / Linux:
+
+```bash
+cd your-project
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | bash
+```
+
+Windows PowerShell:
+
+```powershell
+cd your-project
+irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex
+```
+
+To skip the prompt, specify the target agent:
+
+macOS / Linux:
+
+```bash
+cd your-project
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | KARMIND_AGENT=trae bash
+```
+
+Windows PowerShell:
+
+```powershell
+cd your-project
+$env:KARMIND_AGENT = "trae"; irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex; Remove-Item Env:KARMIND_AGENT
+```
+
+Supported values: `codex`, `opencode`, `trae`, `claude`, `all`.
+
 ## Manual Install
 
 If you are not using plugin marketplace or the `skills` CLI, manually install into the project directory using each agent's guide. Install only the lightweight runtime files: `SKILL.md`, `references/`, and `scripts/`; Codex also gets `agents/`, and Trae also gets project rules.

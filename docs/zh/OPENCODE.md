@@ -4,9 +4,25 @@ OpenCode 支持原生 `.opencode/skills`，也支持全局 `~/.config/opencode/s
 
 推荐在 LLM Wiki 项目目录内使用项目级轻量安装。不要默认全局安装，也不要把整仓库复制到 wiki 项目里。
 
+## 极简安装
+
+在目标 wiki 项目目录运行：
+
+macOS / Linux：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | KARMIND_AGENT=opencode bash
+```
+
+Windows PowerShell：
+
+```powershell
+$env:KARMIND_AGENT = "opencode"; irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex; Remove-Item Env:KARMIND_AGENT
+```
+
 ## 推荐：项目级手动安装
 
-这个方式只把运行 skill 需要的文件检出到当前项目：
+这个方式只把轻量 skill 文件检出到当前项目：
 
 - `SKILL.md`
 - `references/`

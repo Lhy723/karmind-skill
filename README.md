@@ -68,6 +68,24 @@ Claude Code 推荐使用 plugin marketplace 安装：
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
+### 极简安装命令
+
+不使用插件或 Skills CLI 时，可以在目标 wiki 项目目录运行一行安装命令。安装器会询问目标 agent，并且只复制轻量 skill 文件。
+
+macOS / Linux：
+
+```bash
+cd your-project
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | bash
+```
+
+Windows PowerShell：
+
+```powershell
+cd your-project
+irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex
+```
+
 ### 手动安装
 
 如果不用 Claude Code 插件，也不用 `skills` CLI，就按目标 agent 的目录手动放入轻量 skill 文件。可以用 sparse checkout，也可以从本地 checkout 复制；不要复制整个仓库，只放 `SKILL.md`、`references/`、`scripts/`，Codex 额外放 `agents/`，Trae 额外放 `.trae/rules/project_rules.md`。
@@ -225,7 +243,7 @@ wiki/reports/batch/
 ├── .claude-plugin/             # Claude Code marketplace manifest
 ├── agents/openai.yaml          # Codex App 可选元数据
 ├── references/                 # 按需读取的 skill 参考文档
-├── scripts/                    # 初始化、缓存、批处理、体检和附件镜像脚本
+├── scripts/                    # 快速安装、初始化、缓存、批处理、体检和附件镜像脚本
 ├── adapters/                   # 通用 agent 规则模板
 ├── assets/                     # README banner 等静态资源
 ├── plugins/karmind-skill/      # Claude Code plugin 分发目录

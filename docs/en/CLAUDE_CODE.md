@@ -63,6 +63,22 @@ Claude Code can also load skills from `~/.claude/skills/<skill-name>/SKILL.md` a
 
 Prefer lightweight project-level installation inside the LLM Wiki directory.
 
+### Minimal Install
+
+Run this from the target wiki project:
+
+macOS / Linux:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.sh | KARMIND_AGENT=claude bash
+```
+
+Windows PowerShell:
+
+```powershell
+$env:KARMIND_AGENT = "claude"; irm https://raw.githubusercontent.com/Lhy723/karmind-skill/main/scripts/install.ps1 | iex; Remove-Item Env:KARMIND_AGENT
+```
+
 ### Project Install
 
 macOS / Linux:

@@ -277,6 +277,66 @@ class ScriptTests(unittest.TestCase):
     def test_install_script_is_not_distributed(self) -> None:
         self.assertFalse((ROOT / "scripts" / "install.py").exists())
         self.assertFalse((ROOT / "plugins" / "karmind-skill" / "skills" / "karmind-skill" / "scripts" / "install.py").exists())
+        self.assertTrue((ROOT / "scripts" / "install.sh").exists())
+        self.assertTrue((ROOT / "scripts" / "install.ps1").exists())
+
+    def test_shell_installer_installs_codex_from_local_source(self) -> None:
+        with TemporaryDirectory() as tmp:
+            project = Path(tmp) / "wiki"
+            project.mkdir()
+            env = os.environ.copy()
+            env.update(
+                {
+                    "KARMIND_SOURCE_DIR": str(ROOT),
+                    "KARMIND_AGENT": "codex",
+                    "KARMIND_FORCE": "1",
+                }
+            )
+            result = subprocess.run(
+                ["bash", str(ROOT / "scripts" / "install.sh")],
+                cwd=project,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            skill = project / ".agents" / "skills" / "karmind-skill"
+            self.assertTrue((skill / "SKILL.md").exists())
+            self.assertTrue((skill / "references" / "operations.md").exists())
+            self.assertTrue((skill / "scripts" / "init_wiki.py").exists())
+            self.assertTrue((skill / "agents" / "openai.yaml").exists())
+            self.assertFalse((skill / "scripts" / "install.sh").exists())
+            self.assertFalse((skill / "docs").exists())
+
+    def test_shell_installer_installs_trae_from_local_source(self) -> None:
+        with TemporaryDirectory() as tmp:
+            project = Path(tmp) / "wiki"
+            project.mkdir()
+            env = os.environ.copy()
+            env.update(
+                {
+                    "KARMIND_SOURCE_DIR": str(ROOT),
+                    "KARMIND_AGENT": "trae",
+                    "KARMIND_FORCE": "1",
+                }
+            )
+            result = subprocess.run(
+                ["bash", str(ROOT / "scripts" / "install.sh")],
+                cwd=project,
+                env=env,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            skill = project / ".trae" / "skills" / "karmind-skill"
+            self.assertTrue((skill / "SKILL.md").exists())
+            self.assertTrue((skill / "references" / "operations.md").exists())
+            self.assertTrue((skill / "scripts" / "init_wiki.py").exists())
+            self.assertFalse((skill / "agents").exists())
+            self.assertFalse((skill / "scripts" / "install.sh").exists())
+            self.assertTrue((project / ".trae" / "rules" / "project_rules.md").exists())
 
 
 if __name__ == "__main__":
