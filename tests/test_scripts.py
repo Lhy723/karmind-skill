@@ -280,6 +280,7 @@ class ScriptTests(unittest.TestCase):
         self.assertIn("codex-user", result.stdout)
         self.assertIn("claude-user", result.stdout)
         self.assertIn("opencode-user", result.stdout)
+        self.assertIn("Trae targets copy only", result.stdout)
         self.assertIn("project-trae also writes", result.stdout)
 
     def test_project_trae_installs_skill_and_rules(self) -> None:
@@ -288,7 +289,12 @@ class ScriptTests(unittest.TestCase):
             project.mkdir()
             result = self.run_cmd("scripts/install.py", "--target", "project-trae", "--project", str(project))
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertTrue((project / ".trae" / "skills" / "karmind-skill" / "SKILL.md").exists())
+            skill = project / ".trae" / "skills" / "karmind-skill"
+            self.assertTrue((skill / "SKILL.md").exists())
+            self.assertTrue((skill / "references" / "operations.md").exists())
+            self.assertTrue((skill / "scripts" / "init_wiki.py").exists())
+            self.assertFalse((skill / "adapters" / "AGENTS.md").exists())
+            self.assertFalse((skill / "docs").exists())
             self.assertTrue((project / ".trae" / "rules" / "project_rules.md").exists())
 
 

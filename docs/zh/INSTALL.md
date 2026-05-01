@@ -67,11 +67,7 @@ OpenCode：
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
-Trae 推荐组合安装：同时写入 `.trae/rules/project_rules.md` 和 `.trae/skills/karmind-skill/`。见 [TRAE.md](TRAE.md)：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
-```
+Trae 推荐使用不依赖 Python 的“项目规则 + 轻量 skill”组合安装，避免把整仓库 clone 到项目里。见 [TRAE.md](TRAE.md)。
 
 查看所有支持的安装目标：
 

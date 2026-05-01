@@ -67,11 +67,7 @@ OpenCode:
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
-For Trae, use the combined setup: write both `.trae/rules/project_rules.md` and `.trae/skills/karmind-skill/`. See [TRAE.md](TRAE.md):
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
-```
+For Trae, prefer the no-Python “project rules + lightweight skill” setup so the full repository is not cloned into the project. See [TRAE.md](TRAE.md).
 
 List available targets:
 

@@ -1,26 +1,34 @@
 # Trae 安装
 
-推荐使用“项目规则 + 完整 skill”组合安装。
+推荐在 wiki 项目目录内使用“项目规则 + 轻量 skill”组合安装，并优先使用不依赖 Python 脚本的方式。
 
 - `project_rules.md` 负责告诉 Trae：这个项目是 LLM Wiki，普通问答默认从 wiki 出发。
-- `.trae/skills/karmind-skill/` 负责提供完整的 `SKILL.md`、参考文档和脚本。
+- `.trae/skills/karmind-skill/` 只放 Trae 需要读取的 skill 内容：`SKILL.md`、`references/` 和 `scripts/`。
+- 安装使用 Git sparse checkout，不会把仓库里的 README、docs、adapters、测试文件等无关文件下载到项目里。
 
 这样 Trae 不需要全局启用这个能力，也不会影响普通代码项目。
 
-## 推荐：组合安装
+## 推荐：不使用 Python 的组合安装
 
 macOS / Linux：
 
 ```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
+mkdir -p .trae/rules .trae/skills
+curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
+  -o .trae/rules/project_rules.md
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
+git -C .trae/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
 Windows PowerShell：
 
 ```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --project .
+New-Item -ItemType Directory -Force ".trae\rules", ".trae\skills"
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae\rules\project_rules.md"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ".trae\skills\karmind-skill"
+git -C ".trae\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
 安装后，项目里会出现：
@@ -33,36 +41,43 @@ python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --proj
     └── karmind-skill/
         ├── SKILL.md
         ├── references/
-        ├── scripts/
-        └── adapters/
+        └── scripts/
 ```
 
 其中：
 
 - `.trae/rules/project_rules.md` 是 Trae 项目规则入口。
-- `.trae/skills/karmind-skill/SKILL.md` 是完整 skill 入口。
+- `.trae/skills/karmind-skill/SKILL.md` 是 skill 工作流入口。
+- 仓库里的 `adapters/AGENTS.md` 是给通用 agent 使用的适配文件，Trae 不需要它。推荐安装方式不会把 `adapters/` 放进 `.trae/skills/karmind-skill/`，因此不会和 `.trae/rules/project_rules.md` 混淆。
 
-## 不使用 Python 的手动安装
+如果你之前按旧文档完整 clone 过仓库，建议删除旧目录后重新安装：
 
-如果你不想运行安装脚本，可以手动执行。
+```bash
+rm -rf .trae/skills/karmind-skill
+```
+
+PowerShell：
+
+```powershell
+Remove-Item -Recurse -Force ".trae\skills\karmind-skill"
+```
+
+## 备选：Python 脚本安装
+
+如果你已经有 Python，并希望让安装器处理目录创建，可以先获取安装脚本所在仓库，再运行脚本。这个方式现在也只会把 Trae 需要的轻量 skill 复制进项目目录。
 
 macOS / Linux：
 
 ```bash
-mkdir -p .trae/rules .trae/skills
-curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
-  -o .trae/rules/project_rules.md
-git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
 ```
 
 Windows PowerShell：
 
 ```powershell
-New-Item -ItemType Directory -Force ".trae\rules", ".trae\skills"
-Invoke-WebRequest `
-  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
-  -OutFile ".trae\rules\project_rules.md"
-git clone https://github.com/Lhy723/karmind-skill.git ".trae\skills\karmind-skill"
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --project .
 ```
 
 ## 只安装项目规则
@@ -110,10 +125,10 @@ Invoke-WebRequest `
 
 ## 更新
 
-如果使用组合安装，更新完整 skill：
+如果使用推荐的组合安装，更新轻量 skill：
 
 ```bash
-git -C .trae/skills/karmind-skill pull
+git -C .trae/skills/karmind-skill pull --ff-only
 ```
 
 更新项目规则：

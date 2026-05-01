@@ -23,6 +23,7 @@ EXCLUDE_NAMES = {
     "dist",
     "build",
 }
+TRAE_SKILL_ITEMS = ("SKILL.md", "references", "scripts")
 
 
 def source_root() -> Path:
@@ -96,6 +97,32 @@ def copy_skill(src: Path, dst: Path, force: bool, symlink: bool) -> None:
     shutil.copytree(src, dst, ignore=ignore)
 
 
+def copy_minimal_trae_skill(src: Path, dst: Path, force: bool, symlink: bool) -> None:
+    if symlink:
+        copy_skill(src, dst, force=force, symlink=True)
+        return
+
+    src = src.resolve()
+    dst = dst.expanduser().resolve()
+
+    if dst.exists() or dst.is_symlink():
+        if not force:
+            raise FileExistsError(f"{dst} already exists. Use --force to replace it.")
+        if dst.is_symlink() or dst.is_file():
+            dst.unlink()
+        else:
+            shutil.rmtree(dst)
+
+    dst.mkdir(parents=True, exist_ok=True)
+    for name in TRAE_SKILL_ITEMS:
+        item = src / name
+        target = dst / name
+        if item.is_dir():
+            shutil.copytree(item, target)
+        else:
+            shutil.copy2(item, target)
+
+
 def copy_trae_project_rules(src: Path, project: Path, force: bool) -> Path:
     dst = project / ".trae" / "rules" / "project_rules.md"
     if dst.exists() and not force:
@@ -128,6 +155,7 @@ def main(argv: list[str]) -> int:
         for name in project_targets(Path("<project>")):
             print(f"- {name}: <project>/{project_targets(Path('<project>'))[name].relative_to(Path('<project>'))}")
         print("Notes:")
+        print("- Trae targets copy only SKILL.md, references/, and scripts/ unless --symlink is used")
         print("- project-trae also writes <project>/.trae/rules/project_rules.md")
         return 0
 
@@ -149,7 +177,10 @@ def main(argv: list[str]) -> int:
 
     for name in selected:
         dst = targets[name]
-        copy_skill(src, dst, force=args.force, symlink=args.symlink)
+        if name in {"trae-user", "project-trae"}:
+            copy_minimal_trae_skill(src, dst, force=args.force, symlink=args.symlink)
+        else:
+            copy_skill(src, dst, force=args.force, symlink=args.symlink)
         mode = "symlinked" if args.symlink else "copied"
         print(f"{mode} {src} -> {dst}")
         if name == "project-trae":
