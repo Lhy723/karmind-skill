@@ -86,6 +86,8 @@ If your OpenCode config restricts skills, allow this skill:
 Use karmind-skill to run a health check.
 ```
 
+When ingesting new sources, if multiple pending raw files exist, the skill asks for the processing mode instead of silently processing only the first file.
+
 ```text
 Use karmind-skill to fix issues from the latest health report. Do not delete pages; ask me before merging, splitting, or renaming pages.
 ```

@@ -11,5 +11,6 @@ Use the `karmind-skill` workflow for LLM wiki tasks. This project rule is the tr
 - Cite source notes or raw files for durable claims.
 - Keep contradictions, caveats, and open questions visible.
 - Before initializing a wiki, scan existing notes/documents and ask before moving or copying them into `raw/imported/`.
+- For "ingest new sources", sync/list the cache first. If multiple raw files are pending and no specific source was named, ask whether to configure external-model batch processing, manually process the pending cache, process only the next file, or defer. If manual processing is chosen, do not silently stop after one file.
 - Normal user questions in this directory are wiki-grounded by default. Start from `wiki/index.md` and cite wiki/source files.
 - When fixing health-check findings, read `wiki/reports/doctor-report.md`, fix low-risk issues directly, ask before merges/splits/renames, and require approval before deletion, source-note overwrite, cache reset, batch re-ingest, or schema changes.

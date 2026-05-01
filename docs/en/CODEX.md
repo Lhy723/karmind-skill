@@ -96,6 +96,8 @@ or:
 Use karmind-skill to ingest new sources.
 ```
 
+If multiple pending raw files exist, the skill asks for the processing mode instead of silently processing only the first file.
+
 Health check and repair:
 
 ```text

@@ -98,6 +98,8 @@ Use karmind-skill to initialize an LLM Wiki in the current directory. First scan
 Use karmind-skill to ingest new sources. Find pending material from the default directories, create source notes, update related pages, and maintain the index, log, and cache.
 ```
 
+If multiple pending raw files exist, the skill should ask whether to use external-model batch processing, a manual agent loop, next file only, or defer.
+
 ```text
 Use karmind-skill to run a health check.
 ```

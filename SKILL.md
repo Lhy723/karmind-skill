@@ -41,17 +41,23 @@ Read [references/llm-wiki-principles.md](references/llm-wiki-principles.md) when
 When the user asks to ingest a source:
 
 1. Treat the current wiki root as the default root. Do not ask the user for paths unless no wiki root or no candidate source can be found.
-2. Run or emulate `python scripts/ingest_cache.py . ensure`, then process pending raw files first.
-3. If the user did not name a source, choose the next pending source from the ingest cache, or the newest unprocessed raw source.
-4. Skip cache entries marked `processed` unless the user asks to force re-extract; for force re-extract, reset or mark relevant cache entries pending.
-5. Extract claims, entities, concepts, dates, definitions, relationships, uncertainties, and source metadata.
-6. If the source references images or local assets, inspect the most relevant assets separately and cite them when they affect the summary.
-7. Create or update a source note under the default source-note folder.
-8. Update relevant entity, concept, timeline, question, or synthesis pages using the default wiki folders. Prefer small, named pages over one giant summary.
-9. Discuss surprising takeaways, contradictions, or emphasis choices with the user when the source is important or ambiguous.
-10. Add cross-links with `[[Page Name]]` or relative markdown links, following the local schema.
-11. Mark contradictions, superseded claims, and confidence levels instead of smoothing them away.
-12. Update index, append to log, and mark the raw file `processed` in the ingest cache.
+2. Run or emulate `python scripts/ingest_cache.py . ensure`, then list pending raw files before reading source content.
+3. If the user did not name a source and there are multiple pending raw files, pause before extraction and ask the user to choose:
+   - configure an external-model batch loop,
+   - let the current agent manually process pending files in cache order,
+   - process only the next pending file,
+   - or defer.
+4. If the user chooses manual processing, continue through pending cache entries until they are exhausted, the user stops, or the context budget requires a checkpoint. Do not silently stop after one file; report remaining pending files if you must pause.
+5. If there is exactly one pending raw file, process it directly.
+6. Skip cache entries marked `processed` unless the user asks to force re-extract; for force re-extract, reset or mark relevant cache entries pending.
+7. Extract claims, entities, concepts, dates, definitions, relationships, uncertainties, and source metadata.
+8. If the source references images or local assets, inspect the most relevant assets separately and cite them when they affect the summary.
+9. Create or update a source note under the default source-note folder.
+10. Update relevant entity, concept, timeline, question, or synthesis pages using the default wiki folders. Prefer small, named pages over one giant summary.
+11. Discuss surprising takeaways, contradictions, or emphasis choices with the user when the source is important or ambiguous.
+12. Add cross-links with `[[Page Name]]` or relative markdown links, following the local schema.
+13. Mark contradictions, superseded claims, and confidence levels instead of smoothing them away.
+14. Update index, append to log, and mark the raw file `processed` in the ingest cache.
 
 ## Query Workflow
 

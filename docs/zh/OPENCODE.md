@@ -86,6 +86,8 @@ Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.config\opencode\ski
 加载 karmind-skill，并对当前 LLM wiki 做一次健康检查。
 ```
 
+摄取新资料时，如果缓存中有多个 pending raw 文件，skill 会先询问处理方式，而不是默认只整理第一篇。
+
 或者：
 
 ```text

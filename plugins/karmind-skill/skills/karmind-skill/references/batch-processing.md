@@ -1,16 +1,18 @@
 # Batch Processing and Cache Reference
 
-Use this when a wiki has many raw files or the user asks to avoid reprocessing documents.
+Use this when a wiki has multiple raw files, many raw files, or the user asks to avoid reprocessing documents.
 
 ## User Choice
 
-Before large extraction, ask the user to choose:
+Before extracting multiple pending files, ask the user to choose:
 
 - External-model batch loop: best for many documents where a configured API model can extract source notes and structured facts.
 - Manual agent processing: best for small collections, sensitive documents, or when the current agent should reason carefully.
 - Defer: leave files in `pending` state for later.
 
 Do not configure an external API without the user's approval.
+
+For an unqualified request like "ingest new sources", first run the cache sync/list step. If more than one pending file exists, ask for this choice before extracting the first file. If the user chooses manual agent processing, continue through cache gaps until no pending files remain, the user stops, or a context checkpoint is needed.
 
 ## Cache Contract
 
@@ -103,4 +105,5 @@ When processing manually, follow cache gaps:
 2. Process the next highest-value source.
 3. Update wiki pages, index, and log.
 4. Mark the cache entry processed.
-5. Continue until pending entries are exhausted or the user stops.
+5. Continue until pending entries are exhausted, the user stops, or context budget requires a checkpoint.
+6. If pausing, report the remaining pending count and the next file to process.

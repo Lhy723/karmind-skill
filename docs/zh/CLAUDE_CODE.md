@@ -123,6 +123,8 @@ python "$env:TEMP\karmind-skill\scripts\install.py" --target project-claude --pr
 请使用 karmind-skill 维护当前目录的 LLM wiki，并处理新资料。
 ```
 
+如果缓存中有多个 pending raw 文件，skill 会先询问处理方式，而不是默认只整理第一篇。
+
 体检和修复：
 
 ```text

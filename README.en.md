@@ -202,6 +202,8 @@ Prefer natural-language prompts. The bundled scripts are deterministic tools for
 | Wiki doctor | `Use karmind-skill to run a health check.` |
 | Fix doctor findings | `Use karmind-skill to fix issues from the latest health report. Do not delete pages; ask me before merging, splitting, or renaming pages.` |
 
+When multiple pending raw files exist, `ingest new sources` asks for the processing mode first: external-model batch processing, manual agent loop, next file only, or defer.
+
 Wiki doctor reports are written to:
 
 ```text

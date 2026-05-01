@@ -10,17 +10,20 @@ Steps:
    ```bash
    python scripts/ingest_cache.py . ensure
    ```
-2. List pending files and pick the next raw source:
+2. List pending files before reading source content:
    ```bash
    python scripts/ingest_cache.py . list --status pending
    ```
-3. Skip files marked `processed` unless the user asks to force re-extract. For force re-extract, run:
+3. If the user did not name a source and there are multiple pending files, ask the user to choose an external-model batch loop, manual agent processing through the cache, processing only the next file, or deferring.
+4. If the user chooses manual agent processing, continue through pending entries until the cache is exhausted, the user stops, or the context budget requires a checkpoint. Do not stop after one file without reporting what remains.
+5. If there is exactly one pending file, process it directly.
+6. Skip files marked `processed` unless the user asks to force re-extract. For force re-extract, run:
    ```bash
    python scripts/ingest_cache.py . reset
    ```
-4. Read the source and capture metadata: title, author, date, source path, retrieval date if web-derived.
-5. Inspect important local assets or images referenced by the source when they materially affect meaning.
-6. Extract durable items:
+7. Read the source and capture metadata: title, author, date, source path, retrieval date if web-derived.
+8. Inspect important local assets or images referenced by the source when they materially affect meaning.
+9. Extract durable items:
    - claims
    - definitions
    - entities
@@ -29,17 +32,17 @@ Steps:
    - dates and timelines
    - contradictions with existing wiki pages
    - open questions
-7. Read `wiki/index.md` and relevant existing pages.
-8. Write or update the source note under `wiki/sources/`.
-9. Update entity, concept, question, and synthesis pages.
-10. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
-11. Update `wiki/index.md`.
-12. Append to `wiki/log.md`.
-13. Mark the file processed:
+10. Read `wiki/index.md` and relevant existing pages.
+11. Write or update the source note under `wiki/sources/`.
+12. Update entity, concept, question, and synthesis pages.
+13. Discuss surprising takeaways, contradictions, or important schema choices with the user when the source is high-value or ambiguous.
+14. Update `wiki/index.md`.
+15. Append to `wiki/log.md`.
+16. Mark the file processed:
    ```bash
    python scripts/ingest_cache.py . mark raw/example.md --processor manual-agent --source-note wiki/sources/example.md --page wiki/concepts/example.md
    ```
-14. Report changed pages and unresolved questions to the user.
+17. Report changed pages, unresolved questions, and remaining pending count to the user.
 
 ## Initialize Existing Notes
 
@@ -138,3 +141,5 @@ For large batches:
 - Mark files as `processed`, `failed`, or `skipped`.
 - Write a report file with processed, skipped, failed, and needs-review items.
 - Keep logs parseable.
+
+For an unqualified request like "ingest new sources", multiple pending files count as batch work. Ask for the processing mode before extracting the first file.
