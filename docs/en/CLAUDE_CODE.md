@@ -31,7 +31,7 @@ With a full GitHub URL:
 Local development install:
 
 ```text
-/plugin marketplace add karmind-local /path/to/karmind-skill
+/plugin marketplace add karmind-local <local-repo-path>
 /plugin install karmind-skill@karmind-local
 ```
 
@@ -57,56 +57,80 @@ Set-Location "$env:TEMP\karmind-skill"
 python scripts/build_claude_plugin.py
 ```
 
-## Manual Install
+## Fallback: Manual Install
 
 Claude Code can also load skills from `~/.claude/skills/<skill-name>/SKILL.md` and project-local `.claude/skills/<skill-name>/SKILL.md`.
 
-### User Install
-
-If you use the install script, fetch this repository first.
-
-macOS / Linux:
-
-```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target claude-user
-```
-
-Windows PowerShell:
-
-```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target claude-user
-```
-
-Equivalent manual install.
-
-macOS / Linux:
-
-```bash
-mkdir -p ~/.claude/skills
-cp -R /path/to/karmind-skill ~/.claude/skills/karmind-skill
-```
-
-Windows PowerShell:
-
-```powershell
-New-Item -ItemType Directory -Force "$HOME\.claude\skills"
-Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.claude\skills\karmind-skill"
-```
+Prefer lightweight project-level installation inside the LLM Wiki directory.
 
 ### Project Install
 
 macOS / Linux:
 
 ```bash
+mkdir -p .claude/skills
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git .claude/skills/karmind-skill
+git -C .claude/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force ".claude\skills"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ".claude\skills\karmind-skill"
+git -C ".claude\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+### Python Script Fallback
+
+If you already have Python, you can use the installer. This path now copies only the lightweight runtime skill files.
+
+macOS / Linux:
+
+```bash
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
 ```
 
 Windows PowerShell:
 
 ```powershell
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
 python "$env:TEMP\karmind-skill\scripts\install.py" --target project-claude --project .
+```
+
+### User Install
+
+Use this only when you intentionally want the skill available in every Claude Code project.
+
+macOS / Linux:
+
+```bash
+mkdir -p ~/.claude/skills
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ~/.claude/skills/karmind-skill
+git -C ~/.claude/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\skills"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git "$HOME\.claude\skills\karmind-skill"
+git -C "$HOME\.claude\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+## Update
+
+Project-level install:
+
+```bash
+git -C .claude/skills/karmind-skill pull --ff-only
+```
+
+User-level install:
+
+```bash
+git -C ~/.claude/skills/karmind-skill pull --ff-only
 ```
 
 ## Usage

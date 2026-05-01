@@ -25,49 +25,30 @@ See [SKILLS_CLI.md](SKILLS_CLI.md) for details.
 
 ## Project-Level Agent Install
 
-If you are not using plugin marketplace or the `skills` CLI, use the bundled helper to install into the current project's agent skill directory.
+If you are not using plugin marketplace or the `skills` CLI, prefer each agent's no-Python lightweight project install. These installs check out only runtime files, usually `SKILL.md`, `references/`, and `scripts/`, instead of copying the full repository into the wiki project.
 
-The bundled helper comes from this repository. Fetch it first:
+- Codex / generic agents: [CODEX.md](CODEX.md)
+- OpenCode: [OPENCODE.md](OPENCODE.md)
+- Trae: [TRAE.md](TRAE.md)
+- Other agents: [OTHER_AGENTS.md](OTHER_AGENTS.md)
 
-macOS / Linux:
+Claude Code should use plugin installation first; use the project-level fallback in [CLAUDE_CODE.md](CLAUDE_CODE.md) only when the plugin path is unavailable.
+
+If you already have Python, you can use the bundled installer as a fallback. Fetch the repository first:
 
 ```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
-Windows PowerShell:
-
-```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-```
-
-Then run the following commands from the target LLM Wiki project directory.
-
-On Windows PowerShell, replace `/tmp/karmind-skill/scripts/install.py` in the commands below with:
-
-```text
-"$env:TEMP\karmind-skill\scripts\install.py"
-```
-
-Codex / generic agents:
+Then run the matching target from the LLM Wiki project directory, for example:
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
-```
-
-Claude Code project skill:
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
-```
-
-OpenCode:
-
-```bash
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
 ```
 
-For Trae, prefer the no-Python “project rules + lightweight skill” setup so the full repository is not cloned into the project. See [TRAE.md](TRAE.md).
+On Windows PowerShell, replace `/tmp/karmind-skill/scripts/install.py` with `"$env:TEMP\karmind-skill\scripts\install.py"`.
 
 List available targets:
 
@@ -103,7 +84,7 @@ npx -y skills add . --skill karmind-skill --agent '*' -y
 Claude Code local plugin install:
 
 ```text
-/plugin marketplace add karmind-local /path/to/karmind-skill
+/plugin marketplace add karmind-local <local-repo-path>
 /plugin install karmind-skill@karmind-local
 ```
 

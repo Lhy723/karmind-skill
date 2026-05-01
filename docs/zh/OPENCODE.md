@@ -2,35 +2,72 @@
 
 OpenCode 支持原生 `.opencode/skills`，也支持全局 `~/.config/opencode/skills`，并兼容 Claude / Agent 风格的 skill 目录。
 
-推荐只在 LLM Wiki 项目目录使用项目级安装。
+推荐在 LLM Wiki 项目目录内使用项目级轻量安装。不要默认全局安装，也不要把整仓库复制到 wiki 项目里。
 
-## 推荐：项目级安装
+## 推荐：不使用 Python 的项目级安装
 
-如果使用安装脚本，先获取本仓库。
+这个方式只把运行 skill 需要的文件检出到当前项目：
+
+- `SKILL.md`
+- `references/`
+- `scripts/`
 
 macOS / Linux：
 
 ```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+mkdir -p .opencode/skills
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git .opencode/skills/karmind-skill
+git -C .opencode/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
 Windows PowerShell：
 
 ```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+New-Item -ItemType Directory -Force ".opencode\skills"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ".opencode\skills\karmind-skill"
+git -C ".opencode\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
-然后在目标 LLM Wiki 项目目录中运行。
+安装后，项目里会出现：
+
+```text
+.opencode/
+└── skills/
+    └── karmind-skill/
+        ├── SKILL.md
+        ├── references/
+        └── scripts/
+```
+
+如果你之前完整复制过仓库，建议删除旧目录后按上面的命令重装。
 
 macOS / Linux：
 
 ```bash
+rm -rf .opencode/skills/karmind-skill
+```
+
+Windows PowerShell：
+
+```powershell
+Remove-Item -Recurse -Force ".opencode\skills\karmind-skill"
+```
+
+## 备选：Python 脚本安装
+
+如果你已经有 Python，并希望让安装器处理目录创建，可以先获取本仓库，再运行脚本。这个方式现在也只会复制运行时需要的轻量 skill 文件。
+
+macOS / Linux：
+
+```bash
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
 Windows PowerShell：
 
 ```powershell
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
 python "$env:TEMP\karmind-skill\scripts\install.py" --target project-opencode --project .
 ```
 
@@ -41,29 +78,17 @@ python "$env:TEMP\karmind-skill\scripts\install.py" --target project-opencode --
 macOS / Linux：
 
 ```bash
-python /tmp/karmind-skill/scripts/install.py --target opencode-user
-```
-
-Windows PowerShell：
-
-```powershell
-python "$env:TEMP\karmind-skill\scripts\install.py" --target opencode-user
-```
-
-等价的手动安装方式。
-
-macOS / Linux：
-
-```bash
 mkdir -p ~/.config/opencode/skills
-cp -R /path/to/karmind-skill ~/.config/opencode/skills/karmind-skill
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ~/.config/opencode/skills/karmind-skill
+git -C ~/.config/opencode/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
 Windows PowerShell：
 
 ```powershell
 New-Item -ItemType Directory -Force "$HOME\.config\opencode\skills"
-Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.config\opencode\skills\karmind-skill"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git "$HOME\.config\opencode\skills\karmind-skill"
+git -C "$HOME\.config\opencode\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
 ## 权限配置
@@ -80,6 +105,20 @@ Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.config\opencode\ski
 }
 ```
 
+## 更新
+
+项目级安装：
+
+```bash
+git -C .opencode/skills/karmind-skill pull --ff-only
+```
+
+用户级安装：
+
+```bash
+git -C ~/.config/opencode/skills/karmind-skill pull --ff-only
+```
+
 ## 用法
 
 ```text
@@ -87,8 +126,6 @@ Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.config\opencode\ski
 ```
 
 摄取新资料时，如果缓存中有多个 pending raw 文件，skill 会先询问处理方式，而不是默认只整理第一篇。
-
-或者：
 
 ```text
 使用 karmind-skill 修复最新体检报告中的问题。不要删除页面；需要合并、拆分或重命名时先问我。

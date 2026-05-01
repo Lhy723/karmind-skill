@@ -31,7 +31,7 @@ plugins/karmind-skill/skills/karmind-skill/SKILL.md
 本地开发安装：
 
 ```text
-/plugin marketplace add karmind-local /path/to/karmind-skill
+/plugin marketplace add karmind-local <local-repo-path>
 /plugin install karmind-skill@karmind-local
 ```
 
@@ -57,56 +57,80 @@ Set-Location "$env:TEMP\karmind-skill"
 python scripts/build_claude_plugin.py
 ```
 
-## 手动安装
+## 备选：手动安装
 
 Claude Code 也可以从 `~/.claude/skills/<skill-name>/SKILL.md` 读取用户级 skill，或从项目内 `.claude/skills/<skill-name>/SKILL.md` 读取项目级 skill。
 
-### 用户级安装
-
-如果使用安装脚本，先获取本仓库。
-
-macOS / Linux：
-
-```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target claude-user
-```
-
-Windows PowerShell：
-
-```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target claude-user
-```
-
-等价的手动安装方式。
-
-macOS / Linux：
-
-```bash
-mkdir -p ~/.claude/skills
-cp -R /path/to/karmind-skill ~/.claude/skills/karmind-skill
-```
-
-Windows PowerShell：
-
-```powershell
-New-Item -ItemType Directory -Force "$HOME\.claude\skills"
-Copy-Item -Recurse -Force "C:\path\to\karmind-skill" "$HOME\.claude\skills\karmind-skill"
-```
+推荐只在 LLM Wiki 项目目录中使用项目级轻量安装。
 
 ### 项目级安装
 
 macOS / Linux：
 
 ```bash
+mkdir -p .claude/skills
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git .claude/skills/karmind-skill
+git -C .claude/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force ".claude\skills"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ".claude\skills\karmind-skill"
+git -C ".claude\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+### Python 脚本备选
+
+如果你已经有 Python，也可以使用安装脚本。这个方式现在只会复制运行时需要的轻量 skill 文件。
+
+macOS / Linux：
+
+```bash
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
 ```
 
 Windows PowerShell：
 
 ```powershell
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
 python "$env:TEMP\karmind-skill\scripts\install.py" --target project-claude --project .
+```
+
+### 用户级安装
+
+只有你明确希望所有 Claude Code 项目都能调用这个 skill 时，再安装到用户级目录。
+
+macOS / Linux：
+
+```bash
+mkdir -p ~/.claude/skills
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git ~/.claude/skills/karmind-skill
+git -C ~/.claude/skills/karmind-skill sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\skills"
+git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmind-skill.git "$HOME\.claude\skills\karmind-skill"
+git -C "$HOME\.claude\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
+```
+
+## 更新
+
+项目级安装：
+
+```bash
+git -C .claude/skills/karmind-skill pull --ff-only
+```
+
+用户级安装：
+
+```bash
+git -C ~/.claude/skills/karmind-skill pull --ff-only
 ```
 
 ## 用法

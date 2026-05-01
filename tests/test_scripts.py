@@ -280,8 +280,37 @@ class ScriptTests(unittest.TestCase):
         self.assertIn("codex-user", result.stdout)
         self.assertIn("claude-user", result.stdout)
         self.assertIn("opencode-user", result.stdout)
-        self.assertIn("Trae targets copy only", result.stdout)
+        self.assertIn("Copy targets install only runtime skill files", result.stdout)
+        self.assertIn("Codex/generic targets also include agents", result.stdout)
         self.assertIn("project-trae also writes", result.stdout)
+
+    def test_project_agents_installs_lightweight_skill_with_metadata(self) -> None:
+        with TemporaryDirectory() as tmp:
+            project = Path(tmp) / "wiki"
+            project.mkdir()
+            result = self.run_cmd("scripts/install.py", "--target", "project-agents", "--project", str(project))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            skill = project / ".agents" / "skills" / "karmind-skill"
+            self.assertTrue((skill / "SKILL.md").exists())
+            self.assertTrue((skill / "references" / "operations.md").exists())
+            self.assertTrue((skill / "scripts" / "init_wiki.py").exists())
+            self.assertTrue((skill / "agents" / "openai.yaml").exists())
+            self.assertFalse((skill / "docs").exists())
+            self.assertFalse((skill / "README.md").exists())
+
+    def test_project_opencode_installs_lightweight_skill(self) -> None:
+        with TemporaryDirectory() as tmp:
+            project = Path(tmp) / "wiki"
+            project.mkdir()
+            result = self.run_cmd("scripts/install.py", "--target", "project-opencode", "--project", str(project))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            skill = project / ".opencode" / "skills" / "karmind-skill"
+            self.assertTrue((skill / "SKILL.md").exists())
+            self.assertTrue((skill / "references" / "operations.md").exists())
+            self.assertTrue((skill / "scripts" / "init_wiki.py").exists())
+            self.assertFalse((skill / "agents").exists())
+            self.assertFalse((skill / "docs").exists())
+            self.assertFalse((skill / "README.md").exists())
 
     def test_project_trae_installs_skill_and_rules(self) -> None:
         with TemporaryDirectory() as tmp:

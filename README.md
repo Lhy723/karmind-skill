@@ -123,7 +123,7 @@ npx -y skills add . --skill karmind-skill --agent '*' -y
 Claude Code 本地插件安装：
 
 ```text
-/plugin marketplace add karmind-local /path/to/karmind-skill
+/plugin marketplace add karmind-local <local-repo-path>
 /plugin install karmind-skill@karmind-local
 ```
 
@@ -243,9 +243,9 @@ wiki/reports/batch/
 | Skills CLI | 项目目录中 `npx skills add` | [中文](docs/zh/SKILLS_CLI.md) / [English](docs/en/SKILLS_CLI.md) |
 | 模型 API Key | 环境变量或本地 `.env.local` | [中文](docs/zh/MODEL_KEYS.md) / [English](docs/en/MODEL_KEYS.md) |
 | Obsidian 关系图谱 | 目录职责颜色组 | [中文](docs/zh/OBSIDIAN_GRAPH.md) / [English](docs/en/OBSIDIAN_GRAPH.md) |
-| Codex | 项目级 `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
+| Codex | 项目级轻量 `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
-| OpenCode | 项目级 `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
+| OpenCode | 项目级轻量 `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
 | Trae | 项目规则 + 轻量 skill 组合安装 | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
 | 其他 agent | 项目级 `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
 

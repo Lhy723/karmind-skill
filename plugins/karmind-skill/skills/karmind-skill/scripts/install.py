@@ -23,7 +23,8 @@ EXCLUDE_NAMES = {
     "dist",
     "build",
 }
-TRAE_SKILL_ITEMS = ("SKILL.md", "references", "scripts")
+BASE_SKILL_ITEMS = ("SKILL.md", "references", "scripts")
+CODEX_SKILL_ITEMS = (*BASE_SKILL_ITEMS, "agents")
 
 
 def source_root() -> Path:
@@ -97,7 +98,7 @@ def copy_skill(src: Path, dst: Path, force: bool, symlink: bool) -> None:
     shutil.copytree(src, dst, ignore=ignore)
 
 
-def copy_minimal_trae_skill(src: Path, dst: Path, force: bool, symlink: bool) -> None:
+def copy_lightweight_skill(src: Path, dst: Path, force: bool, symlink: bool, items: tuple[str, ...]) -> None:
     if symlink:
         copy_skill(src, dst, force=force, symlink=True)
         return
@@ -114,13 +115,21 @@ def copy_minimal_trae_skill(src: Path, dst: Path, force: bool, symlink: bool) ->
             shutil.rmtree(dst)
 
     dst.mkdir(parents=True, exist_ok=True)
-    for name in TRAE_SKILL_ITEMS:
+    for name in items:
         item = src / name
+        if not item.exists():
+            continue
         target = dst / name
         if item.is_dir():
             shutil.copytree(item, target)
         else:
             shutil.copy2(item, target)
+
+
+def lightweight_items_for_target(name: str) -> tuple[str, ...]:
+    if name in {"codex-user", "generic-user", "project-agents"}:
+        return CODEX_SKILL_ITEMS
+    return BASE_SKILL_ITEMS
 
 
 def copy_trae_project_rules(src: Path, project: Path, force: bool) -> Path:
@@ -155,7 +164,8 @@ def main(argv: list[str]) -> int:
         for name in project_targets(Path("<project>")):
             print(f"- {name}: <project>/{project_targets(Path('<project>'))[name].relative_to(Path('<project>'))}")
         print("Notes:")
-        print("- Trae targets copy only SKILL.md, references/, and scripts/ unless --symlink is used")
+        print("- Copy targets install only runtime skill files unless --symlink is used")
+        print("- Codex/generic targets also include agents/ metadata when present")
         print("- project-trae also writes <project>/.trae/rules/project_rules.md")
         return 0
 
@@ -177,10 +187,7 @@ def main(argv: list[str]) -> int:
 
     for name in selected:
         dst = targets[name]
-        if name in {"trae-user", "project-trae"}:
-            copy_minimal_trae_skill(src, dst, force=args.force, symlink=args.symlink)
-        else:
-            copy_skill(src, dst, force=args.force, symlink=args.symlink)
+        copy_lightweight_skill(src, dst, force=args.force, symlink=args.symlink, items=lightweight_items_for_target(name))
         mode = "symlinked" if args.symlink else "copied"
         print(f"{mode} {src} -> {dst}")
         if name == "project-trae":

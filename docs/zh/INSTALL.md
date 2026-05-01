@@ -25,49 +25,30 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 ## 项目级 Agent 安装
 
-如果不使用 plugin marketplace 或 `skills` CLI，可以用内置脚本安装到当前项目的 agent skill 目录。
+如果不使用 plugin marketplace 或 `skills` CLI，推荐按各 agent 的专用文档做不依赖 Python 的项目级轻量安装。它们都只检出运行时需要的 `SKILL.md`、`references/`、`scripts/`，不会把整仓库复制到 wiki 项目里。
 
-内置脚本来自本仓库。先获取仓库：
+- Codex / 通用 agent：[CODEX.md](CODEX.md)
+- OpenCode：[OPENCODE.md](OPENCODE.md)
+- Trae：[TRAE.md](TRAE.md)
+- 其他 agent：[OTHER_AGENTS.md](OTHER_AGENTS.md)
 
-macOS / Linux：
+Claude Code 推荐使用插件安装；只有在插件不可用时才参考 [CLAUDE_CODE.md](CLAUDE_CODE.md) 的项目级备选方式。
+
+如果你已经有 Python，也可以使用内置安装脚本作为备选。先获取仓库：
 
 ```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
 ```
 
-Windows PowerShell：
-
-```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-```
-
-然后在目标 LLM Wiki 项目目录中运行下面的命令。
-
-Windows PowerShell 用户把下面命令里的 `/tmp/karmind-skill/scripts/install.py` 替换为：
-
-```text
-"$env:TEMP\karmind-skill\scripts\install.py"
-```
-
-Codex / 通用 agent：
+然后在目标 LLM Wiki 项目目录中运行对应目标，例如：
 
 ```bash
 python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
-```
-
-Claude Code 项目级 skill：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
-```
-
-OpenCode：
-
-```bash
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
 ```
 
-Trae 推荐使用不依赖 Python 的“项目规则 + 轻量 skill”组合安装，避免把整仓库 clone 到项目里。见 [TRAE.md](TRAE.md)。
+Windows PowerShell 用户把 `/tmp/karmind-skill/scripts/install.py` 替换为 `"$env:TEMP\karmind-skill\scripts\install.py"`。
 
 查看所有支持的安装目标：
 
@@ -103,7 +84,7 @@ npx -y skills add . --skill karmind-skill --agent '*' -y
 Claude Code 本地插件安装：
 
 ```text
-/plugin marketplace add karmind-local /path/to/karmind-skill
+/plugin marketplace add karmind-local <local-repo-path>
 /plugin install karmind-skill@karmind-local
 ```
 
