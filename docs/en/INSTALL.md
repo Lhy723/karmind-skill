@@ -23,9 +23,11 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 See [SKILLS_CLI.md](SKILLS_CLI.md) for details.
 
-## Project-Level Agent Install
+## Manual Install
 
-If you are not using plugin marketplace or the `skills` CLI, prefer each agent's no-Python lightweight project install. These installs check out only runtime files, usually `SKILL.md`, `references/`, and `scripts/`, instead of copying the full repository into the wiki project.
+If you are not using plugin marketplace or the `skills` CLI, manually install into the project directory using each agent's guide. Install only the lightweight runtime files: `SKILL.md`, `references/`, and `scripts/`; Codex also gets `agents/`, and Trae also gets project rules.
+
+Manual install can use the sparse checkout commands in these docs, or you can copy the same lightweight files from a local checkout into the target directory. Do not copy README files, docs, tests, plugin distribution folders, or other repository maintenance files.
 
 - Codex / generic agents: [CODEX.md](CODEX.md)
 - OpenCode: [OPENCODE.md](OPENCODE.md)
@@ -34,38 +36,7 @@ If you are not using plugin marketplace or the `skills` CLI, prefer each agent's
 
 Claude Code should use plugin installation first; use the project-level fallback in [CLAUDE_CODE.md](CLAUDE_CODE.md) only when the plugin path is unavailable.
 
-If you already have Python, you can use the bundled installer as a fallback. Fetch the repository first:
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-```
-
-Then run the matching target from the LLM Wiki project directory, for example:
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
-python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
-```
-
-On Windows PowerShell, replace `/tmp/karmind-skill/scripts/install.py` with `"$env:TEMP\karmind-skill\scripts\install.py"`.
-
-List available targets:
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --list-targets
-```
-
-## Optional: User-Level Install
-
-Use user-level install only when you intentionally want the skill available everywhere:
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target codex-user
-python /tmp/karmind-skill/scripts/install.py --target claude-user
-python /tmp/karmind-skill/scripts/install.py --target opencode-user
-python /tmp/karmind-skill/scripts/install.py --target trae-user
-```
+If you need user-level installation, manually place the lightweight files in the user-level directory documented by the target agent.
 
 ## Local Development Install
 
@@ -88,13 +59,7 @@ Claude Code local plugin install:
 /plugin install karmind-skill@karmind-local
 ```
 
-Use `--symlink` during development:
-
-```bash
-python scripts/install.py --target project-agents --project . --symlink --force
-```
-
-The helper scripts below also come from this repository. If the current project does not contain a `scripts/` directory, call them as `/tmp/karmind-skill/scripts/...`.
+The helper scripts below come from this repository. If the current project does not contain a `scripts/` directory, call them as `/tmp/karmind-skill/scripts/...`, or use `scripts/...` from the installed skill directory.
 
 On Windows PowerShell, use `"$env:TEMP\karmind-skill\scripts\..."`.
 

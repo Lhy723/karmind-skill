@@ -81,24 +81,6 @@ git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmin
 git -C ".claude\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
-### Python Script Fallback
-
-If you already have Python, you can use the installer. This path now copies only the lightweight runtime skill files.
-
-macOS / Linux:
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
-```
-
-Windows PowerShell:
-
-```powershell
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-claude --project .
-```
-
 ### User Install
 
 Use this only when you intentionally want the skill available in every Claude Code project.

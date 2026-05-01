@@ -6,7 +6,7 @@ Review before enabling any third-party skill:
 
 - `SKILL.md`
 - scripts under `scripts/`
-- install scripts
+- lightweight skill files in the agent install directory
 - agent-specific rule files
 
 For sensitive wikis:

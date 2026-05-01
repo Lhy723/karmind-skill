@@ -68,43 +68,11 @@ Claude Code 推荐使用 plugin marketplace 安装：
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
-### 内置安装脚本
+### 手动安装
 
-内置脚本来自本仓库。先获取仓库：
+如果不用 Claude Code 插件，也不用 `skills` CLI，就按目标 agent 的目录手动放入轻量 skill 文件。可以用 sparse checkout，也可以从本地 checkout 复制；不要复制整个仓库，只放 `SKILL.md`、`references/`、`scripts/`，Codex 额外放 `agents/`，Trae 额外放 `.trae/rules/project_rules.md`。
 
-macOS / Linux：
-
-```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-```
-
-Windows PowerShell：
-
-```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-```
-
-然后在目标 wiki 项目目录中运行：
-
-macOS / Linux：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
-```
-
-Windows PowerShell：
-
-```powershell
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-agents --project .
-```
-
-查看全部目标：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --list-targets
-```
-
-Windows PowerShell 中把脚本路径替换为 `"$env:TEMP\karmind-skill\scripts\install.py"`。
+各 agent 的具体目录和命令见 [安装指南](docs/zh/INSTALL.md)。
 
 ### 开发者本地安装
 
@@ -257,7 +225,7 @@ wiki/reports/batch/
 ├── .claude-plugin/             # Claude Code marketplace manifest
 ├── agents/openai.yaml          # Codex App 可选元数据
 ├── references/                 # 按需读取的 skill 参考文档
-├── scripts/                    # 初始化、缓存、批处理、体检、安装脚本
+├── scripts/                    # 初始化、缓存、批处理、体检和附件镜像脚本
 ├── adapters/                   # 通用 agent 规则模板
 ├── assets/                     # README banner 等静态资源
 ├── plugins/karmind-skill/      # Claude Code plugin 分发目录

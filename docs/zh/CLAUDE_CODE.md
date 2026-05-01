@@ -81,24 +81,6 @@ git clone --depth 1 --filter=blob:none --sparse https://github.com/Lhy723/karmin
 git -C ".claude\skills\karmind-skill" sparse-checkout set --no-cone /SKILL.md /references /scripts
 ```
 
-### Python 脚本备选
-
-如果你已经有 Python，也可以使用安装脚本。这个方式现在只会复制运行时需要的轻量 skill 文件。
-
-macOS / Linux：
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-claude --project .
-```
-
-Windows PowerShell：
-
-```powershell
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-claude --project .
-```
-
 ### 用户级安装
 
 只有你明确希望所有 Claude Code 项目都能调用这个 skill 时，再安装到用户级目录。

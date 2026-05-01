@@ -23,9 +23,11 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 更多说明见 [SKILLS_CLI.md](SKILLS_CLI.md)。
 
-## 项目级 Agent 安装
+## 手动安装
 
-如果不使用 plugin marketplace 或 `skills` CLI，推荐按各 agent 的专用文档做不依赖 Python 的项目级轻量安装。它们都只检出运行时需要的 `SKILL.md`、`references/`、`scripts/`，不会把整仓库复制到 wiki 项目里。
+如果不使用 plugin marketplace 或 `skills` CLI，按各 agent 的专用文档手动安装到项目目录。推荐只放运行时需要的轻量文件：`SKILL.md`、`references/`、`scripts/`；Codex 额外放 `agents/`，Trae 额外放项目规则。
+
+手动安装可以使用文档中的 sparse checkout 命令，也可以从本地 checkout 复制同样的轻量文件到目标目录；不要复制 README、docs、tests、插件分发目录等仓库维护文件。
 
 - Codex / 通用 agent：[CODEX.md](CODEX.md)
 - OpenCode：[OPENCODE.md](OPENCODE.md)
@@ -34,38 +36,7 @@ npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 
 Claude Code 推荐使用插件安装；只有在插件不可用时才参考 [CLAUDE_CODE.md](CLAUDE_CODE.md) 的项目级备选方式。
 
-如果你已经有 Python，也可以使用内置安装脚本作为备选。先获取仓库：
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-```
-
-然后在目标 LLM Wiki 项目目录中运行对应目标，例如：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
-python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
-```
-
-Windows PowerShell 用户把 `/tmp/karmind-skill/scripts/install.py` 替换为 `"$env:TEMP\karmind-skill\scripts\install.py"`。
-
-查看所有支持的安装目标：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --list-targets
-```
-
-## 可选：用户级安装
-
-只有你明确希望所有项目都能调用这个 skill 时，再安装到用户级目录：
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target codex-user
-python /tmp/karmind-skill/scripts/install.py --target claude-user
-python /tmp/karmind-skill/scripts/install.py --target opencode-user
-python /tmp/karmind-skill/scripts/install.py --target trae-user
-```
+需要用户级安装时，也按对应 agent 文档里的用户级目录手动放入轻量文件。
 
 ## 开发者本地安装
 
@@ -88,13 +59,7 @@ Claude Code 本地插件安装：
 /plugin install karmind-skill@karmind-local
 ```
 
-开发本 skill 时可以使用软链接，避免每次修改后重复复制：
-
-```bash
-python scripts/install.py --target project-agents --project . --symlink --force
-```
-
-下面的辅助脚本同样来自本仓库。如果你的当前项目里没有 `scripts/` 目录，请使用 `/tmp/karmind-skill/scripts/...` 形式调用。
+下面的辅助脚本来自本仓库。如果你的当前项目里没有 `scripts/` 目录，请使用 `/tmp/karmind-skill/scripts/...` 形式调用，或者使用已安装 skill 目录里的 `scripts/...`。
 
 Windows PowerShell 用户请使用 `"$env:TEMP\karmind-skill\scripts\..."`。
 

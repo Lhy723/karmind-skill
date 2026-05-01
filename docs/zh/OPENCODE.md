@@ -4,7 +4,7 @@ OpenCode 支持原生 `.opencode/skills`，也支持全局 `~/.config/opencode/s
 
 推荐在 LLM Wiki 项目目录内使用项目级轻量安装。不要默认全局安装，也不要把整仓库复制到 wiki 项目里。
 
-## 推荐：不使用 Python 的项目级安装
+## 推荐：项目级手动安装
 
 这个方式只把运行 skill 需要的文件检出到当前项目：
 
@@ -51,24 +51,6 @@ Windows PowerShell：
 
 ```powershell
 Remove-Item -Recurse -Force ".opencode\skills\karmind-skill"
-```
-
-## 备选：Python 脚本安装
-
-如果你已经有 Python，并希望让安装器处理目录创建，可以先获取本仓库，再运行脚本。这个方式现在也只会复制运行时需要的轻量 skill 文件。
-
-macOS / Linux：
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
-```
-
-Windows PowerShell：
-
-```powershell
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-opencode --project .
 ```
 
 ## 可选：用户级安装

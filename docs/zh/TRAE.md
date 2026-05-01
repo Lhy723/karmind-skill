@@ -1,6 +1,6 @@
 # Trae 安装
 
-推荐在 wiki 项目目录内使用“项目规则 + 轻量 skill”组合安装，并优先使用不依赖 Python 脚本的方式。
+推荐在 wiki 项目目录内使用“项目规则 + 轻量 skill”组合安装。
 
 - `project_rules.md` 负责告诉 Trae：这个项目是 LLM Wiki，普通问答默认从 wiki 出发。
 - `.trae/skills/karmind-skill/` 只放 Trae 需要读取的 skill 内容：`SKILL.md`、`references/` 和 `scripts/`。
@@ -8,7 +8,7 @@
 
 这样 Trae 不需要全局启用这个能力，也不会影响普通代码项目。
 
-## 推荐：不使用 Python 的组合安装
+## 推荐：项目级手动组合安装
 
 macOS / Linux：
 
@@ -60,24 +60,6 @@ PowerShell：
 
 ```powershell
 Remove-Item -Recurse -Force ".trae\skills\karmind-skill"
-```
-
-## 备选：Python 脚本安装
-
-如果你已经有 Python，并希望让安装器处理目录创建，可以先获取安装脚本所在仓库，再运行脚本。这个方式现在也只会把 Trae 需要的轻量 skill 复制进项目目录。
-
-macOS / Linux：
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
-```
-
-Windows PowerShell：
-
-```powershell
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --project .
 ```
 
 ## 只安装项目规则

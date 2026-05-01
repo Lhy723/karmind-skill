@@ -68,43 +68,11 @@ Run from the target wiki project:
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
-### Bundled Installer
+### Manual Install
 
-The bundled helper comes from this repository. Fetch it first:
+If you do not use the Claude Code plugin or the `skills` CLI, manually place the lightweight skill files in the target agent directory. Use sparse checkout or copy from a local checkout. Do not copy the whole repository. Install `SKILL.md`, `references/`, and `scripts/`; Codex also gets `agents/`, and Trae also gets `.trae/rules/project_rules.md`.
 
-macOS / Linux:
-
-```bash
-git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-```
-
-Windows PowerShell:
-
-```powershell
-git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-```
-
-Then run this from the target wiki project:
-
-macOS / Linux:
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-agents --project .
-```
-
-Windows PowerShell:
-
-```powershell
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-agents --project .
-```
-
-List all targets:
-
-```bash
-python /tmp/karmind-skill/scripts/install.py --list-targets
-```
-
-In Windows PowerShell, replace the script path with `"$env:TEMP\karmind-skill\scripts\install.py"`.
+See the [installation guide](docs/en/INSTALL.md) for exact directories and commands.
 
 ### Local Development Install
 
@@ -243,10 +211,10 @@ Doctor repair policy:
 | Skills CLI | `npx skills add` from the project directory | [中文](docs/zh/SKILLS_CLI.md) / [English](docs/en/SKILLS_CLI.md) |
 | Model API keys | Environment variables or local `.env.local` | [中文](docs/zh/MODEL_KEYS.md) / [English](docs/en/MODEL_KEYS.md) |
 | Obsidian graph | Directory-responsibility color groups | [中文](docs/zh/OBSIDIAN_GRAPH.md) / [English](docs/en/OBSIDIAN_GRAPH.md) |
-| Codex | Project-level `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
+| Codex | Lightweight project-level `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
-| OpenCode | Project-level `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
-| Trae | Combined project rules + full skill install | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
+| OpenCode | Lightweight project-level `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
+| Trae | Project rules + lightweight skill install | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
 | Other agents | Project-level `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
 
 ## Repository Layout
@@ -257,7 +225,7 @@ Doctor repair policy:
 ├── .claude-plugin/             # Claude Code marketplace manifest
 ├── agents/openai.yaml          # Optional Codex app metadata
 ├── references/                 # On-demand skill reference docs
-├── scripts/                    # Init, cache, batch, doctor, and install scripts
+├── scripts/                    # Init, cache, batch, doctor, and asset mirroring scripts
 ├── adapters/                   # Generic agent rule templates
 ├── assets/                     # Static assets such as the README banner
 ├── plugins/karmind-skill/      # Claude Code plugin distribution

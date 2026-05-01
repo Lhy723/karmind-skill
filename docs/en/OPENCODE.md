@@ -4,7 +4,7 @@ OpenCode supports native `.opencode/skills`, global `~/.config/opencode/skills`,
 
 Prefer lightweight project-level installation inside the LLM Wiki directory. Do not install globally by default, and do not copy the full repository into the wiki project.
 
-## Recommended: No-Python Project Install
+## Recommended: Manual Project Install
 
 This checks out only the files needed at runtime:
 
@@ -51,24 +51,6 @@ Windows PowerShell:
 
 ```powershell
 Remove-Item -Recurse -Force ".opencode\skills\karmind-skill"
-```
-
-## Fallback: Python Script Install
-
-If you already have Python and want the installer to create the directories, first fetch this repository, then run the script. This path now also copies only the lightweight runtime skill files.
-
-macOS / Linux:
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
-```
-
-Windows PowerShell:
-
-```powershell
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-opencode --project .
 ```
 
 ## Optional: User Install

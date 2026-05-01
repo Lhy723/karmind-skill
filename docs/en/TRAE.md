@@ -1,6 +1,6 @@
 # Trae Installation
 
-Use the combined “project rules + lightweight skill” setup inside the wiki project directory. Prefer the no-Python install path.
+Use the combined “project rules + lightweight skill” setup inside the wiki project directory.
 
 - `project_rules.md` tells Trae that this project is an LLM Wiki and that normal questions should start from the wiki.
 - `.trae/skills/karmind-skill/` contains only the skill files Trae needs to read: `SKILL.md`, `references/`, and `scripts/`.
@@ -8,7 +8,7 @@ Use the combined “project rules + lightweight skill” setup inside the wiki p
 
 This keeps the behavior scoped to the current project and avoids affecting ordinary code projects.
 
-## Recommended: No-Python Combined Install
+## Recommended: Manual Project Combined Install
 
 macOS / Linux:
 
@@ -60,24 +60,6 @@ PowerShell:
 
 ```powershell
 Remove-Item -Recurse -Force ".trae\skills\karmind-skill"
-```
-
-## Fallback: Python Script Install
-
-If you already have Python and want the installer to create the directories, first fetch the repository that contains the script, then run it. This path now also copies only the lightweight Trae skill into the project directory.
-
-macOS / Linux:
-
-```bash
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
-```
-
-Windows PowerShell:
-
-```powershell
-git clone --depth 1 https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
-python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --project .
 ```
 
 ## Minimal Project Rules Only

@@ -6,7 +6,7 @@
 
 - `SKILL.md`
 - `scripts/` 下的脚本
-- 安装脚本
+- agent 安装目录中的轻量 skill 文件
 - agent 专用规则文件
 
 如果 wiki 涉及敏感资料：
