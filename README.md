@@ -43,7 +43,6 @@
 | Wiki 体检 | 输出断链、孤儿页、未编译资料、缓存状态和维护建议到 `wiki/reports/` |
 | 体检修复 | 用户明确要求后，按风险分级修复报告问题；高风险操作先确认 |
 | Obsidian 友好 | 支持 wikilinks、assets、graph/backlinks、Dataview、Canvas、Marp 风格输出 |
-| 多 agent 适配 | 支持 Codex、Claude Code、OpenCode、Trae、Skills CLI 和通用 `AGENTS.md` |
 
 ## 安装建议
 
@@ -118,7 +117,7 @@ Claude Code 本地插件安装：
 在目标目录打开你的 agent，然后直接说：
 
 ```text
-使用 karmind-skill 在当前目录初始化一个 LLM Wiki。先扫描已有笔记或文档，列出候选项，询问我是移动、复制还是跳过；确认后再创建 raw/、wiki/、index、log、cache 和 reports。
+使用 karmind-skill 在当前目录初始化一个 LLM Wiki。
 ```
 
 初始化时 agent 会按当前对话语言生成模板；中文对话默认生成中文标题，如 `摘要`、`证据`、`待解决问题`。
@@ -126,13 +125,13 @@ Claude Code 本地插件安装：
 放入资料后继续说：
 
 ```text
-使用 karmind-skill 编译新资料。请按默认目录寻找待处理资料，创建 source note，更新相关实体、概念、问题或综合页面，并维护默认索引、日志和缓存。
+使用 karmind-skill 编译新资料。
 ```
 
 如果 raw 文件很多：
 
 ```text
-使用 karmind-skill 检查待处理资料。先建议整理顺序；如果适合外部模型批处理，请先 dry run，说明会处理哪些文件、使用什么模型和输出哪些报告，等我确认后再运行。
+使用 karmind-skill 检查待处理资料。
 ```
 
 手动兜底命令：

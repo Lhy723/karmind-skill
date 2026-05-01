@@ -43,7 +43,6 @@ Typical RAG splits material into chunks and retrieves them at question time. An 
 | Wiki doctor | Reports broken links, orphan pages, unprocessed sources, cache status, and maintenance actions |
 | Doctor finding repair | Fixes report findings only after explicit user request, with risk-based approval rules |
 | Obsidian-friendly | Supports wikilinks, assets, graph/backlinks, Dataview, Canvas, and Marp-style outputs |
-| Multi-agent support | Works with Codex, Claude Code, OpenCode, Trae, Skills CLI, and generic `AGENTS.md` workflows |
 
 ## Installation Guidance
 
@@ -118,7 +117,7 @@ Claude Code local plugin install:
 Open your agent in the target directory and say:
 
 ```text
-Use karmind-skill to initialize an LLM Wiki in the current directory. First scan for existing notes or documents, list candidates, ask whether to move, copy, or skip them, then create raw/, wiki/, index, log, cache, and reports after confirmation.
+Use karmind-skill to initialize an LLM Wiki in the current directory.
 ```
 
 During initialization, the agent should generate templates in the current conversation language. A Chinese conversation should create headings such as `摘要`, `证据`, and `待解决问题`.
@@ -126,13 +125,13 @@ During initialization, the agent should generate templates in the current conver
 After adding sources, continue with:
 
 ```text
-Use karmind-skill to ingest new sources. Find pending material from the default directories, create source notes, update related entity, concept, question, or synthesis pages, and maintain the default index, log, and cache.
+Use karmind-skill to compile new sources.
 ```
 
 If there are many raw files:
 
 ```text
-Use karmind-skill to inspect pending material. Suggest a processing order first; if external-model batch processing is appropriate, run a dry run, explain which files, model, and reports will be used, then wait for my confirmation.
+Use karmind-skill to inspect pending material.
 ```
 
 Manual fallback command:
