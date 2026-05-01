@@ -275,6 +275,7 @@ def build_agents_md(project_name: str, language: str) -> str:
 - 手动或自动处理后都要更新编译缓存（ingest cache）。
 - 可复用回答归档到 `wiki/questions/` 或 `wiki/synthesis/`；必要时使用表格、时间线、图表或 slide markdown。
 - 生成的报告写入 `wiki/reports/`。
+- 修复缺失的概念页或实体页时，即使只创建占位页，也要报告本地搜索词、检查过的 wiki/raw 文件、是否联网搜索，以及为什么写入事实内容或只保留待找证据。
 - 修复体检问题时不要编造缺失事实。先搜索本地 wiki/raw；证据不足且可联网时，搜索/浏览权威来源并引用，再创建概念页或实体页。
 - 如果 helper script 可用，可运行 `python scripts/wiki_doctor.py .`。
 
@@ -319,6 +320,7 @@ This repository is an LLM wiki named `{project_name}`.
 - Update the ingest cache after manual or automated processing.
 - File reusable answers into `wiki/questions/` or `wiki/synthesis/`; use tables, timelines, diagrams, or slide markdown when that better answers the question.
 - Write generated reports under `wiki/reports/`.
+- When repairing missing concept/entity pages, even as stubs, report local search terms, inspected wiki/raw files, whether web search was used, and why factual content was written or left as evidence-needed.
 - When fixing health-check findings, do not invent missing factual content. Search local wiki/raw first; if evidence is insufficient and web access is available, search/browse authoritative sources and cite them before creating concept/entity pages.
 - Run `python scripts/wiki_doctor.py .` if the helper script is available.
 

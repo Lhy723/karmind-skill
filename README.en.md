@@ -224,6 +224,7 @@ Doctor repair policy:
 - Low-risk findings can be fixed directly: obvious broken links, missing index entries, orphan links, missing citations, and question-page stubs.
 - Medium-risk findings need a short plan first: duplicated pages, large-page splits, and page renames.
 - High-risk findings require confirmation: deleting pages, overwriting source notes, resetting cache, batch re-ingest, or schema changes.
+- When repairing missing concept/entity pages, even as stubs, the agent must report local search terms, inspected wiki/raw files, whether web search was used, and why factual content was written or left as evidence-needed.
 - If a repair creates factual concept/entity pages, search local wiki/raw first; when evidence is insufficient, use available web search/browsing to verify authoritative sources and cite them instead of writing from memory.
 - After repairs, update `wiki/index.md`, append `wiki/log.md`, and rerun the doctor.
 

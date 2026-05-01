@@ -123,13 +123,15 @@ Steps:
 7. For orphan pages, link them from `wiki/index.md` or the nearest relevant topic page. If the page is intentionally archival, mark that explicitly in the page or index.
 8. For raw files, follow `wiki/cache/ingest-cache.json`; process only pending entries unless the user requested force re-extract.
 9. When a manual fix processes a raw source, mark it with `scripts/ingest_cache.py` or update the cache equivalently.
-10. When creating or filling a factual concept/entity page, search local `wiki/` and `raw/` first. If local evidence is insufficient and the user has authorized repair, use available web search/browsing tools before writing factual content.
-11. Prefer primary or authoritative sources. For web evidence, cite URL, title/source, and access date; use two independent sources for nontrivial claims when available.
-12. If web search is unavailable, blocked, or evidence remains weak, do not invent evidence. Turn missing support into `wiki/questions/` entries or source-finding tasks.
-13. Preserve contradictions with source names, dates, and confidence language.
-14. Update `wiki/index.md` and append a dated maintenance entry to `wiki/log.md`.
-15. Rerun `python scripts/wiki_doctor.py .`.
-16. Report fixed items, external sources used, remaining issues, and items waiting for user approval.
+10. When a repair creates or fills a missing concept/entity page, perform a visible evidence check even if you only create a stub. Report local `rg` searches, wiki/raw files inspected, whether web search was used, and why the page is sourced or left as a stub.
+11. When creating or filling a factual concept/entity page, search local `wiki/` and `raw/` first. If local evidence is insufficient and the user has authorized repair, use available web search/browsing tools before writing factual content.
+12. Prefer primary or authoritative sources. For web evidence, cite URL, title/source, and access date; use two independent sources for nontrivial claims when available.
+13. If web search is unavailable, blocked, or evidence remains weak, do not invent evidence. Turn missing support into `wiki/questions/` entries or source-finding tasks.
+14. Do not mark a missing concept/entity page as fully fixed unless the repair report shows the evidence check and the created page contains either cited facts or an explicit evidence-needed/source-finding note.
+15. Preserve contradictions with source names, dates, and confidence language.
+16. Update `wiki/index.md` and append a dated maintenance entry to `wiki/log.md`.
+17. Rerun `python scripts/wiki_doctor.py .`.
+18. Report fixed items, evidence searches performed, external sources used, remaining issues, and items waiting for user approval.
 
 ## Contradiction Handling
 

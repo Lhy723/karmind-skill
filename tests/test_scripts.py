@@ -54,6 +54,7 @@ class ScriptTests(unittest.TestCase):
             self.assertNotEqual(template, concept)
             self.assertNotEqual(question, synthesis)
             self.assertIn("默认问答模式", agents)
+            self.assertIn("修复缺失的概念页或实体页", agents)
 
     def test_init_wiki_accepts_custom_language_code(self) -> None:
         with TemporaryDirectory() as tmp:
