@@ -239,7 +239,7 @@ def build_agents_md(project_name: str, language: str) -> str:
 
 - `raw/` 保存不可变原始资料。可以读取，不要在没有用户明确许可时改写。
 - `wiki/` 保存 agent 维护的 Markdown 知识页。
-- `wiki/index.md` 是内容索引，摄取资料或大幅修改页面后必须更新。
+- `wiki/index.md` 是内容索引，编译资料或大幅修改页面后必须更新。
 - `wiki/log.md` 是追加式时间日志。使用类似 `## [YYYY-MM-DD] ingest | 标题` 的可解析标题。
 - `wiki/cache/ingest-cache.json` 记录 raw 文件的 `pending`、`drafted`、`processed`、`skipped`、`failed` 状态。除非用户要求强制重新提取，否则跳过已处理文件。
 - `wiki/cache/assets-cache.json` 记录 raw 文章中的本地附件副本和在线图片下载结果。
@@ -261,11 +261,11 @@ def build_agents_md(project_name: str, language: str) -> str:
 
 ## 操作规则
 
-- 第一次摄取前，先检查已有笔记/文档是否应移动或复制到 `raw/imported/`。
-- 除非用户要求批量摄取或批准外部模型批处理，否则一次处理一个 source。
+- 第一次编译前，先检查已有笔记/文档是否应移动或复制到 `raw/imported/`。
+- 除非用户要求批量编译或批准外部模型批处理，否则一次处理一个 source。
 - 外部模型批处理结果只是待复核草稿；检查原文并更新相关页面后，才提升到正式 `wiki/sources/`。
-- 摄取 raw 文章前，先镜像重要图片和附件到 `wiki/assets/`；在线图片应下载为本地副本。
-- 手动或自动处理后都要更新 ingest cache。
+- 编译 raw 文章前，先镜像重要图片和附件到 `wiki/assets/`；在线图片应下载为本地副本。
+- 手动或自动处理后都要更新编译缓存（ingest cache）。
 - 可复用回答归档到 `wiki/questions/` 或 `wiki/synthesis/`；必要时使用表格、时间线、图表或 slide markdown。
 - 生成的报告写入 `wiki/reports/`。
 - 修复体检问题时不要编造缺失事实。先搜索本地 wiki/raw；证据不足且可联网时，搜索/浏览权威来源并引用，再创建概念页或实体页。
@@ -332,7 +332,7 @@ def build_index(project_name: str, language: str) -> str:
 
 ## 资料
 
-尚未摄取资料。
+尚未编译资料。
 
 ## 实体
 
@@ -389,7 +389,7 @@ def build_log(project_name: str, language: str) -> str:
 
 - 创建 raw 资料层和 wiki 知识层。
 - 创建 index、log、overview 和标准页面目录。
-- 创建 ingest cache：`wiki/cache/ingest-cache.json`。
+- 创建编译缓存（ingest cache）：`wiki/cache/ingest-cache.json`。
 - 创建报告目录：`wiki/reports/`。
 """
     return f"""# {project_name} Log
@@ -415,7 +415,7 @@ def build_overview(project_name: str, language: str) -> str:
 
 ## 主要线索
 
-- 将资料放入 `raw/`，然后让 agent 摄取。
+- 将资料放入 `raw/`，然后让 agent 编译。
 
 ## 待解决问题
 

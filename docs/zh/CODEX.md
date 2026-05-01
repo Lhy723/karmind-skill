@@ -118,7 +118,7 @@ $karmind-skill 初始化当前目录的 LLM Wiki
 或者：
 
 ```text
-使用 karmind-skill 摄取新资料。
+使用 karmind-skill 编译新资料。
 ```
 
 如果缓存中有多个 pending raw 文件，skill 会先询问处理方式，而不是默认只整理第一篇。

@@ -36,11 +36,11 @@
 | --- | --- |
 | 初始化 wiki | 创建 `raw/`、`wiki/`、`wiki/index.md`、`wiki/log.md`、`wiki/cache/`、`wiki/reports/` |
 | 导入已有笔记 | 初始化时扫描已有文档，经用户确认后移动或复制到 `raw/imported/` |
-| 资料摄取 | 从 raw source 提取 claim、entity、concept、timeline、矛盾和开放问题 |
+| 资料编译 | 从 raw source 提取 claim、entity、concept、timeline、矛盾和开放问题 |
 | 缓存去重 | 用 `wiki/cache/ingest-cache.json` 记录 `pending`、`drafted`、`processed`、`failed`、`skipped` |
 | 附件镜像 | 把 raw 文章引用的本地图片/附件复制到 `wiki/assets/`，并下载在线图片 |
 | 外部模型批处理 | 可用任意 OpenAI-compatible 模型批量生成待复核 source note drafts |
-| Wiki 体检 | 输出断链、孤儿页、未摄取资料、缓存状态和维护建议到 `wiki/reports/` |
+| Wiki 体检 | 输出断链、孤儿页、未编译资料、缓存状态和维护建议到 `wiki/reports/` |
 | 体检修复 | 用户明确要求后，按风险分级修复报告问题；高风险操作先确认 |
 | Obsidian 友好 | 支持 wikilinks、assets、graph/backlinks、Dataview、Canvas、Marp 风格输出 |
 | 多 agent 适配 | 支持 Codex、Claude Code、OpenCode、Trae、Skills CLI 和通用 `AGENTS.md` |
@@ -126,7 +126,7 @@ Claude Code 本地插件安装：
 放入资料后继续说：
 
 ```text
-使用 karmind-skill 摄取新资料。请按默认目录寻找待处理资料，创建 source note，更新相关实体、概念、问题或综合页面，并维护默认索引、日志和缓存。
+使用 karmind-skill 编译新资料。请按默认目录寻找待处理资料，创建 source note，更新相关实体、概念、问题或综合页面，并维护默认索引、日志和缓存。
 ```
 
 如果 raw 文件很多：
@@ -183,7 +183,7 @@ my-llm-wiki/
 | 工作流 | 推荐提示 |
 | --- | --- |
 | 初始化 wiki | `使用 karmind-skill 在当前目录初始化一个 LLM Wiki。先扫描已有笔记或文档，列出候选项，并询问我是移动、复制还是跳过。` |
-| 摄取资料 | `使用 karmind-skill 摄取新资料。` |
+| 编译资料 | `使用 karmind-skill 编译新资料。` |
 | 整理待处理资料 | `使用 karmind-skill 查看待处理资料，按重要性建议下一批要整理的内容，然后等我确认。` |
 | 批量模型整理 | `使用 karmind-skill 配置外部模型批处理。先 dry run，告诉我会处理哪些文件、使用什么模型和输出哪些报告，再等我确认运行。` |
 | 强制重新提取 | `使用 karmind-skill 强制重新提取。请先说明会重置哪些缓存项，确认后再执行。` |
@@ -194,7 +194,7 @@ my-llm-wiki/
 | Wiki 体检 | `使用 karmind-skill 做一次健康检查。` |
 | 修复体检问题 | `使用 karmind-skill 修复最新体检报告中的问题。不要删除页面；需要合并、拆分或重命名时先问我。` |
 
-当缓存中有多个 pending raw 文件时，`摄取新资料` 会先询问处理方式：外部模型批处理、当前 agent 手动循环处理、只处理下一篇，或暂缓。
+当缓存中有多个 pending raw 文件时，`编译新资料` 会先询问处理方式：外部模型批处理、当前 agent 手动循环处理、只处理下一篇，或暂缓。
 
 外部模型批处理默认只写入 `wiki/sources/_drafts/` 并把缓存标记为 `drafted`；复核后才提升到正式 `wiki/sources/` 并标记为 `processed`。
 
@@ -218,7 +218,7 @@ wiki/reports/batch/
 
 - 低风险问题直接修：明显断链、缺失索引、孤儿页挂接、缺失引用、问题页占位。
 - 中风险问题先给方案：合并重复页、拆分大页、重命名页面。
-- 高风险问题必须先确认：删除页面、覆盖 source note、重置缓存、批量重摄取、修改 schema。
+- 高风险问题必须先确认：删除页面、覆盖 source note、重置缓存、批量重新编译、修改 schema。
 - 需要创建带事实内容的概念页或实体页时，先查本地 wiki/raw；证据不足时使用可用的联网搜索/浏览能力核验权威来源并引用，不能凭常识硬写。
 - 修复后更新 `wiki/index.md`、追加 `wiki/log.md`，并重新运行体检。
 

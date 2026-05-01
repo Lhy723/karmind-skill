@@ -123,7 +123,7 @@ python /tmp/karmind-skill/scripts/init_wiki.py . --import-existing copy
 
 导入后的文件会在 `wiki/cache/ingest-cache.json` 中标记为 `pending`。
 
-## 摄取缓存
+## 编译缓存（ingest cache）
 
 保持缓存与 `raw/` 同步：
 
@@ -146,7 +146,7 @@ python /tmp/karmind-skill/scripts/ingest_cache.py . reset
 
 ## 图片和附件镜像
 
-摄取 raw 文章前，把文章引用的本地图片/附件复制到 `wiki/assets/`，并下载在线图片：
+编译 raw 文章前，把文章引用的本地图片/附件复制到 `wiki/assets/`，并下载在线图片：
 
 macOS / Linux：
 
@@ -253,7 +253,7 @@ wiki/reports/doctor-report.md
 
 - 低风险：直接修复明显断链、缺失索引、孤儿页挂接、缺失引用和问题页占位。
 - 中风险：合并、拆分、重命名前先给出方案。
-- 高风险：删除页面、覆盖 source note、重置缓存、批量重摄取、修改 schema 前必须确认。
+- 高风险：删除页面、覆盖 source note、重置缓存、批量重新编译、修改 schema 前必须确认。
 - 如果修复需要创建带事实内容的概念页或实体页，agent 应先查本地 wiki/raw；证据不足时调用可用的联网搜索/浏览能力核验权威来源并引用，不能凭常识硬写。
 
 修复完成后，agent 应更新 `wiki/index.md`、追加 `wiki/log.md`，并重新运行体检。

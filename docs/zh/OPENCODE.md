@@ -123,7 +123,7 @@ git -C ~/.config/opencode/skills/karmind-skill pull --ff-only
 加载 karmind-skill，并对当前 LLM wiki 做一次健康检查。
 ```
 
-摄取新资料时，如果缓存中有多个 pending raw 文件，skill 会先询问处理方式，而不是默认只整理第一篇。
+编译新资料时，如果缓存中有多个 pending raw 文件，skill 会先询问处理方式，而不是默认只整理第一篇。
 
 ```text
 使用 karmind-skill 修复最新体检报告中的问题。不要删除页面；需要合并、拆分或重命名时先问我。

@@ -1,6 +1,6 @@
 ---
 name: "karmind-skill"
-description: "Maintains a persistent LLM wiki: ingest raw sources, update interlinked markdown pages, answer from the wiki with citations, and run wiki health checks. Use when the user wants an agent to manage an Obsidian-style knowledge base, personal research wiki, project memory, source synthesis, or Karpathy-inspired LLM wiki workflow."
+description: "Maintains a persistent LLM wiki: compile/ingest raw sources, update interlinked markdown pages, answer from the wiki with citations, and run wiki health checks. Use when the user wants an agent to manage an Obsidian-style knowledge base, personal research wiki, project memory, source synthesis, or Karpathy-inspired LLM wiki workflow."
 license: "MIT"
 compatibility: "Portable Agent Skill format for Codex, Claude Code, OpenCode, Trae, and agents that read SKILL.md or AGENTS.md-style instructions."
 metadata:
@@ -39,9 +39,9 @@ Read [references/llm-wiki-principles.md](references/llm-wiki-principles.md) when
 5. Read the local schema before changing wiki files.
 6. Read `wiki/index.md` before browsing individual pages. Use `rg` or the bundled doctor/search patterns for larger wikis.
 
-## Ingest Workflow
+## Compile / Ingest Workflow
 
-When the user asks to ingest a source:
+When the user asks to compile, ingest, process, or organize new source material:
 
 1. Treat the current wiki root as the default root. Do not ask the user for paths unless no wiki root or no candidate source can be found.
 2. Run or emulate `python scripts/ingest_cache.py . ensure`, then list pending raw files before reading source content.

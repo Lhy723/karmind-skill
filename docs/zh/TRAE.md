@@ -108,7 +108,7 @@ Invoke-WebRequest `
 ```
 
 ```text
-使用 karmind-skill 摄取新资料。按默认目录寻找待处理资料，创建 source note，更新相关页面，并维护索引、日志和缓存。
+使用 karmind-skill 编译新资料。按默认目录寻找待处理资料，创建 source note，更新相关页面，并维护索引、日志和缓存。
 ```
 
 如果有多个 pending raw 文件，skill 应先询问使用外部模型批处理、当前 agent 手动循环处理、只处理下一篇，还是暂缓。

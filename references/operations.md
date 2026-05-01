@@ -1,6 +1,6 @@
 # Operations Reference
 
-## Ingest Source
+## Compile / Ingest Source
 
 Input can be a markdown clip, PDF-derived text, transcript, paper notes, CSV summary, image notes, or manually pasted source.
 
@@ -153,6 +153,6 @@ For large batches:
 - Write a report file with drafted, processed, skipped, failed, and needs-review items.
 - Keep logs parseable.
 
-For an unqualified request like "ingest new sources", multiple pending files count as batch work. Ask for the processing mode before extracting the first file.
+For an unqualified request like "compile new sources" or "ingest new sources", multiple pending files count as batch work. Ask for the processing mode before extracting the first file.
 
 For external-model batch mode, write drafts to `wiki/sources/_drafts/` and keep cache entries `drafted` until reviewed. Do not mix unreviewed model drafts with reviewed source notes.

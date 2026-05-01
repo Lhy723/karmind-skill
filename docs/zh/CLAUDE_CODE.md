@@ -136,7 +136,7 @@ git -C ~/.claude/skills/karmind-skill pull --ff-only
 直接调用：
 
 ```text
-/karmind-skill ingest new sources
+/karmind-skill 编译新资料
 ```
 
 或者自然语言描述任务：
