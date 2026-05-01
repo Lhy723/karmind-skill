@@ -217,6 +217,7 @@ This repository is an LLM wiki named `{project_name}`.
 - Update the ingest cache after manual or automated processing.
 - File reusable answers into `wiki/questions/` or `wiki/synthesis/`; use tables, timelines, diagrams, or slide markdown when that better answers the question.
 - Write generated reports under `wiki/reports/`.
+- When fixing health-check findings, do not invent missing factual content. Search local wiki/raw first; if evidence is insufficient and web access is available, search/browse authoritative sources and cite them before creating concept/entity pages.
 - Run `python scripts/wiki_doctor.py .` if the helper script is available.
 
 Initialized: {today}

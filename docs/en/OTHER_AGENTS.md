@@ -15,7 +15,7 @@ Copy [adapters/CLAUDE.md](../../adapters/CLAUDE.md) into projects where the agen
 ## Generic Prompt
 
 ```text
-Read SKILL.md in the karmind-skill repository. Follow it whenever I ask you to maintain the LLM wiki in the current directory. Treat raw/ as immutable sources, maintain wiki/index.md, append to wiki/log.md, cite sources, and preserve contradictions/open questions. Normal questions should start from the wiki by default. When fixing doctor findings, read wiki/reports/doctor-report.md, fix low-risk issues directly, and ask me before medium- or high-risk changes.
+Read SKILL.md in the karmind-skill repository. Follow it whenever I ask you to maintain the LLM wiki in the current directory. Treat raw/ as immutable sources, maintain wiki/index.md, append to wiki/log.md, cite sources, and preserve contradictions/open questions. Normal questions should start from the wiki by default. When fixing doctor findings, read wiki/reports/doctor-report.md, fix low-risk issues directly, and ask me before medium- or high-risk changes. When creating factual concept/entity pages, search local wiki/raw first; if evidence is insufficient and web access is available, browse/search authoritative sources and cite them instead of writing from memory.
 ```
 
 ## Recommended Project Layout

@@ -98,19 +98,22 @@ When the user explicitly asks to fix health-check findings:
 
 1. Read the latest `wiki/reports/doctor-report.md`; if it does not exist, run `python scripts/wiki_doctor.py .` first.
 2. Classify findings by risk before editing:
-   - Low risk: fix obvious broken links, add missing index entries, link orphan pages, create missing question pages, and add source citations.
-   - Medium risk: propose a short plan before merging duplicated pages, splitting large pages, or renaming pages.
+   - Low risk: fix obvious broken links, add missing index entries, link orphan pages, create missing question pages, and add citations that already exist in the wiki/raw sources.
+   - Medium risk: propose a short plan before creating factual concept/entity pages, merging duplicated pages, splitting large pages, or renaming pages.
    - High risk: ask first before deleting pages, overwriting source notes, resetting ingest cache, batch-reingesting raw files, or changing the wiki schema.
 3. Fix the smallest useful set of issues. Prefer adding links, notes, questions, and citations over rewriting whole pages.
-4. For missing evidence, create or update a page under the default questions area instead of inventing support.
-5. For pending raw files, follow the ingest cache. Manual fixes must also update `wiki/cache/ingest-cache.json` when they process, skip, or fail a raw source.
-6. Preserve contradictions and dated claims. Do not collapse conflicting evidence into one unsupported conclusion.
-7. Update `wiki/index.md` and append a dated entry to `wiki/log.md`.
-8. Run `python scripts/wiki_doctor.py .` again and report what was fixed, what remains, and what needs user approval.
+4. When the fix requires new factual content, such as creating a key concept/entity page, first search local `wiki/` and `raw/`. If local evidence is insufficient and the user has asked you to fix the issue, use available web search/browsing tools to find and verify sources before writing the page.
+5. Prefer primary or authoritative sources. For external web claims, cite the URL, title/source, and access date in the page or a source note; use at least two independent sources for nontrivial claims when available.
+6. If web search is unavailable, blocked, or evidence remains weak, do not invent the concept page. Create or update a `wiki/questions/` page or source-finding task that names the missing evidence.
+7. For pending raw files, follow the ingest cache. Manual fixes must also update `wiki/cache/ingest-cache.json` when they process, skip, or fail a raw source.
+8. Preserve contradictions and dated claims. Do not collapse conflicting evidence into one unsupported conclusion.
+9. Update `wiki/index.md` and append a dated entry to `wiki/log.md`.
+10. Run `python scripts/wiki_doctor.py .` again and report what was fixed, what remains, and what needs user approval.
 
 ## Guardrails
 
 - Do not invent source support. Every durable claim should trace to a wiki page, source note, or raw source.
+- When repairing the wiki, use web search/browsing to verify missing factual content if local evidence is insufficient and the user has authorized repairs. Cite the external sources used.
 - In an LLM Wiki directory, do not answer durable/factual questions from general model memory alone unless the user explicitly asks for outside knowledge or brainstorming.
 - Preserve dissent and uncertainty. Contradictions are first-class wiki content.
 - Prefer incremental updates over rewrites. Keep history legible.

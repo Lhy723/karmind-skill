@@ -13,5 +13,6 @@ When the task involves an LLM wiki, follow `karmind-skill`.
 - Ask before moving existing documents into `raw/imported/`, configuring model APIs, or resetting the ingest cache.
 - Normal user questions in this directory are wiki-grounded by default. Start from `wiki/index.md` and cite wiki/source files.
 - When fixing health-check findings, read `wiki/reports/doctor-report.md`, fix low-risk issues directly, ask before merges/splits/renames, and require approval before deletion, source-note overwrite, cache reset, batch re-ingest, or schema changes.
+- If a repair creates factual concept/entity pages, search local wiki/raw first; if evidence is insufficient and web access is available, search/browse authoritative sources and cite them instead of inventing content.
 
 Read `karmind-skill/SKILL.md` when available.

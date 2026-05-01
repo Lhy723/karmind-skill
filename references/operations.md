@@ -105,20 +105,22 @@ Steps:
 1. Read `wiki/reports/doctor-report.md`; if missing, run `python scripts/wiki_doctor.py .`.
 2. Triage findings:
    - Low risk: obvious broken links, missing index entries, orphan pages that have a clear parent topic, missing question pages, missing source citations.
-   - Medium risk: duplicate pages, oversized pages, ambiguous page names, broad renames, or content that needs substantial synthesis.
+   - Medium risk: factual concept/entity pages, duplicate pages, oversized pages, ambiguous page names, broad renames, or content that needs substantial synthesis.
    - High risk: deletion, overwriting source notes, cache reset, batch re-ingest, schema changes, or moving large sets of files.
 3. Fix low-risk findings directly.
 4. For medium-risk findings, write a short plan and proceed only when the user approves the merge, split, or rename.
 5. For high-risk findings, ask before changing files.
-6. For broken links, prefer correcting the link target. If the target concept is real but missing, create a page or question page.
+6. For broken links, prefer correcting the link target. If the target concept is real but missing, create a question page first unless there is enough evidence to create a sourced concept page.
 7. For orphan pages, link them from `wiki/index.md` or the nearest relevant topic page. If the page is intentionally archival, mark that explicitly in the page or index.
 8. For raw files, follow `wiki/cache/ingest-cache.json`; process only pending entries unless the user requested force re-extract.
 9. When a manual fix processes a raw source, mark it with `scripts/ingest_cache.py` or update the cache equivalently.
-10. Do not invent evidence. Turn missing support into `wiki/questions/` entries or source-finding tasks.
-11. Preserve contradictions with source names, dates, and confidence language.
-12. Update `wiki/index.md` and append a dated maintenance entry to `wiki/log.md`.
-13. Rerun `python scripts/wiki_doctor.py .`.
-14. Report fixed items, remaining issues, and items waiting for user approval.
+10. When creating or filling a factual concept/entity page, search local `wiki/` and `raw/` first. If local evidence is insufficient and the user has authorized repair, use available web search/browsing tools before writing factual content.
+11. Prefer primary or authoritative sources. For web evidence, cite URL, title/source, and access date; use two independent sources for nontrivial claims when available.
+12. If web search is unavailable, blocked, or evidence remains weak, do not invent evidence. Turn missing support into `wiki/questions/` entries or source-finding tasks.
+13. Preserve contradictions with source names, dates, and confidence language.
+14. Update `wiki/index.md` and append a dated maintenance entry to `wiki/log.md`.
+15. Rerun `python scripts/wiki_doctor.py .`.
+16. Report fixed items, external sources used, remaining issues, and items waiting for user approval.
 
 ## Contradiction Handling
 

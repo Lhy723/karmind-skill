@@ -251,5 +251,6 @@ When you explicitly ask for repairs, the agent reads `wiki/reports/doctor-report
 - Low risk: fix obvious broken links, missing index entries, orphan links, missing citations, and question-page stubs directly.
 - Medium risk: propose a plan before merges, splits, or renames.
 - High risk: confirm before deleting pages, overwriting source notes, resetting cache, batch re-ingesting, or changing schema.
+- If a repair creates factual concept/entity pages, the agent should search local wiki/raw first; when evidence is insufficient, use available web search/browsing to verify authoritative sources and cite them instead of writing from memory.
 
 After repairs, the agent should update `wiki/index.md`, append `wiki/log.md`, and rerun the doctor.
