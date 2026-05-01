@@ -68,9 +68,9 @@ Claude Code 推荐使用 plugin marketplace 安装：
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
-### 极简安装命令
+### 推荐：一键安装
 
-不使用插件或 Skills CLI 时，可以在目标 wiki 项目目录运行一行安装命令。安装器会询问目标 agent，并且只复制轻量 skill 文件。
+推荐在目标 wiki 项目目录运行一键安装命令。安装器会询问目标 agent，并且只复制轻量 skill 文件。
 
 macOS / Linux：
 

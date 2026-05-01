@@ -63,7 +63,7 @@ Claude Code can also load skills from `~/.claude/skills/<skill-name>/SKILL.md` a
 
 Prefer lightweight project-level installation inside the LLM Wiki directory.
 
-### Minimal Install
+### Recommended: One-Command Install
 
 Run this from the target wiki project:
 

@@ -68,9 +68,9 @@ Run from the target wiki project:
 npx -y skills add Lhy723/karmind-skill --skill karmind-skill --agent '*' -y
 ```
 
-### Minimal Install Command
+### Recommended: One-Command Install
 
-When you are not using the plugin or Skills CLI, run a one-line installer from the target wiki project. It asks for the target agent and copies only the lightweight skill files.
+Run the one-command installer from the target wiki project. It asks for the target agent and copies only the lightweight skill files.
 
 macOS / Linux:
 
