@@ -53,7 +53,11 @@ OpenCode：
 python /tmp/karmind-skill/scripts/install.py --target project-opencode --project .
 ```
 
-Trae 推荐使用项目规则文件，不建议先从 `.trae/skills` 开始。见 [TRAE.md](TRAE.md)。
+Trae 推荐组合安装：同时写入 `.trae/rules/project_rules.md` 和 `.trae/skills/karmind-skill/`。见 [TRAE.md](TRAE.md)：
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
+```
 
 查看所有支持的安装目标：
 

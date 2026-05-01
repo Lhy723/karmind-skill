@@ -96,6 +96,15 @@ def copy_skill(src: Path, dst: Path, force: bool, symlink: bool) -> None:
     shutil.copytree(src, dst, ignore=ignore)
 
 
+def copy_trae_project_rules(src: Path, project: Path, force: bool) -> Path:
+    dst = project / ".trae" / "rules" / "project_rules.md"
+    if dst.exists() and not force:
+        raise FileExistsError(f"{dst} already exists. Use --force to replace it.")
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src / "adapters" / "trae_project_rules.md", dst)
+    return dst
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Install karmind-skill into agent skill directories.")
     parser.add_argument("--target", action="append", help="Install target. Repeat for multiple targets.")
@@ -118,6 +127,8 @@ def main(argv: list[str]) -> int:
         print("Project targets:")
         for name in project_targets(Path("<project>")):
             print(f"- {name}: <project>/{project_targets(Path('<project>'))[name].relative_to(Path('<project>'))}")
+        print("Notes:")
+        print("- project-trae also writes <project>/.trae/rules/project_rules.md")
         return 0
 
     selected = args.target or ["generic-user"]
@@ -141,10 +152,13 @@ def main(argv: list[str]) -> int:
         copy_skill(src, dst, force=args.force, symlink=args.symlink)
         mode = "symlinked" if args.symlink else "copied"
         print(f"{mode} {src} -> {dst}")
+        if name == "project-trae":
+            assert project is not None
+            rules_path = copy_trae_project_rules(src, project, args.force)
+            print(f"copied {src / 'adapters' / 'trae_project_rules.md'} -> {rules_path}")
 
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-

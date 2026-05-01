@@ -206,7 +206,7 @@ wiki/reports/batch/
 | Codex | 项目级 `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
 | OpenCode | 项目级 `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
-| Trae | 项目级 `.trae/rules/project_rules.md`，可选 `.trae/skills` | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
+| Trae | 项目规则 + 完整 skill 组合安装 | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
 | 其他 agent | 项目级 `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
 
 ## 本仓库结构

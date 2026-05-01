@@ -12,7 +12,7 @@ Common locations:
 - Claude Code repo skill: `.claude/skills/karmind-skill/SKILL.md`
 - OpenCode native user skill: `~/.config/opencode/skills/karmind-skill/SKILL.md`
 - OpenCode repo skill: `.opencode/skills/karmind-skill/SKILL.md`
-- Trae project skill or rules: `.trae/skills/karmind-skill/SKILL.md` and `.trae/rules/project_rules.md`
+- Trae combined project install: `.trae/rules/project_rules.md` plus `.trae/skills/karmind-skill/SKILL.md`
 - Generic agent skill: `.agents/skills/karmind-skill/SKILL.md`
 
 When an agent has no skill loader, put the wiki operating instructions in `AGENTS.md` and link to this repository.

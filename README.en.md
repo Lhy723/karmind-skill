@@ -206,7 +206,7 @@ Doctor repair policy:
 | Codex | Project-level `.agents/skills` | [中文](docs/zh/CODEX.md) / [English](docs/en/CODEX.md) |
 | Claude Code | Plugin marketplace | [中文](docs/zh/CLAUDE_CODE.md) / [English](docs/en/CLAUDE_CODE.md) |
 | OpenCode | Project-level `.opencode/skills` | [中文](docs/zh/OPENCODE.md) / [English](docs/en/OPENCODE.md) |
-| Trae | Project-level `.trae/rules/project_rules.md`, optional `.trae/skills` | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
+| Trae | Combined project rules + full skill install | [中文](docs/zh/TRAE.md) / [English](docs/en/TRAE.md) |
 | Other agents | Project-level `AGENTS.md` / `CLAUDE.md` | [中文](docs/zh/OTHER_AGENTS.md) / [English](docs/en/OTHER_AGENTS.md) |
 
 ## Repository Layout

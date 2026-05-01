@@ -1,10 +1,59 @@
 # Trae 安装
 
-Trae 的项目规则比 skill 目录更稳定，所以推荐先使用项目规则文件。这样 Trae 只会在当前 LLM Wiki 项目里遵守 `karmind-skill` 工作流，不会影响其他项目。
+推荐使用“项目规则 + 完整 skill”组合安装。
 
-## 推荐：项目规则安装
+- `project_rules.md` 负责告诉 Trae：这个项目是 LLM Wiki，普通问答默认从 wiki 出发。
+- `.trae/skills/karmind-skill/` 负责提供完整的 `SKILL.md`、参考文档和脚本。
 
-在你的 LLM Wiki 项目根目录运行：
+这样 Trae 不需要全局启用这个能力，也不会影响普通代码项目。
+
+## 推荐：组合安装
+
+先获取本仓库：
+
+```bash
+git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+```
+
+然后进入你的 LLM Wiki 项目根目录，运行：
+
+```bash
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
+```
+
+安装后，项目里会出现：
+
+```text
+.trae/
+├── rules/
+│   └── project_rules.md
+└── skills/
+    └── karmind-skill/
+        ├── SKILL.md
+        ├── references/
+        ├── scripts/
+        └── adapters/
+```
+
+其中：
+
+- `.trae/rules/project_rules.md` 是 Trae 项目规则入口。
+- `.trae/skills/karmind-skill/SKILL.md` 是完整 skill 入口。
+
+## 不使用 Python 的手动安装
+
+如果你不想运行安装脚本，可以手动执行：
+
+```bash
+mkdir -p .trae/rules .trae/skills
+curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
+  -o .trae/rules/project_rules.md
+git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
+```
+
+## 只安装项目规则
+
+如果你只想要最小安装，也可以只放项目规则：
 
 ```bash
 mkdir -p .trae/rules
@@ -12,58 +61,7 @@ curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/tra
   -o .trae/rules/project_rules.md
 ```
 
-安装后，项目里应该有：
-
-```text
-.trae/rules/project_rules.md
-```
-
-然后在 Trae 中打开这个项目，直接说：
-
-```text
-使用 karmind-skill 在当前目录初始化一个 LLM Wiki。
-```
-
-或者：
-
-```text
-使用 karmind-skill 摄取新资料。
-```
-
-## 可选：安装完整 skill 文件
-
-如果你的 Trae 版本支持读取 `.trae/skills/`，可以把完整仓库放到项目内：
-
-```bash
-mkdir -p .trae/skills
-git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
-```
-
-安装后，项目里应该有：
-
-```text
-.trae/skills/karmind-skill/SKILL.md
-```
-
-如果 Trae 没有自动读取这个目录，仍然保留上面的项目规则文件即可。项目规则会要求 Trae 在需要维护 wiki 时读取 `karmind-skill` 的 `SKILL.md`。
-
-## 目录建议
-
-推荐最终结构：
-
-```text
-your-wiki-project/
-├── .trae/
-│   ├── rules/
-│   │   └── project_rules.md
-│   └── skills/
-│       └── karmind-skill/
-│           └── SKILL.md
-├── raw/
-└── wiki/
-```
-
-只使用项目规则时，`.trae/skills/` 可以不存在。
+这种方式可用，但功能依赖项目规则里的简短说明；推荐组合安装，因为 Trae 可以在需要时读取完整 `SKILL.md`。
 
 ## 常用提示
 
@@ -85,13 +83,13 @@ your-wiki-project/
 
 ## 更新
 
-如果使用了 `.trae/skills/karmind-skill`，更新方式：
+如果使用组合安装，更新完整 skill：
 
 ```bash
 git -C .trae/skills/karmind-skill pull
 ```
 
-如果只使用项目规则，重新下载规则文件即可：
+更新项目规则：
 
 ```bash
 curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \

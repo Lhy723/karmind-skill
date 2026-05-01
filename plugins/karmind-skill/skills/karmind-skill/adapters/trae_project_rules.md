@@ -1,6 +1,6 @@
 # Trae Project Rules: LLM Wiki
 
-Use the `karmind-skill` workflow for LLM wiki tasks.
+Use the `karmind-skill` workflow for LLM wiki tasks. This project rule is the trigger layer; the installed `.trae/skills/karmind-skill/SKILL.md` folder is the full workflow layer when available.
 
 - Read `SKILL.md` from `.trae/skills/karmind-skill/` or another installed `karmind-skill` folder when available.
 - Treat `raw/` as immutable source evidence.
