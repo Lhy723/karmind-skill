@@ -9,16 +9,18 @@
 
 ## 推荐：组合安装
 
-先获取本仓库：
+macOS / Linux：
 
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
 ```
 
-然后进入你的 LLM Wiki 项目根目录，运行：
+Windows PowerShell：
 
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --project .
 ```
 
 安装后，项目里会出现：
@@ -42,7 +44,9 @@ python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
 
 ## 不使用 Python 的手动安装
 
-如果你不想运行安装脚本，可以手动执行：
+如果你不想运行安装脚本，可以手动执行。
+
+macOS / Linux：
 
 ```bash
 mkdir -p .trae/rules .trae/skills
@@ -51,14 +55,35 @@ curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/tra
 git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
 ```
 
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force .trae/rules, .trae/skills
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae/rules/project_rules.md"
+git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
+```
+
 ## 只安装项目规则
 
-如果你只想要最小安装，也可以只放项目规则：
+如果你只想要最小安装，也可以只放项目规则。
+
+macOS / Linux：
 
 ```bash
 mkdir -p .trae/rules
 curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
   -o .trae/rules/project_rules.md
+```
+
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force .trae/rules
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae/rules/project_rules.md"
 ```
 
 这种方式可用，但功能依赖项目规则里的简短说明；推荐组合安装，因为 Trae 可以在需要时读取完整 `SKILL.md`。
@@ -91,7 +116,17 @@ git -C .trae/skills/karmind-skill pull
 
 更新项目规则：
 
+macOS / Linux：
+
 ```bash
 curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
   -o .trae/rules/project_rules.md
+```
+
+Windows PowerShell：
+
+```powershell
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae/rules/project_rules.md"
 ```

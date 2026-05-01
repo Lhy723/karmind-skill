@@ -9,16 +9,18 @@ This keeps the behavior scoped to the current project and avoids affecting ordin
 
 ## Recommended: Combined Install
 
-Fetch this repository first:
+macOS / Linux:
 
 ```bash
 git clone https://github.com/Lhy723/karmind-skill.git /tmp/karmind-skill
+python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
 ```
 
-Then run this from your LLM Wiki project root:
+Windows PowerShell:
 
-```bash
-python /tmp/karmind-skill/scripts/install.py --target project-trae --project .
+```powershell
+git clone https://github.com/Lhy723/karmind-skill.git "$env:TEMP\karmind-skill"
+python "$env:TEMP\karmind-skill\scripts\install.py" --target project-trae --project .
 ```
 
 After installation, the project contains:
@@ -42,7 +44,9 @@ Meaning:
 
 ## Manual Install Without Python
 
-If you do not want to run the install script, do it manually:
+If you do not want to run the install script, do it manually.
+
+macOS / Linux:
 
 ```bash
 mkdir -p .trae/rules .trae/skills
@@ -51,14 +55,35 @@ curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/tra
 git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
 ```
 
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force .trae/rules, .trae/skills
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae/rules/project_rules.md"
+git clone https://github.com/Lhy723/karmind-skill.git .trae/skills/karmind-skill
+```
+
 ## Minimal Project Rules Only
 
-For a minimal install, use only the project rule:
+For a minimal install, use only the project rule.
+
+macOS / Linux:
 
 ```bash
 mkdir -p .trae/rules
 curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
   -o .trae/rules/project_rules.md
+```
+
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force .trae/rules
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae/rules/project_rules.md"
 ```
 
 This works, but it relies on the shorter project rule instructions. The combined install is preferred because Trae can read the full `SKILL.md` when needed.
@@ -91,7 +116,17 @@ git -C .trae/skills/karmind-skill pull
 
 Update the project rule:
 
+macOS / Linux:
+
 ```bash
 curl -L https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md \
   -o .trae/rules/project_rules.md
+```
+
+Windows PowerShell:
+
+```powershell
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/Lhy723/karmind-skill/main/adapters/trae_project_rules.md" `
+  -OutFile ".trae/rules/project_rules.md"
 ```
